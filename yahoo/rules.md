@@ -2,7 +2,12 @@
 
 - [http](#http)
 - [css](#css)
-- 
+- [js](#js)
+- [js-css](#js-css)
+- [img](#img)
+- [cookie](#cookie)
+- [mobile](#mobile)
+- [server](#server)
 
 ## http
 **1.尽量减少HTTP请求数**
@@ -86,6 +91,7 @@
 　　分离组件可以最大化并行下载，但要确保只用不超过2-4个域，因为存在DNS查找的代价。例如，可以把HTML和动态内容部署在www.example.org，而把静态组件分离到static1.example.org和static2.example.org。
 
 **9.尽量少用iframe**
+
 　　用iframe可以把一个HTML文档插入到父文档里，重要的是明白iframe是如何工作的并高效地使用它。
 
 <iframe>的优点：
@@ -146,6 +152,9 @@ css部分
 
 **18.把脚本放在底部**
 
+
+## js-css
+
 **19.把JavaScript和CSS放到外面**
 
 　　很多性能原则都是关于如何管理外部组件的，然而，在这些顾虑出现之前你应该问一个更基础的问题：应该把JavaScript和CSS放到外部文件中还是直接写在页面里？
@@ -153,6 +162,9 @@ css部分
 实际上，用外部文件可以让页面更快，因为JavaScript和CSS文件会被缓存在浏览器。HTML文档中的行内JavaScript和CSS在每次请求该HTML文档的时候都会重新下载。这样做减少了所需的HTTP请求数，但增加了HTML文档的大小。另一方面，如果JavaScript和CSS在外部文件中，并且已经被浏览器缓存起来了，那么我们就成功地把HTML文档变小了，而且还没有增加HTTP请求数。
 
 **20.压缩JavaScript和CSS**
+
+
+## img
 
 **21.优化图片**
 
@@ -196,6 +208,7 @@ css部分
 　　如果域名是www.example.org，可以把静态组件部署到static.example.org。然而，如果已经在顶级域example.org或者www.example.org设置了cookie，那么所有对static.example.org的请求都会含有这些cookie。这时候可以再买一个新域名，把所有的静态组件部署上去，并保持这个新域名不含cookie。Yahoo!用的是yimg.com，YouTube是ytimg.com，Amazon是images-amazon.com等等。
 
 　　把静态组件部署在不含cookie的域下还有一个好处是有些代理可能会拒绝缓存带cookie的组件。有一点需要注意：如果不知道应该用example.org还是www.example.org作为主页，可以考虑一下cookie的影响。省略www的话，就只能把cookie写到*.example.org，所以因为性能原因最好用www子域，并且把cookie写到这个子域下。
+
 
 ## mobile
 
