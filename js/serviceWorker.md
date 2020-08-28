@@ -54,6 +54,8 @@ install -> installed -> actvating -> Active -> Activated -> Redundant
 - 激活(activating)失败
 - 新版本的 Service Worker 替换了它并成为激活状态
 
+完整的图[大图](../img/sw-lifecycle.png)
+
 **3、使用 Service Worker**
 
 首先要注意如下两点：
