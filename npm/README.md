@@ -4,7 +4,7 @@
 
 ## publish
 
-1. 创建 `github`
+1 创建 `github`
 ```
 git init
 
@@ -20,7 +20,7 @@ git commit -m 注释
 git push -u origin master
 ```
 
-2. 推送并关联github
+2 推送并关联github
 
 2.1 创建 `package.json`
 ```
