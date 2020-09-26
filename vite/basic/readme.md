@@ -352,7 +352,7 @@ provide/inject组件通信
   </div>
 </template>
 
-script>
+<script>
 import { provide } from '@vue/composition-api'
 
 export default {
