@@ -64,7 +64,15 @@ const unwrapped = isRef(foo) ? foo.value : null
 
 `toRefs`：该函数将 `reactive()` 创建的响应式的对象转换成普通的对象，只不过，这个对象上的每个属性节点都是 `refs()` 函数的响应式的数据
 
-```js
+```vue
+<template>
+  <div>
+    <p>{{ count }}</p>
+    <button @click="increment">increment</button>
+  </div>
+</template>
+
+<script>
 import { toRefs } from '@vue/composition-api'
 
 export default {
@@ -77,10 +85,7 @@ export default {
     return { ...toRefs(state), increment }
   }
 }
-```
-
-```html
-<p>{{ count }}</p>
+</script>
 ```
 
 ## computed
