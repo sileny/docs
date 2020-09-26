@@ -7,6 +7,8 @@
 - [computed](#computed)
 - [watch](#watch)
 - [lifeCycle](#lifecycle)
+- [provide-inject](#provide-inject)
+- [refs](#refs)
 
 ## reactive
 
