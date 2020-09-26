@@ -12,7 +12,7 @@
 
 ## reactive
 
-Vue2里的 `Vue.observable()` 等价于 `vite3` 里的 `reactive` 函数，用来创建响应式的对象，基本代码如下：
+Vue2里的 `Vue.observable()` 等价于 `vite` 里的 `reactive` 函数，用来创建响应式的对象，基本代码如下：
 
 ```js
 import { reactive } from '@vue/composition-api'
