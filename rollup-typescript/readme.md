@@ -203,7 +203,7 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
 {
   "name": "type",
   "version": "1.0.0",
-  "description": "array",
+  "description": "Type check in TypeScript",
   "main": "dist/index.cjs.js",
   "unpkg": "dist/index.global.js",
   "module": "dist/index.esm.js",
