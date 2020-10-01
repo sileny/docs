@@ -3,6 +3,7 @@
 - [项目结构](#project)
 - [tsconfig](#tsconfig)
 - [rollup](#rollup)
+- [package.json](#package.json)
 
 ## project
 
@@ -194,4 +195,67 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
   return replace(replacements)
 }
 
+```
+
+## package.json
+
+```json
+{
+  "name": "package-name",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.cjs.js",
+  "unpkg": "dist/index.global.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.js",
+  "scripts": {
+    "dev": "rimraf dist && rollup -c --environment NODE_ENV:development",
+    "build": "rimraf dist && rollup -c --environment NODE_ENV:production",
+    "lint": "prettier --write --parser typescript src/**/*.ts"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-typescript": "^7.10.4",
+    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-replace": "^2.3.3",
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.27.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.27.3",
+    "typescript": "^4.0.3"
+  },
+  "author": "sunsilent",
+  "email": "sunsilently@outlook.com",
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "dependencies": {},
+  "typings": "dist/index.d.ts",
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ],
+    "src/**/*.{jsx,json,css,scss,vue}": [
+      "prettier --write"
+    ]
+  }
+}
 ```
