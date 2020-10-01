@@ -120,11 +120,23 @@ const outputConfigs = {
   }
 };
 
-export default Object.keys(outputConfigs).map(format =>
-  createConfig(format, outputConfigs[format])
-)
+const packageFormats = Object.keys(outputConfigs);
 
-function createConfig(format, output) {
+const packageConfigs = packageFormats.map(format =>
+  createConfig(format, outputConfigs[format])
+);
+
+if (process.env.NODE_ENV === 'production') {
+  packageFormats.forEach(format => {
+    if ('umd' === format) {
+      packageConfigs.push(createMinifiedConfig(format))
+    }
+  })
+}
+
+export default packageConfigs;
+
+function createConfig(format, output, plugins = []) {
   if (!output) {
     console.log(require('chalk').yellow(`invalid format: "${ format }"`));
     process.exit(1)
@@ -149,8 +161,8 @@ function createConfig(format, output) {
     tsconfigOverride: {},
   });
 
-  const mode = process.env.NODE_ENV;
-  const isProd = mode === 'production';
+  // const mode = process.env.NODE_ENV;
+  // const isProd = mode === 'production';
 
   return {
     input: `src/index.ts`,
@@ -163,7 +175,8 @@ function createConfig(format, output) {
         isGlobalBuild,
         isNodeBuild
       ),
-      isProd && terser(),
+      // isProd && terser(), // 生成模式下全部被压缩
+      ...plugins,
       json(),
       resolve(),
       commonjs(),
@@ -193,6 +206,19 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
     }
   });
   return replace(replacements)
+}
+
+function createMinifiedConfig(format) {
+  const { terser } = require('rollup-plugin-terser')
+  return createConfig(
+    format,
+    {
+      file: outputConfigs[format].file.replace(/\.js$/, '.min.js'),
+      format: outputConfigs[format].format,
+      name: 'index'
+    },
+    [terser()]
+  )
 }
 
 ```
