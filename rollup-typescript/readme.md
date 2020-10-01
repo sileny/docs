@@ -204,10 +204,17 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
   "name": "type",
   "version": "1.0.0",
   "description": "Type check in TypeScript",
+  "author": "sunsilent",
+  "email": "sunsilently@outlook.com",
+  "license": "MIT",
   "main": "dist/index.cjs.js",
   "unpkg": "dist/index.global.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "rimraf dist && rollup -c --environment NODE_ENV:development",
     "build": "rimraf dist && rollup -c --environment NODE_ENV:production",
@@ -215,6 +222,27 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
   },
   "engines": {
     "node": ">=10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sileny/type.git"
+  },
+  "bugs": "https://github.com/sileny/type/issues",
+  "homepage": "https://github.com/sileny/type",
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier --write"
+    ],
+    "src/**/*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ],
+    "src/**/*.{jsx,json,css,scss,vue}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -233,28 +261,6 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
     "rollup-plugin-typescript2": "^0.27.3",
     "typescript": "^4.0.3"
   },
-  "author": "sunsilent",
-  "email": "sunsilently@outlook.com",
-  "files": [
-    "dist"
-  ],
-  "license": "MIT",
-  "dependencies": {},
-  "typings": "dist/index.d.ts",
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "node scripts/verifyCommit.js"
-  },
-  "lint-staged": {
-    "src/**/*.js": [
-      "prettier --write"
-    ],
-    "src/**/*.ts?(x)": [
-      "prettier --parser=typescript --write"
-    ],
-    "src/**/*.{jsx,json,css,scss,vue}": [
-      "prettier --write"
-    ]
-  }
+  "dependencies": {}
 }
 ```
