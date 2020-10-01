@@ -39,7 +39,7 @@
     "rootDir": "src",
     "outDir": "dist", // 输出目录
     "declaration": true, // 是否自动创建类型声明文件
-    "declarationDir": "types", // 类型声明文件的输出目录
+    "declarationDir": "dist", // 类型声明文件的输出目录
     "allowJs": false, // 允许编译javascript文件。
     "lib": [ // 编译过程中需要引入的库文件的列表
       "dom",
