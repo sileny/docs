@@ -201,9 +201,9 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
 
 ```json
 {
-  "name": "package-name",
+  "name": "type",
   "version": "1.0.0",
-  "description": "",
+  "description": "array",
   "main": "dist/index.cjs.js",
   "unpkg": "dist/index.global.js",
   "module": "dist/index.esm.js",
@@ -247,8 +247,7 @@ function createReplacePlugin(isBrowserBuild, isGlobalBuild, isNodeBuild) {
   },
   "lint-staged": {
     "src/**/*.js": [
-      "prettier --write",
-      "eslint --fix"
+      "prettier --write"
     ],
     "src/**/*.ts?(x)": [
       "prettier --parser=typescript --write"
