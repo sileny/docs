@@ -22,7 +22,7 @@ git add .
 
 git commit -m 注释
 
-git push -u origin master
+git push -u origin main
 ```
 
 2 推送并关联github
