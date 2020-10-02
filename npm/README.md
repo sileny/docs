@@ -8,10 +8,15 @@
 ```
 git init
 
-git config user.name username
-git config user.email emailAddress
+git config user.name sunsilently
 
-git remote add origin https://github.com/sileny/docs
+git config user.email sunsilently@outlook.com
+
+git remote add origin https://github.com/sileny/名称
+
+git pull https://github.com/sileny/名称 main
+
+git branch -m master main
 
 git add .
 
