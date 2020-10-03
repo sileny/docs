@@ -94,8 +94,8 @@ interface OutputPluginHooks {
 }
 ```
 
-- [`augmentChunkHash` 单独使用似乎无效](https://www.rollupjs.org/guide/en/#augmentchunkhash) 为每一块增加哈希值，以便于输出的文件之间相互调用的时候使用。
-- `generateBundle` 生成代码块。在 `bundle.generate()` 之后或在将文件写入 `bundle.write` 写入磁盘之前调用。**要在写入文件后修改文件，要使用 `writeBundle` 挂钩**
+1. [`augmentChunkHash` 单独使用似乎无效](https://www.rollupjs.org/guide/en/#augmentchunkhash) 为每一块增加哈希值，以便于输出的文件之间相互调用的时候使用。
+2. `generateBundle` 生成代码块。在 `bundle.generate()` 之后或在将文件写入 `bundle.write` 写入磁盘之前调用。**要在写入文件后修改文件，要使用 `writeBundle` 挂钩**
 
 文件输出定义，也支持命令的部分看[command-line-flags](https://www.rollupjs.org/guide/en/#command-line-flags)
 ```
@@ -181,4 +181,4 @@ bundle: OutputBundle {
 }
 ```
 
-
+3. `writeBundle` 和 `generateBundle` 的参数定义类似，原理也类似
