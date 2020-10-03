@@ -253,7 +253,26 @@ npm run build
 
 1.2.3 business
 
-在 `D:/code/package/auto/copy-code.js` 实现 `copy`
+实现 `copy` 的代码
+
+```js
+const args = process.argv.slice(2);
+
+function copyCode(name) {
+  return new Promise((resolve, reject) => {
+    try {
+      fs.copySync(filename, tagName);
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
+copyCode(args[0]).then(() => {
+  // 做点可爱的事情吧...
+});
+```
 
 然后，实现`git push`、`npm publish`
 
