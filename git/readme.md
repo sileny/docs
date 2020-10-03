@@ -2,6 +2,7 @@
 
 - [init](#init)
 - [push](#push)
+- [更新代码后提交](#update)
 
 ## init
 ```
@@ -29,3 +30,10 @@ git branch -m master main
 ```
 git add . && git commit -m a && git push -u origin main
 ```
+
+## update
+
+```
+git add . && git commit -m u && git push
+```
+
