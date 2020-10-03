@@ -183,3 +183,81 @@ bundle: OutputBundle {
 
 3. `writeBundle` 和 `generateBundle` 的参数定义类似，原理也类似
 
+### do-plugin
+
+0. 目前的痛点
+
+- 写代码
+- build
+- copy到另外一个目录下（备注：将一个大的代码包拆分成多个小的代码包，需要根据方法名动态生成文件夹和文件）
+- 之后将动态生成的代码推送到git仓库
+- 发布到npm仓库
+
+1. 实现
+
+1.1 写业务代码
+```
+const toStr = Object.prototype.toString;
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+function isArrayBuffer(val) {
+  return toStr.call(val) === '[object ArrayBuffer]';
+}
+
+export {
+  isArrayBuffer
+};
+```
+
+1.2 build
+
+1.2.1 修改配置
+
+生产环境下执行的插件业务
+```rollup.config.js
+if (process.env.NODE_ENV === 'production') {
+  packageFormats.forEach(format => {
+    if ('umd' === format) {
+      packageConfigs.push(createMinifiedConfig(format))
+    }
+  })
+}
+
+function createMinifiedConfig(format) {
+  const { terser } = require('rollup-plugin-terser');
+  return createConfig(
+    format,
+    {
+      file: outputConfigs[format].file.replace(/\.js$/, '.min.js'),
+      format: outputConfigs[format].format, // 输出umd/amd/iife...格式
+      name: 'index' // umd必须
+    },
+    [terser(), { // 插件就是一个对象，该对象下有一些特定的方法，这些在会运行时执行的方法就是钩子函数
+      writeBundle(options, bundle) {
+        const { execFile } = require('child_process');
+        execFile('node', ['D:/code/package/auto/copy-code.js', 'isArrayBuffer'], (error, stdout, stderr) => {
+          console.log(error, stdout, stderr);
+        });
+      }
+    }]
+  )
+}
+```
+
+1.2.2 build
+
+```
+npm run build
+```
+
+1.2.3 business
+
+在 `D:/code/package/auto/copy-code.js` 实现 `copy`
+
+然后，实现`git push`、`npm publish`
+
