@@ -145,7 +145,7 @@ options：NormalizedOutputOptions {
 bundle: OutputBundle {
   'index.min.js': { // 输出的文件名
     exports: [ 'isArrayBuffer' ], // 暴露的方法名
-    facadeModuleId: 'D:\\code\\package\\@silen\\array\\src\\index.ts', // 源码目录
+    facadeModuleId: 'D:\\code\\xxx\\src\\index.ts', // 源码目录
     isDynamicEntry: false, // 是否动态入口
     isEntry: true, // 是否为入口文件
     isImplicitEntry: false, // 是否在别的代码块加载完之后加载（模块依赖的时候可能会为true）
