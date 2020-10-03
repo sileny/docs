@@ -39,7 +39,7 @@ export interface PluginHooks extends OutputPluginHooks {
 	options: (this: MinimalPluginContext, options: InputOptions) => InputOptions | null | undefined;
 	resolveDynamicImport: ResolveDynamicImportHook;
 	resolveId: ResolveIdHook;
-	transform: TransformHook;
+	transform: TransformHook; // transform(code: 原代码, id: 该文件完整路径)
 	watchChange: (id: string) => void;
 }
 ```
@@ -182,3 +182,4 @@ bundle: OutputBundle {
 ```
 
 3. `writeBundle` 和 `generateBundle` 的参数定义类似，原理也类似
+
