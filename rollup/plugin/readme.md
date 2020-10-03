@@ -181,7 +181,7 @@ bundle: OutputBundle {
 
 ### do-plugin
 
-0. 目前的痛点
+0 目前的痛点
 
 - 写代码
 - build
@@ -189,7 +189,7 @@ bundle: OutputBundle {
 - 之后将动态生成的代码推送到git仓库
 - 发布到npm仓库
 
-1. 实现
+1 实现
 
 1.1 写业务代码
 ```
