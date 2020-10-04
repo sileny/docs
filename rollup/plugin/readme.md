@@ -149,7 +149,7 @@ bundle: OutputBundle {
       'D:\\code\\xxx\\src\\index.ts': [Object]
     },
     name: [Getter], // extends RenderedChunk extends PreRenderedChunk
-    type: 'chunk', // extends PreRenderedChunk
+    type: 'chunk', // extends PreRenderedChunk // 被标记为chunk
     code: '/*!\n' + // extends PreRenderedChunk 生成的代码，不一定输出到磁盘，输出到磁盘要看 `writeBundle`
       '  * @silen/type v1.0.0\n' +
       '  * (c) 2020\n' +
@@ -172,7 +172,7 @@ bundle: OutputBundle {
     isAsset: [Getter],
     source: 'declare function isArrayBuffer(val: any): boolean;\r\n' +
       'export { isArrayBuffer };\r\n',
-    type: 'asset'
+    type: 'asset' // 被标记为asset
   }
 }
 ```
