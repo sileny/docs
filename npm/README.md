@@ -1,6 +1,7 @@
 # npm
 
 - [install](#install)
+- [rm](#rm)
 - [publish](#publish)
 
 ## install
