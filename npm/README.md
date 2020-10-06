@@ -1,6 +1,22 @@
 # npm
 
+- [install](#install)
 - [publish](#publish)
+
+## install
+
+```
+npm install express
+```
+
+当然，也可以使用 `npm i express` 来安装，`i` 是 `install` 的简写
+
+## rm
+
+```
+npm rm express --save
+```
+会卸载掉 `express` 模块，同时，会刷新 `package.json`
 
 ## publish
 
