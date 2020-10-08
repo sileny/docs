@@ -12,7 +12,7 @@
 
 - 设置 `httpOnly` 为 `true`，只可以在服务端操作，客户端js无法操作，可以防止 `xss` 攻击
 - `secure` 设置为 `true`，需要 `https` 支持，在 `http` 下不支持
-- `signed` 设置为 `true`，拒绝未签名的 `cookie`
+- `signed` 设置为 `true`，拒绝未签名的或被篡改的 `cookie`，可以有效防止 `中间人` 攻击。[案例参考](https://github.com/sileny/node-demo/tree/main/web-express#cookie-parser)
 
 ### session
 
