@@ -2,6 +2,7 @@
 
 - [生产环境报错信息二次处理](#error-handler)
 - [cookie设置](#cookie)
+- [mongo结合express-session会话缓存多重校验](#session)
 
 ### error-handler
 
@@ -13,3 +14,6 @@
 - `secure` 设置为 `true`，需要 `https` 支持，在 `http` 下不支持
 - `signed` 设置为 `true`，拒绝未签名的 `cookie`
 
+### session
+
+结合数据库和会话实现多重认证校验
