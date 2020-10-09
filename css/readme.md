@@ -243,6 +243,12 @@
       transform-origin: 0 50%;
     }
 
+    .circle-left:hover,
+    .circle-right:hover {
+      cursor: pointer;
+      background-color: #000!important;
+    }
+
     .circle-right {
       width: 100px;
       height: 200px;
@@ -299,6 +305,11 @@
       transform: rotate(315deg);
     }
 
+    #circle10 {
+      background-color: #00f;
+      transform: rotate(360deg);
+    }
+
     #left {
       clip: rect(0px 100px 200px 0px);
       position: absolute;
@@ -327,6 +338,7 @@
     <div class="circle-left" id="circle5"></div>
   </div>
   <div id="right">
+    <div class="circle-right" id="circle10"></div>
     <div class="circle-right" id="circle9"></div>
     <div class="circle-right" id="circle8"></div>
     <div class="circle-right" id="circle7"></div>
