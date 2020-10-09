@@ -1,5 +1,7 @@
 # css
 
+>`0.25turn` 为 `90deg`
+
 - [svg](#svg)
 - [四分之一扇形](#sector)
 - [圆点环绕](#circle-points)
