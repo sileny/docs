@@ -8,6 +8,7 @@
 - [米字型](#union-jack)
 - [八圆角形](#8radius)
 - [九大行星](#9stars)
+- [一个圆8等分](#8partion)
 
 ## svg
 
@@ -219,6 +220,119 @@
   ul.appendChild(doc);
   document.body.appendChild(ul);
 </script>
+</body>
+</html>
+
+```
+
+## 8partion
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CSS等分圆</title>
+  <meta charset="utf-8">
+  <style type="text/css">
+    .circle-left {
+      width: 100px;
+      height: 200px;
+      border-radius: 0px 100px 100px 0px;
+      position: absolute;
+      right: 0;
+      transform-origin: 0 50%;
+    }
+
+    .circle-right {
+      width: 100px;
+      height: 200px;
+      border-radius: 100px 0px 0px 100px;
+      position: absolute;
+      right: 0;
+      transform-origin: 100% 50%;
+    }
+
+    #circle0 {
+      width: 200px;
+      height: 200px;
+      border-radius: 100px;
+      background-color: yellowgreen;
+      position: relative;
+    }
+
+    #circle2 {
+      background-color: #70f3ff;
+    }
+
+    #circle3 {
+      background-color: #ff461f;
+      transform: rotate(45deg);
+    }
+
+    #circle4 {
+      background-color: #bce672;
+      transform: rotate(90deg);
+    }
+
+    #circle5 {
+      background-color: #ffffff;
+      transform: rotate(135deg);
+    }
+
+    #circle6 {
+      background-color: #3b2e7e;
+      transform: rotate(180deg);
+    }
+
+    #circle7 {
+      background-color: #ff2121;
+      transform: rotate(225deg);
+    }
+
+    #circle8 {
+      background-color: #16a951;
+      transform: rotate(270deg);
+    }
+
+    #circle9 {
+      background-color: #e0eee8;
+      transform: rotate(315deg);
+    }
+
+    #left {
+      clip: rect(0px 100px 200px 0px);
+      position: absolute;
+      right: 0px;
+      width: 100px;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    #right {
+      clip: rect(0px 100px 200px 0px);
+      position: absolute;
+      left: 0px;
+      width: 100px;
+      height: 200px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+<div id="circle0">
+  <div id="left">
+    <div class="circle-left" id="circle2"></div>
+    <div class="circle-left" id="circle3"></div>
+    <div class="circle-left" id="circle4"></div>
+    <div class="circle-left" id="circle5"></div>
+  </div>
+  <div id="right">
+    <div class="circle-right" id="circle9"></div>
+    <div class="circle-right" id="circle8"></div>
+    <div class="circle-right" id="circle7"></div>
+    <div class="circle-right" id="circle6"></div>
+  </div>
+</div>
 </body>
 </html>
 
