@@ -68,3 +68,4 @@ store.subscribe(() => {
   ReactDOM.render(<Counter></Counter>, document.getElementById('root'));
 });
 ```
+该案例原理：`dispatch` 触发 `action`，在 `reducer` 函数里根据 `action.type` 来决定数据的变化，`subscribe` 订阅数据状态
