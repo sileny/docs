@@ -9,7 +9,8 @@
 ## node
 
 - [compression压缩响应](#compression)
-- [对指定的消息进行压缩](#filter)
+- [compression对指定的消息进行压缩](#compression-filter)
+- [compression压缩水平](#compression-level)
 
 ### compression
 
@@ -43,7 +44,7 @@ curl http://localhost:3000 -H 'Accept-Encoding: gzip' | gunzip
 
 但不是所有的消息都需要压缩
 
-### filter
+### compression-filter
 
 `compression` 在默认的 `filter` 函数里包含了 `MIME` 类型的 `text/*`、`*/json`、`*/javascript`，因此，只会压缩这些响应数据
 
@@ -67,3 +68,13 @@ connect
 ```
 
 这样就可只对普通文本进行压缩
+
+### compression-level
+
+```js
+connect()
+  .use(compression({ level: 3, memLevel: 8 }));
+```
+
+- `level` 为 `3`，表示压缩率低，但压缩速度快
+- `memLevel` 为 `8`，表示使用更多的内存进行压缩
