@@ -3,6 +3,7 @@
 - [生产环境报错信息二次处理](#error-handler)
 - [cookie设置](#cookie)
 - [mongo结合express-session会话缓存多重校验](#session)
+- [body-parser限制请求体大小](#limit)
 
 ### error-handler
 
@@ -17,3 +18,6 @@
 ### session
 
 结合数据库和会话实现多重认证校验
+
+- [mongodb结合session实现认证](https://github.com/sileny/node-demo/tree/main/session-mongodb)
+- [redis结合session以及对cookie签名实现认证](https://github.com/sileny/node-demo/tree/main/session-redis)
