@@ -48,23 +48,30 @@ curl http://localhost:3000 -H 'Accept-Encoding: gzip' | gunzip
 
 `compression` 在默认的 `filter` 函数里包含了 `MIME` 类型的 `text/*`、`*/json`、`*/javascript`，因此，只会压缩这些响应数据
 
-```js
-exports.filter = function(req, res) {
-  const type = res.getHeader('Content-Type') || '';
-  return type.match(/json|text|javascript/);
-};
-```
-
 如果要改变这种默认的行为，需要传入定制的 `filter`
 
 ```js
-function filter(req) {
-  const type = req.getHeader('Content-Type') || '';
-  return 0 === type.indexOf('text/plain');
+const connect = require('connect');
+const compression = require('compression');
+
+function shouldCompress(req, res) {
+  if (req.headers['x-no-compression']) {
+    // don't compress responses with this request header
+    return false
+  }
+
+  // fallback to standard filter function
+  return compression.filter(req, res)
 }
 
-connect
-  .use(compression({ filter }));
+connect()
+  .use(compression({ threshold: 0, filter: shouldCompress }))
+  .use((req, res, next) => {
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('This response is compressed');
+  })
+  .listen(3000);
+
 ```
 
 这样就可只对普通文本进行压缩
