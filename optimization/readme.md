@@ -42,6 +42,9 @@ curl http://localhost:3000 -i -H 'Accept-Encoding: gzip'
 curl http://localhost:3000 -H 'Accept-Encoding: gzip' | gunzip
 ```
 
+[compression-demo案例](https://github.com/sileny/node-demo/tree/main/compression-demo)
+
+
 但不是所有的消息都需要压缩
 
 ### compression-filter
