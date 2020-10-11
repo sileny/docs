@@ -40,12 +40,12 @@ const store = createStore(reducer);
 
 function increment() {
   // 通过仓库的`dispatch`调用方法修改数据
-  store.dispatch('increment');
+  store.dispatch({ type: 'increment' });
 }
 
 function decrement() {
   // 通过仓库的`dispatch`调用方法修改数据
-  store.dispatch('decrement');
+  store.dispatch({ type: 'decrement' });
 }
 
 const Counter = props => {
