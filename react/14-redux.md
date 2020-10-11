@@ -49,6 +49,7 @@ function decrement() {
 }
 
 const Counter = props => {
+  // 获取数据状态
   const state = store.getState();
   const { num } = state;
   return (
