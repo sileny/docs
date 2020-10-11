@@ -4,6 +4,7 @@
 - [cookie设置](#cookie)
 - [mongo结合express-session会话缓存多重校验](#session)
 - [body-parser限制请求体大小](#limit)
+- [跨站请求伪造csrf](#csrf)
 
 ### error-handler
 
@@ -21,3 +22,11 @@
 
 - [mongodb结合session实现认证](https://github.com/sileny/node-demo/tree/main/session-mongodb)
 - [redis结合session以及对cookie签名实现认证](https://github.com/sileny/node-demo/tree/main/session-redis)
+
+### csrf
+
+跨站请求伪造简称为 `csrf`，即，利用站点对浏览器的信任漏洞进行攻击。
+
+经过 `你的程序认证的用户` 访问攻击者创建的或攻陷的站点时，这种站点会在用户不知情的情况下，代表用户向你的程序发起请求，从而进行攻击。`csrf` 中间件可以防护这样的攻击。
+
+[csurf实现跨站请求伪造防护](https://github.com/sileny/node-demo/tree/main/csrf)
