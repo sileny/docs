@@ -9,7 +9,7 @@ class App extends React.Component {
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       isCompleted: PropTypes.bool.isRequired
-    }))
+    })).isRequired
   };
 
   render() {
