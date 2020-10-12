@@ -25,6 +25,16 @@
 
 # usage
 
+- [语法](#grammar)
+- [input](#input)
+- [confirm](#confirm)
+- [list](#list)
+- [rawlist](#rawlist)
+- [expand](#expand)
+- [checkbox](#checkbox)
+- [password](#password)
+- [editor](#editor)
+
 ## grammar
 
 语法：
@@ -39,6 +49,34 @@ const promptList = [
 inquirer.prompt(promptList).then(answers => {
   console.log(answers); // 返回的结果
 });
+```
+
+下面是一个完整的 `demo`
+
+```js
+const inquirer = require('inquirer');
+
+const promptList = [{
+  type: 'input',
+  message: '设置一个用户名:',
+  name: 'name',
+  default: "defaultName" // 默认值
+}, {
+  type: 'input',
+  message: '请输入手机号:',
+  name: 'phone',
+  validate(val) {
+    if (val.match(/\d{11}/g)) { // 校验位数
+      return val;
+    }
+    return "请输入11位数字";
+  }
+}];
+
+inquirer.prompt(promptList).then(answers => {
+  console.log(answers); // 返回的结果
+});
+
 ```
 
 ## input
