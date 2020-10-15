@@ -31,3 +31,15 @@ function Example() {
 因为这个特性，所以，可以在函数组件里记录 `state` 和 引入生命周期等特性函数。
 
 >Hook不能在 `class` 组件里使用
+
+
+当然，也可以多次使用 `state hook`
+```js
+function ExampleWithManyStates() {
+  // 声明多个 state 变量！
+  const [age, setAge] = useState(42);
+  const [fruit, setFruit] = useState('banana');
+  const [todos, setTodos] = useState([{ text: 'Learn Hooks' }]);
+  // ...
+}
+```
