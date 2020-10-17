@@ -1,5 +1,7 @@
 # react-redux
 
+- [install](#install)
+- [example](#example)
 
 ## install
 
@@ -9,40 +11,46 @@ npm i react-redux
 
 ## example
 
-创建一个 `Counter` 组件，渲染父组件传递过来的数据
+需求：
+- 当点击点击 `++` 按钮，将会触发 `increment` 类型的操作，之后，将会通过 `dispatch` 调用 `incrementAction` 的方法，该方法会执行 `reducer` 的 `state.num++` 并返回新的 `state`
+- 点击 `--` 按钮，也是如此
+
+组件设计实现：
+
+1 `App` 组件的实现
+
+创建一个 `App` 组件，渲染父组件传递过来的数据
 ```js
-class Counter extends React.Component {
-  render() {
-    const value = this.props.value;
-    const increment = this.props.increment; // 指向了`mapDispatchToProps`关联的方法
-    const decrement = this.props.decrement;
-    return (
+function App(props) {
+  const { value, increment, decrement } = props;
+  return (
+    <div className="App">
       <div>
         <h1>计数器数量: { value }</h1>
         <button onClick={increment}>++</button>
         <button onClick={decrement}>--</button>
       </div>
-    )
-  }
+    </div>
+  );
 }
 ```
 
-定义 `state`
+定义 `App` 组件需要的数据状态 `state`
 ```js
 function mapStateToProps(state) {
   return {
-    value: state.num // 将num映射为value
+    value: state.num // 将num映射为value，按照设计模式的角度来看，就是接口适配
   };
 }
 ```
 
-定义通过何种操作(`action`)修改数据状态(`state`)
+定义希望通过何种操作(`action`)修改数据状态(`state`)
 ```js
 const incrementAction = { type: 'increment' };
 const decrementAction = { type: 'decrement' };
 ```
 
-定义通过指定操作(`action`)修改数据状态的方法
+定义通过指定操作(`action`)修改数据状态的方法，该方法通过 `dispatch` 实现
 ```js
 function mapDispatchToProps(dispatch) {
   return {
@@ -51,6 +59,13 @@ function mapDispatchToProps(dispatch) {
   };
 }
 ```
+
+将 `App` 组件的需要的数据状态和修改数据状态的方法通过 `connect` 来连接。即，点击 `++` 按钮实现数值新增，点击 `--` 实现数值减少
+
+至此，`App`组件已经完成。下面来实现父组件的数据传值
+
+
+2 父组件的实现
 
 定义进行数据变更的业务方法(`reducer`)
 ```js
@@ -67,19 +82,34 @@ function reducer(state = { num: 0 }, action) {
 }
 ```
 
-当点击点击 `++` 按钮，将会触发 `increment` 类型的操作，之后，将会通过 `dispatch` 调用 `incrementAction` 的方法，该方法会执行 `reducer` 的 `state.num++` 并返回新的 `state`
+创建仓库，存储 `reducer` 返回的数据
+```js
+const store = createStore(reducer);
+```
 
-点击 `--` 按钮，也是如此
+将数据通过 `Provider` 组件传递给 `App` 组件
+```jsx
+<Provider store={ store }>
+  <App />
+</Provider>
+```
+
+>`Provider`组件是一个顶级组件，数据可以被内部的所有的子组件拿到
+
 
 下面是完整的代码
+
+父组件代码如下，
 ```js
+// index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 
-const incrementAction = { type: 'increment' };
-const decrementAction = { type: 'decrement' };
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 // 函数：用来改变数据，并返回state给store
 function reducer(state = { num: 0 }, action) {
@@ -90,12 +120,40 @@ function reducer(state = { num: 0 }, action) {
     case 'decrement':
       state.num--;
       break;
+    default:
+      break;
   }
   return { ...state };
 }
 
 // 创建仓库，存储reducer返回的数据
 const store = createStore(reducer);
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={ store }>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
+
+```
+
+`App`组件代码
+```js
+import React from 'react';
+import './App.css';
+
+import { connect } from 'react-redux';
+
+const incrementAction = { type: 'increment' };
+const decrementAction = { type: 'decrement' };
 
 // 将state映射到props
 function mapStateToProps(state) {
@@ -113,29 +171,21 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class Counter extends React.Component {
-  render() {
-    const value = this.props.value;
-    const increment = this.props.increment; // 指向了`mapDispatchToProps`关联的方法
-    const decrement = this.props.decrement;
-    return (
+function App(props) {
+  const { value, increment, decrement } = props;
+  return (
+    <div className="App">
       <div>
         <h1>计数器数量: { value }</h1>
         <button onClick={increment}>++</button>
         <button onClick={decrement}>--</button>
       </div>
-    )
-  }
+    </div>
+  );
 }
 
-// 将数据状态(state)和修改数据的方法(dispatch)通过connect添加到组件上，形成一个新的组件
-const App = connect(mapStateToProps, mapDispatchToProps)(Counter);
-// 如果不需要传入state，只需要传入方法，那么，第一参数为null即可，即，connect(null, mapDispatchToProps)(Counter)
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-// Provider将store与App根组件进行关联
-ReactDOM.render(<Provider store={ store }>
-  <App />
-</Provider>, document.getElementById('root'));
 ```
 
 该案例原理：
