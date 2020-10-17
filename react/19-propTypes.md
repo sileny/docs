@@ -2,6 +2,9 @@
 
 添加类型校验
 ```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+
 class App extends React.Component {
   // 复杂数组类型
   static propTypes = {
