@@ -17,7 +17,7 @@ npm i react-redux
 
 组件设计实现：
 
-1 `App` 组件的实现
+> `App` 组件的实现
 
 创建一个 `App` 组件，渲染父组件传递过来的数据
 ```js
@@ -65,7 +65,7 @@ function mapDispatchToProps(dispatch) {
 至此，`App`组件已经完成。下面来实现父组件的数据传值
 
 
-2 父组件的实现
+> 父组件的实现
 
 定义进行数据变更的业务方法(`reducer`)
 ```js
