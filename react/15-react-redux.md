@@ -159,6 +159,7 @@ serviceWorker.unregister();
 `App`组件代码
 ```js
 import React from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 
 import { connect } from 'react-redux';
@@ -177,15 +178,15 @@ function mapStateToProps(state) {
 // mapDispatchToProps默认将dispatch作为第一参数
 function mapDispatchToProps(dispatch) {
   return {
-    increment: () => { dispatch(incrementAction) },
-    decrement: () => { dispatch(decrementAction) }
+    increment: () => { dispatch(incrementAction); },
+    decrement: () => { dispatch(decrementAction); }
   };
 }
 
 function App(props) {
   const { value, increment, decrement } = props;
   return (
-    <div className="App">
+    <div className='App'>
       <div>
         <h1>计数器数量: { value }</h1>
         <button onClick={increment}>++</button>
@@ -194,6 +195,12 @@ function App(props) {
     </div>
   );
 }
+
+App.propTypes = {
+  value: PropTypes.number,
+  increment: PropTypes.func,
+  decrement: PropTypes.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
