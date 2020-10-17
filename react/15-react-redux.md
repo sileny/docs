@@ -213,13 +213,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 ## multiple-reducer
 
-一个项目里可能有多个 `reducer`，它们可以单独放在一个 `js` 文件里。
+一个项目里可能有多个 `reducer`，它们可以单独放在一个 `js` 文件里。然后，将它们都放在 `reducers` 目录下
 
 现在，将 `reducer` 方法单独转移到 `counter.js` 里。
 
 多个 `reducer` 使用 `redux` 的 `combineReducers` 方法进行连接
 
 ```js
+// reducers/index.js
 import { combineReducers } from 'redux'
 import counter from './counter'
 import otherReducer from './otherReducer'
@@ -230,3 +231,11 @@ export default combineReducers({
 });
 
 ```
+
+`src/index.js` 写法如下
+```js
+import { createStore } from 'redux';
+import rootReducer from './reducers'; // 状态：state
+const store = createStore(rootReducer);
+```
+
