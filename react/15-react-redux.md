@@ -129,8 +129,8 @@ class Counter extends React.Component {
 }
 
 // 将数据状态(state)和修改数据的方法(dispatch)通过connect添加到组件上，形成一个新的组件
-const App = connect(mapStateToProps, mapDispatch)(Counter);
-// 如果不需要传入state，只需要传入方法，那么，第一参数为null即可，即，connect(null, mapDispatch)(Counter)
+const App = connect(mapStateToProps, mapDispatchToProps)(Counter);
+// 如果不需要传入state，只需要传入方法，那么，第一参数为null即可，即，connect(null, mapDispatchToProps)(Counter)
 
 // Provider将store与App根组件进行关联
 ReactDOM.render(<Provider store={ store }>
