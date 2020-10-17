@@ -15,6 +15,16 @@ npm i react-redux
 - 当点击点击 `++` 按钮，将会触发 `increment` 类型的操作，之后，将会通过 `dispatch` 调用 `incrementAction` 的方法，该方法会执行 `reducer` 的 `state.num++` 并返回新的 `state`
 - 点击 `--` 按钮，也是如此
 
+
+项目主要结构：
+```
+|--public/
+|--src/
+|----App.js
+|----index.js
+```
+
+
 组件设计实现：
 
 > `App` 组件的实现
