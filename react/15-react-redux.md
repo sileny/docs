@@ -2,6 +2,7 @@
 
 - [install](#install)
 - [example](#example)
+- [multiple-reducer](#multiple-reducer)
 
 ## install
 
@@ -202,3 +203,23 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 - 所有的数据状态丢到 `Provider` 全局组件上，其内部的任意一个组件都可以共享 `store` 里的数据
 - ui操作通过 `mapDispatchToProps` 内部的 `dispatch` 来触发 `action` 指定类型的变更
 - `reducer` 在接收到 `action` 类型变更指令后。更新数据 `state`
+
+## multiple-reducer
+
+一个项目里可能有多个 `reducer`，它们可以单独放在一个 `js` 文件里。
+
+现在，将 `reducer` 方法单独转移到 `counter.js` 里。
+
+多个 `reducer` 使用 `redux` 的 `combineReducers` 方法进行连接
+
+```js
+import { combineReducers } from 'redux'
+import counter from './counter'
+import otherReducer from './otherReducer'
+
+export default combineReducers({
+  counter,
+  otherReducer
+});
+
+```
