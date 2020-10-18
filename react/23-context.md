@@ -9,6 +9,7 @@
 - [Context.Provider](#Contextprovider)
 - [Class.contextType](#ClasscontextType)
 - [Context.Consumer](#ContextConsumer)
+- [使用Context实现计数器](#example-counter)
 
 ## class-to-context
 
