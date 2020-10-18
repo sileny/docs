@@ -61,6 +61,27 @@ export default Another;
 
 ```
 
+高阶组件代码如下，
+```js
+import React from 'react';
+
+const withCopyright = Cmp => {
+  return class WithCopyright extends React.Component {
+    render() {
+      return (
+        <div className={'withCopyright'}>
+          <Cmp {...this.props} />
+          <div>WithCopyright</div>
+        </div>
+      );
+    }
+  };
+};
+
+export default withCopyright;
+
+```
+
 然后，运行 `yarn start`
 
 ## git-husky
