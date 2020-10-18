@@ -11,7 +11,7 @@
 yarn eject
 ```
 
-然后，添加 `plugins` 配置
+然后，在 `package.json` 的 `babel` 添加 `plugins` 配置
 ```json
   "babel": {
     "plugins": [
