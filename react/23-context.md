@@ -5,10 +5,10 @@
 `Context` 的设计是为了实现全局的数据状态共享
 
 - [class-to-context](#class-to-context)
-- [React.createContext](#React.createContext)
-- [Context.Provider](#Context.provider)
-- [Class.contextType](#Class.contextType)
-- [Context.Consumer](#Context.Consumer)
+- [React.createContext](#ReactcreateContext)
+- [Context.Provider](#Contextprovider)
+- [Class.contextType](#ClasscontextType)
+- [Context.Consumer](#ContextConsumer)
 
 ## class-to-context
 
