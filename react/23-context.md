@@ -139,3 +139,94 @@ MyClass.contextType = MyContext;
 ```
 
 这里，需要函数作为子元素（`function as a child`）这种做法，函数接收当前的 `context` 值，返回一个 `React` 节点。传递给函数的 `value` 值等同于往上组件树离这个 `context` 最近的 `Provider` 提供的 `value` 值。如果没有对应的 `Provider`，`value` 参数等同于传递给 `createContext()` 的 `defaultValue`
+
+## example-counter
+
+在嵌套的组件里使用 `React.createContext` 来降低数据传递的复杂度
+
+1 声明消费者组件需要的数据结构
+
+>在实际的应用中，`defaultValue` 在消费者组件里并不能使用到
+
+```js
+const MyContext = React.createContext({
+  count: 100,
+  handleClick: () => {
+  }
+});
+```
+
+2 定义一个 `Counter` 组件，该组件负责渲染来自 `MyContext.Provider` 的数据
+
+>`MyContext.Consumer` 内部如果需要显示一个组件，需要接收一个 `function` 类型作为子元素
+```js
+class Counter extends React.Component {
+  render() {
+    return <MyContext.Consumer>
+      {
+        ({ count }) => {
+          return <span>{count}</span>;
+        }
+      }
+    </MyContext.Consumer>;
+  }
+}
+```
+
+3 定义一个执行增减操作的按钮
+
+```js
+class CountBtn extends React.Component {
+  render() {
+    const { type } = this.props;
+    return <MyContext.Consumer>
+      {
+        ({ handleClick }) => {
+          return <button onClick={() => handleClick(type)}>{type}</button>;
+        }
+      }
+    </MyContext.Consumer>;
+  }
+}
+
+CountBtn.propTypes = {
+  type: PropTypes.string
+};
+```
+
+4 定义一个数据提供方组件
+
+> 组件数据提供方接收一个 `value` 作为数据输入
+```js
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0,
+      handleClick: this.handleClick
+    };
+  }
+
+  handleClick = type => {
+    this.setState(state => ({
+      count: type === 'increment' ? state.count++ : state.count--
+    }));
+  };
+
+  render() {
+    // 将整个state作为数据输入，传递给`MyContext.Provider`
+    return <MyContext.Provider value={this.state}>
+      <CountBtn type={'decrement'}/>
+      <Counter/>
+      <CountBtn type={'increment'}/>
+    </MyContext.Provider>;
+  }
+}
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App/>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+```
