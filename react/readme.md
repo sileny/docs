@@ -77,7 +77,7 @@ git init
 yarn add husky lint-staged -D
 ```
 
-husky 在安装过程中会在 .git/hooks 文件夹中生成一系列的 git hook 脚本
+`husky` 在安装过程中会在 `.git/hooks` 文件夹中生成一系列的 git hook 脚本
 
 在 `package.json` 添加如下配置
 
