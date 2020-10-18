@@ -1,5 +1,9 @@
 # slot
 
+- [渲染xml标签里的内容](#render-children)
+- [根据条件渲染命名的组件](#render-named-components)
+- [使用高阶组件实现slot](https://github.com/sileny/docs/blob/master/react/24-hoc.md)
+
 用 `this.props.children` 实现插槽
 
 ## render-children
