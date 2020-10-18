@@ -59,7 +59,7 @@ function Example() {
 
 `useEffect` 告诉组件在渲染之后要做进行某些操作
 
-`useEffect` 内的方法会在组件第一次渲染或组件更新后执行
+`useEffect` 内的方法会在组件 `第一次渲染` 或 `组件更新后` 执行
 
 # cleanup
 
