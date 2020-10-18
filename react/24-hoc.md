@@ -119,7 +119,7 @@ import Another from './Another';
 ReactDOM.render(
   <React.StrictMode>
     <App />
-    <Another name={1}/>
+    <Another name={'another'}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
