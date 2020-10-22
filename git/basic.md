@@ -122,7 +122,7 @@ git checkout -- filename
 ls
 ```
 
-- 6.4、撤销更改
+6.4、撤销更改
 ```sh
 git log
 
@@ -137,12 +137,12 @@ error: Your local changes to the following files would be overwritten by merge
 git stash
 ```
 
-- 6.5、撤销merge后的更改
+6.5、撤销merge后的更改
 ```sh
 git revert -m commitId
 ```
 
-- 6.6 撤销所有更改
+6.6 撤销所有更改
 ```sh
 git clean -df
 git reset --hard
