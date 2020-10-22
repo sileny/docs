@@ -9,6 +9,7 @@
 - [八圆角形](#8radius)
 - [九大行星](#9stars)
 - [一个圆8等分](#8partion)
+- [消除chrome浏览器的记录密码填充颜色](#autofill)
 
 ## svg
 
@@ -348,4 +349,23 @@
 </body>
 </html>
 
+```
+
+## autofill
+
+缓解 `webkit` 内核浏览器的表单记录填充样式
+```css
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill,
+:-webkit-autofill,
+:-webkit-autofill:hover,
+:-webkit-autofill:focus,
+:-webkit-autofill:active {
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-box-shadow: 0 0 3px 100px transparent inset !important;
+  -webkit-text-fill-color: $--font-color-light !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 ```
