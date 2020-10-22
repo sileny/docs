@@ -1,5 +1,6 @@
 # command
 
+- [常用项目配置](basic.md)
 - [init](#init)
 - [push](#push)
 - [更新代码后提交](#update)
