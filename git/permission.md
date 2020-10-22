@@ -10,8 +10,9 @@ cd ~/.ssh
 
 3、生成SSH公钥
 
+```
 C:\Users\dear>ssh-keygen -t rsa -C "sunsilently@outlook.com"
-
+```
 
 4、添加 `SSH` 公钥到 `github`
 
