@@ -28,11 +28,11 @@ ssh -T git@github.com
 ```
 
 D:\code>ssh -T git@github.com
-The authenticity of host 'github.com (13.250.177.223)' can't be established.
-RSA key fingerprint is SHA256:nThbg6kXUpJxWGl7E1IGOCspRomTxd8ARxLviKw6E5SY.
-Are you sure you want to continue connecting (yes/no)? **yes**
-Warning: Permanently added 'github.com,13.250.177.223' (RSA) to the list of known hosts.
-Enter passphrase for key 'C:\Users\dear/.ssh/id_rsa':
+The authenticity of host 'github.com (13.250.177.223)' can't be established.<br/>
+RSA key fingerprint is SHA256:nThbg6kXUpJxWGl7E1IGOCspRomTxd8ARxLviKw6E5SY.<br/>
+Are you sure you want to continue connecting (yes/no)? **yes**<br/>
+Warning: Permanently added 'github.com,13.250.177.223' (RSA) to the list of known hosts.<br/>
+Enter passphrase for key 'C:\Users\dear/.ssh/id_rsa':<br/>
 Hi sileny! You've successfully authenticated, but GitHub does not provide shell access.
 
 
