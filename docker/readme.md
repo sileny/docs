@@ -322,3 +322,63 @@ $ docker logs web
 $ docker logs -f web
 ```
 
+# docker-deploy-java
+
+docker 部署 java
+
+1、Dockerfile编写
+
+```Dockerfile
+FROM openjdk:8-jre
+
+RUN mkdir /app
+
+COPY app.jar /app
+
+CMD java -jar /app/app.jar --spring.profiles.active=prod
+
+EXPOSE 8761
+```
+
+
+2、构建运行
+
+```
+docker build -t app .
+docker run -d -p 8761:8761 app
+```
+
+
+# docker-eureka-cluster
+
+集群
+
+```docker-compose.yml
+
+version: '3'
+services:
+  eureka-1:
+    restart: always
+    image: app
+    container_name: eureka-1
+    ports:
+     - 8761:8761
+  eureka-2:
+    restart: always
+    image: app
+    container_name: eureka-2
+    ports:
+     - 8762:8761
+  eureka-3:
+    restart: always
+    image: app
+    container_name: eureka-3
+    ports:
+     - 8763:8761
+```
+
+后台运行
+```
+docker-compose up -d
+```
+
