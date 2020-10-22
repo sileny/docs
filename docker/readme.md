@@ -1,4 +1,3 @@
-
 # docker
 
 操作容器
@@ -211,6 +210,16 @@ $ docker run -d -p 8081:80 --name web8081 nginx -v /usrs/local/nginx/html:/usrs/
 
 上面俩容器共享的是宿主机上 `/usr/local/nginx/html` 目录下的文件
 
+
+# 修改容器
+
+docker 进入容器的4种方式
+```
+docker exec -it CONTAINER_ID /bin/bash
+docker exec -it CONTAINER_ID /bin/sh
+docker exec -it CONTAINER_ID bash
+docker exec -it CONTAINER_ID sh
+```
 
 # mysql
 
