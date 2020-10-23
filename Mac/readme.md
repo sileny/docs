@@ -89,6 +89,13 @@ Or, if you don't want/need a background service you can just run:
 
 ```
 
+测试是否安装成功
+```
+nginx -v
+```
+
+有版本信息打印出来则表示成功
+
 
 ## node
 
