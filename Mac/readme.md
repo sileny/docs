@@ -108,3 +108,47 @@ node -> stable (-> N/A) (default)
 unstable -> N/A (default)
 ```
 
+```
+brew install node
+```
+
+默认会安装最新的node
+
+`nvm ls`会打印如下信息内容
+```
+->      v15.0.1
+default -> node (-> v15.0.1)
+node -> stable (-> v15.0.1) (default)
+stable -> 15.0 (-> v15.0.1) (default)
+iojs -> N/A (default)
+unstable -> N/A (default)
+lts/* -> lts/erbium (-> N/A)
+lts/argon -> v4.9.1 (-> N/A)
+lts/boron -> v6.17.1 (-> N/A)
+lts/carbon -> v8.17.0 (-> N/A)
+lts/dubnium -> v10.22.1 (-> N/A)
+lts/erbium -> v12.19.0 (-> N/A)
+```
+
+如果没有安装过别的版本的 node，执行了 `nvm uninstall node` 会提示以下错误信息
+```
+nvm: Cannot uninstall currently-active node version, v15.0.1 (inferred from node).
+```
+
+安装另外一个版本的之后，执行，`nvm uninstall v15.0.1`，然后执行 `nvm ls`，打印如下消息内容
+```
+->     v12.19.0
+default -> node (-> v12.19.0)
+node -> stable (-> v12.19.0) (default)
+stable -> 12.19 (-> v12.19.0) (default)
+iojs -> N/A (default)
+unstable -> N/A (default)
+lts/* -> lts/erbium (-> v12.19.0)
+lts/argon -> v4.9.1 (-> N/A)
+lts/boron -> v6.17.1 (-> N/A)
+lts/carbon -> v8.17.0 (-> N/A)
+lts/dubnium -> v10.22.1 (-> N/A)
+lts/erbium -> v12.19.0
+```
+
+执行 `nvm ls-remote`，可以打印出更多的版本信息列表
