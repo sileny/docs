@@ -205,6 +205,10 @@ export default class RouterConfig extends React.Component {
 
 `Link` 的 `to` 参数可以是一个对象，案例参考[这里](#send-data-to-component)
 
+`Switch` 表示匹配到第一个之后，不会匹配后续的路由
+
+`<Route path={'/article'} component={Article} exact />` 的 `exact` 如果不加上，那么，`<Route path={'/article/:id'} component={Detail} />` 匹配的组件将不会显示出来，`exact` 表示严格匹配到 `/article` 路由后将只显示 `Article/index.js` 组件内容
+
 - `withCopyright.js`
 
 ```js
