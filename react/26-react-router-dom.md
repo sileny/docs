@@ -1,7 +1,7 @@
 # react-router-dom
 
 - [基本demo](#project-construct)
-- [render动态组件](#render)
+- [render动态组件，可以根据权限显示对应的组件](#render)
 - [js导航](#js-nav)
 
 ## project-construct
@@ -236,7 +236,7 @@ export default withCopyright;
 
 ## render
 
-动态渲染组件
+动态渲染组件，可以根据权限显示对应的组件
 
 - 方式一
 
