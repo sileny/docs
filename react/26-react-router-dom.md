@@ -19,7 +19,7 @@
 |-----index.js
 |---router/
 |-----index.js            // 路由配置
-|-----util.js            // 辅助方法
+|-----util.js             // 辅助方法
 |---Another.js            // 装饰器的写法
 |---App.js                // 组件--end--
 |---index.js              // 启动程序
@@ -81,6 +81,7 @@ export default class Home extends React.Component {
     return <div>home</div>;
   }
 }
+```
 
 - `Login`
 
