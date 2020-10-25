@@ -173,6 +173,8 @@ export default class RouterConfig extends React.Component {
 
 ```
 
+>`<Route path={'/another'} component={Another} name={'another-name'}/>`渲染了 `Another` 组件，但是，`name={'another-name'}`并没有渲染出来，下面会用[两种方式](#render)解决此类问题
+
 - `withCopyright.js`
 
 ```js
@@ -199,4 +201,92 @@ export default withCopyright;
 
 动态渲染组件
 
+- 方式一
+
+```
+<Route path={'/dynamic'} render={() => <Another name={'another-dynamic-name'}/>}/>
+```
+
+`render` 属性为 `function` 类型
+
+
+- 方式二
+
+传参的形式
+
+```
+<Route path={'/dynamic2'} render={routeProps => dynamicRender(Another, routeProps, { name: 'another-dynamic-name-2' })}/>
+```
+
+`decorators/dynamicRender.js` 代码如下
+```js
+import React from 'react';
+
+const dynamicRender = (Cmp, props, options) => {
+  return <Cmp {...props} {...options} />;
+};
+
+export default dynamicRender;
+
+```
+
+`dynamicRender` 方法实际上是对组件进行了一次封装
+
+
+`render` 方法默认注入的 `routeProps` 参数为 `RouteComponentProps` 类型
+
+```typescript
+export interface RouteComponentProps<
+    Params extends { [K in keyof Params]?: string } = {},
+    C extends StaticContext = StaticContext,
+    S = H.LocationState
+> {
+    history: H.History<S>;
+    location: H.Location<S>;
+    match: match<Params>;
+    staticContext?: C;
+}
+```
+
+`History` 具有以下方法，可以用作导航
+```typescript
+export interface History<HistoryLocationState = LocationState> {
+    length: number;
+    action: Action;
+    location: Location<HistoryLocationState>;
+    push(path: Path, state?: HistoryLocationState): void;
+    push(location: LocationDescriptor<HistoryLocationState>): void;
+    replace(path: Path, state?: HistoryLocationState): void;
+    replace(location: LocationDescriptor<HistoryLocationState>): void;
+    go(n: number): void;
+    goBack(): void;
+    goForward(): void;
+    block(prompt?: boolean | string | TransitionPromptHook<HistoryLocationState>): UnregisterCallback;
+    listen(listener: LocationListener<HistoryLocationState>): UnregisterCallback;
+    createHref(location: LocationDescriptorObject<HistoryLocationState>): Href;
+}
+```
+
+`Location` 反映了当前的 `location` 信息
+
+```typescript
+export interface Location<S = LocationState> {
+    pathname: Pathname;
+    search: Search;
+    state: S;
+    hash: Hash;
+    key?: LocationKey;
+}
+```
+
+`match` 匹配到的路由信息
+
+```typescript
+export interface match<Params extends { [K in keyof Params]?: string } = {}> {
+    params: Params;
+    isExact: boolean;
+    path: string;
+    url: string;
+}
+```
 
