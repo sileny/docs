@@ -108,6 +108,12 @@ const lessModuleRegex = /\.module\.less$/;
 **注意**
 可以将主题色放在环境变量文件里
 
+`antd` 主题配置可以参考[官方地址](https://ant.design/docs/react/customize-theme-cn)
+
+**注意：**
+- `less-loader` 的处理范围不要过滤掉 `node_modules` 下的 `antd` 包。
+- `lessOptions` 的配置写法在 `less-loader@6.0.0` 里支持。
+
 完整的 `webpack.config.js` 参考[这个项目](https://github.com/sileny/react-app-hoc/blob/main/config/webpack.config.js)
 
 ## 按需引入
