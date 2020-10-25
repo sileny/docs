@@ -3,6 +3,7 @@
 - [基本demo](#project-construct)
 - [render动态组件，可以根据权限显示对应的组件](#render)
 - [js导航](#js-nav)
+- [使用withRouter写一个通用的回到首页导航组件](#nav-cmp)
 
 ## project-construct
 
@@ -466,3 +467,103 @@ export default class JsNav extends React.Component {
 ```
 
 `push` 方法的参数和 `Link` 的 `to` 的属性是一样的
+
+所以，也可以写成这样
+```js
+<button
+  onClick={() => {
+    this.props.history.push({
+      pathname: '/home',
+      state: {
+        flag: 'btn-to-home'
+      }
+    });
+  }}
+>
+  go home
+</button>
+```
+
+## nav-cmp
+
+目的：在任意一个组件里都可以直接使用该组件返回到 `/home` 页面
+
+```js
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+
+@withRouter
+class BackHome extends React.Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func
+    })
+  };
+
+  render() {
+    return (
+      <button
+        onClick={() => {
+          this.props.history.push({
+            pathname: '/home',
+            state: {
+              flag: 'btn-to-home'
+            }
+          });
+        }}
+      >
+        withRouter go home
+      </button>
+    );
+  }
+}
+
+export default BackHome;
+
+```
+
+可以将 `<BackHome/>` 嵌入到 `JsNav.js` 里，同样可以实现回退到 `/home`
+
+基于以上按钮，可以写一个跳转到任意路由的组件
+
+```js
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+
+@withRouter
+class PageButton extends React.Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func
+    }),
+    pathname: PropTypes.string,
+    state: PropTypes.object
+  };
+
+  render() {
+    const { history, pathname, state } = this.props;
+    return (
+      <button
+        onClick={() => {
+          history.push({
+            pathname,
+            state
+          });
+        }}
+      >
+        withRouter PageButton 可以条件到任意的路由页面
+      </button>
+    );
+  }
+}
+
+export default PageButton;
+
+```
+
+当然，也可以使用 `withRouter` 方法来包裹 `PageButton` 组件，写法如下，
+```js
+export default withRouter(PageButton);
+```
