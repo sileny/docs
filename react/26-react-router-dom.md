@@ -7,7 +7,7 @@
 
 ## project-construct
 
-项目结构
+初期项目结构
 ```
 |-src/
 |---decorators/           // 装饰器
@@ -28,6 +28,8 @@
 |---App.js                // 组件--end--
 |---index.js              // 启动程序
 ```
+
+完整的案例在[这里](https://github.com/sileny/react-app-hoc)
 
 - `Article`
 
