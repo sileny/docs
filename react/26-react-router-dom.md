@@ -262,13 +262,25 @@ export default withCopyright;
 ```js
 import React from 'react';
 
-const dynamicRender = (Cmp, props, options) => {
-  return <Cmp {...props} {...options} />;
+const dynamicRender = (Cmp, routeProps, options) => {
+  return <Cmp {...routeProps} {...options} />;
 };
 
 export default dynamicRender;
 
 ```
+
+用法如下，
+```js
+<Route
+  path={'/dynamic-render-with-data'}
+  render={routeProps => {
+    return dynamicRender(Another, routeProps, { name: 'dynamicRender another name' });
+  }}
+/>
+```
+
+访问 `/dynamic-render-with-data` 路由即可看到效果
 
 `dynamicRender` 方法实际上是对组件进行了一次封装
 
