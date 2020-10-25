@@ -49,7 +49,7 @@ export default class Article extends React.Component {
 
 ```
 接收父路由组件传递的id
-``jsx
+```jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 
