@@ -108,9 +108,11 @@ const lessModuleRegex = /\.module\.less$/;
 **注意**
 可以将主题色放在环境变量文件里
 
+完整的 `webpack.config.js` 参考[这个项目](https://github.com/sileny/react-app-hoc/blob/main/config/webpack.config.js)
+
 ## 按需引入
 
-```
+```js
 import React from 'react';
 import './App.scss';
 import { Button } from 'antd';
