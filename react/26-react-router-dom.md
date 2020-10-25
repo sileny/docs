@@ -63,6 +63,11 @@ export default class Article extends React.Component {
 
 ```
 
+`to={'/article/1'}` 是显式传参给 `Detail` 组件，在 `Detail` 组件里可以通过 `this.props.match.props` 来获取数据
+
+隐式传参，借助于 `Link` 的 `to` 的 `state` 属性，案例[在此](#send-data-to-component)
+
+
 - `Home`
 
 `Home/index.js`
@@ -288,5 +293,110 @@ export interface match<Params extends { [K in keyof Params]?: string } = {}> {
     path: string;
     url: string;
 }
+```
+
+## send-data-to-component
+
+- `query`
+- 动态路由 `params`
+- `Link.to.state`
+
+下面介绍 `Link` 这种隐式的传参，由于不可见，所以该方式可以用作 [埋点](https://github.com/sileny/docs/tree/master/bury)
+
+继续修改上面的 `Article/detail.js`，完整代码如下，
+```js
+import React from 'react';
+import PropTypes from 'prop-types';
+
+export default class Detail extends React.Component {
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]) // id可以实数字类型，也可以是字符串类型
+      })
+    }),
+    location: PropTypes.shape({
+      state: PropTypes.shape({
+        flag: PropTypes.oneOfType([PropTypes.string, PropTypes.number]) // id可以实数字类型，也可以是字符串类型
+      })
+    })
+  };
+
+  render() {
+    const { match, location } = this.props;
+    return <div>
+      <div>params.id -- {match.params.id}</div>
+      <div>state.flag -- {location.state.flag}</div>
+    </div>;
+  }
+}
+
+```
+
+路由添加了如下代码，
+```js
+<Link to={{
+  pathname: '/article/3',
+  state: {
+    flag: '123'
+  }
+}}
+>Link.to.state</Link>
+```
+
+路由完整代码如下，
+```js
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, NavLink as Link } from 'react-router-dom';
+import Home from './Home';
+import Article from './Article';
+import Detail from './Article/detail';
+import App from './App';
+import Login from './Login';
+import Another from './Another';
+
+export default class RouterConfig extends React.Component {
+  render() {
+    return (
+      <Router>
+        <ul>
+          <li>
+            <Link to={'/login'}>login</Link>
+          </li>
+          <li>
+            <Link to={'/app'}>app</Link>
+          </li>
+          <li>
+            <Link to={'/another'}>another</Link>
+          </li>
+          <li>
+            <Link to={'/home'}>home</Link>
+          </li>
+          <li>
+            <Link to={'/article'}>article</Link>
+          </li>
+          <li>
+            <Link to={{
+              pathname: '/article/3',
+              state: {
+                flag: '123'
+              }
+            }}
+            >Link.to.state</Link>
+          </li>
+        </ul>
+        <Switch>
+          <Route path={'/login'} component={Login} />
+          <Route path={'/app'} component={App} />
+          <Route path={'/another'} component={Another} name={'another-name'} />
+          <Route path={'/home'} component={Home} />
+          <Route path={'/article'} component={Article} exact />
+          <Route path={'/article/:id'} component={Detail} />
+        </Switch>
+      </Router>
+    );
+  }
+}
+
 ```
 
