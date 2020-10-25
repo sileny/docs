@@ -1,6 +1,7 @@
 # react-router-dom
 
 - [基本demo](#project-construct)
+- [render动态组件](#render)
 
 ## project-construct
 
@@ -10,6 +11,8 @@
 |---Article/              // 组件--start--
 |-----detail.js
 |-----index.js
+|---decorators/           // 装饰器
+|-----withCopyright.js    // 页面底部copyright
 |---Home/
 |-----index.js
 |---Login/
@@ -18,7 +21,6 @@
 |---App.js                // 组件--end--
 |---index.js              // 启动程序
 |---router.js             // 路由配置
-|---withCopyright.js      // 装饰器
 ```
 
 - `Article`
@@ -92,7 +94,7 @@ export default class Login extends React.Component {
 ```js
 import React from 'react';
 import PropTypes from 'prop-types';
-import withCopyright from './withCopyright';
+import withCopyright from './decorators/withCopyright';
 
 @withCopyright
 class Another extends React.Component {
@@ -115,7 +117,7 @@ export default Another;
 ```js
 import React from 'react';
 
-import withCopyright from './withCopyright';
+import withCopyright from './decorators/withCopyright';
 
 function App() {
   return <div className="App">App</div>;
@@ -192,3 +194,9 @@ const withCopyright = Cmp => {
 export default withCopyright;
 
 ```
+
+## render
+
+动态渲染组件
+
+
