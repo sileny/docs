@@ -113,6 +113,28 @@ const lessModuleRegex = /\.module\.less$/;
 
 完整的 `webpack.config.js` 参考[这个项目](https://github.com/sileny/react-app-hoc/blob/main/config/webpack.config.js)
 
+
+## env
+
+多次使用到 `'#1DA57A'`，可以将该变量放在 `.env` 文件里，具体的配置如下，
+```
+REACT_APP_primaryColor=#f00
+```
+然后，在 `webpack.config.js` 里声明一个变量 `const theme = process.env.REACT_APP_primaryColor;`，将 `'#1DA57A'` 替换为 `theme`，然后，重新编译即可
+
+>环境变量命名规则：`REACT_APP_`为前缀
+
+- `.env`: 所有环境生效
+- `.env.local`: 重写本地变量。除了 `test` 环境都生效
+- `.env.development`, `.env.test`, `.env.production`: 指定环境生效
+- `.env.development.local`, `.env.test.local`, `.env.production.local`: 重写本地变量.
+
+优先级如下
+* `npm start`: `.env.development.local` > `.env.development` > `.env.local` > `.env`
+* `npm run build`: `.env.production.local` > `.env.production` > `.env.local` > `.env` 
+* `npm test`: `.env.test.local` > `.env.test` > `.env`
+
+
 ## 按需引入
 
 ```js
