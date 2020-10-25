@@ -8,19 +8,21 @@
 项目结构
 ```
 |-src/
-|---Article/              // 组件--start--
-|-----detail.js
-|-----index.js
 |---decorators/           // 装饰器
 |-----withCopyright.js    // 页面底部copyright
-|---Home/
-|-----index.js
-|---Login/
-|-----index.js
+|---pages/
+|-----Another/
+|-------Another.js            // 装饰器的写法
+|-----Article/              // 组件--start--
+|-------detail.js
+|-------index.js
+|-----Home/
+|-------index.js
+|-----Login/
+|-------index.js
 |---router/
 |-----index.js            // 路由配置
 |-----util.js             // 辅助方法
-|---Another.js            // 装饰器的写法
 |---App.js                // 组件--end--
 |---index.js              // 启动程序
 ```
@@ -158,12 +160,12 @@ ReactDOM.render(
 ```js
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, NavLink as Link } from 'react-router-dom';
-import Home from '../Home';
-import Article from '../Article';
-import Detail from '../Article/detail';
+import Home from '../pages/Home';
+import Article from '../pages/Article';
+import Detail from '../pages/Article/detail';
 import App from '../App';
-import Login from '../Login';
-import Another from '../Another';
+import Login from '../pages/Login';
+import Another from '../pages/Another';
 
 export default class RouterConfig extends React.Component {
   render() {
@@ -377,12 +379,12 @@ export default class Detail extends React.Component {
 ```js
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, NavLink as Link } from 'react-router-dom';
-import Home from './Home';
-import Article from './Article';
-import Detail from './Article/detail';
-import App from './App';
-import Login from './Login';
-import Another from './Another';
+import Home from '../pages/Home';
+import Article from '../pages/Article';
+import Detail from '../pages/Article/detail';
+import App from '../App';
+import Login from '../pages/Login';
+import Another from '../pages/Another';
 
 export default class RouterConfig extends React.Component {
   render() {
