@@ -1,5 +1,6 @@
 # 暴露react的项目配置
 
+以下配置在老版本中需要做如下配置，在新版本里不需要
 ```
 npm run eject
 // 会释放`config`、`scripts`文件夹
