@@ -17,10 +17,12 @@
 |-----index.js
 |---Login/
 |-----index.js
+|---router/
+|-----index.js            // 路由配置
+|-----until.js            // 辅助方法
 |---Another.js            // 装饰器的写法
 |---App.js                // 组件--end--
 |---index.js              // 启动程序
-|---router.js             // 路由配置
 ```
 
 - `Article`
@@ -148,37 +150,58 @@ ReactDOM.render(
 
 ```
 
-- `router.js`
+- `router/index.js`
 
 路由配置
 ```js
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './Home';
-import Article from './Article';
-import Detail from './Article/detail';
-import App from './App';
-import Login from './Login';
-import Another from './Another';
+import { BrowserRouter as Router, Switch, Route, NavLink as Link } from 'react-router-dom';
+import Home from '../Home';
+import Article from '../Article';
+import Detail from '../Article/detail';
+import App from '../App';
+import Login from '../Login';
+import Another from '../Another';
 
 export default class RouterConfig extends React.Component {
   render() {
-    return <Router>
-      <Switch>
-        <Route path={'/login'} component={Login}/>
-        <Route path={'/app'} component={App}/>
-        <Route path={'/another'} component={Another} name={'another-name'}/>
-        <Route path={'/home'} component={Home}/>
-        <Route path={'/article'} component={Article} exact/>
-        <Route path={'/article/:id'} component={Detail}/>
-      </Switch>
-    </Router>;
+    return (
+      <Router>
+        <ul>
+          <li>
+            <Link to={'/login'}>login</Link>
+          </li>
+          <li>
+            <Link to={'/app'}>app</Link>
+          </li>
+          <li>
+            <Link to={'/another'}>another</Link>
+          </li>
+          <li>
+            <Link to={'/home'}>home</Link>
+          </li>
+          <li>
+            <Link to={'/article'}>article</Link>
+          </li>
+        </ul>
+        <Switch>
+          <Route path={'/login'} component={Login} />
+          <Route path={'/app'} component={App} />
+          <Route path={'/another'} component={Another} name={'another-name'} />
+          <Route path={'/home'} component={Home} />
+          <Route path={'/article'} component={Article} exact />
+          <Route path={'/article/:id'} component={Detail} />
+        </Switch>
+      </Router>
+    );
   }
 }
 
 ```
 
 >`<Route path={'/another'} component={Another} name={'another-name'}/>`渲染了 `Another` 组件，但是，`name={'another-name'}`并没有渲染出来，下面会用[两种方式](#render)解决此类问题
+
+`Link` 的 `to` 参数可以是一个对象，案例参考[这里](#send-data-to-component)
 
 - `withCopyright.js`
 
