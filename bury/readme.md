@@ -19,7 +19,7 @@ img.src = 'https://localhost/button-01.jpg?x=1&y=2';
 
 成功率最高，兼容性不好
 
-```
+```js
 window.addEventListener('unload', logData, false);
 
 function logData() {
