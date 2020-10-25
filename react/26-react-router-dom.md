@@ -19,7 +19,7 @@
 |-----index.js
 |---router/
 |-----index.js            // 路由配置
-|-----until.js            // 辅助方法
+|-----util.js            // 辅助方法
 |---Another.js            // 装饰器的写法
 |---App.js                // 组件--end--
 |---index.js              // 启动程序
@@ -231,7 +231,7 @@ export default withCopyright;
 
 - 方式一
 
-```
+```jsx
 <Route path={'/dynamic'} render={() => <Another name={'another-dynamic-name'}/>}/>
 ```
 
@@ -242,11 +242,11 @@ export default withCopyright;
 
 传参的形式
 
-```
+```jsx
 <Route path={'/dynamic2'} render={routeProps => dynamicRender(Another, routeProps, { name: 'another-dynamic-name-2' })}/>
 ```
 
-`decorators/dynamicRender.js` 代码如下
+`router/util.js` 代码如下
 ```js
 import React from 'react';
 
