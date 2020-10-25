@@ -95,6 +95,7 @@ export default class Login extends React.Component {
     return <div>login</div>;
   }
 }
+```
 
 - `Another.js`
 
