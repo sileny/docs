@@ -124,3 +124,5 @@ function App() {
 
 export default withCopyright(App);
 ```
+
+> 不需要导入 `antd` 的任何样式，`babel-plugin-import` 会按需提取组件依赖
