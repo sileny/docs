@@ -1,5 +1,6 @@
 # URLSearchParams
 
+```js
 var paramsString = "q=URLUtils.searchParams&topic=api"
 var searchParams = new URLSearchParams(paramsString);
 
@@ -17,3 +18,4 @@ searchParams.set("topic", "More webdev");
 searchParams.toString(); // "q=URLUtils.searchParams&topic=More+webdev"
 searchParams.delete("topic");
 searchParams.toString(); // "q=URLUtils.searchParams"
+```
