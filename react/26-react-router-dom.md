@@ -2,6 +2,7 @@
 
 - [基本demo](#project-construct)
 - [render动态组件](#render)
+- [js导航](#js-nav)
 
 ## project-construct
 
@@ -431,3 +432,37 @@ export default class RouterConfig extends React.Component {
 
 ```
 
+## js-nav
+
+`router/index.js` 添加如下代码
+
+```
+<li>
+  <Link to={'/js-nav'}>js-nav</Link>
+</li>
+```
+
+在 `pages` 目录下添加 `Nav/JsNav.js`，代码如下
+```js
+import React from 'react';
+import PropTypes from 'prop-types';
+
+export default class JsNav extends React.Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func
+    })
+  };
+
+  render() {
+    return (
+      <div>
+        <button onClick={() => this.props.history.push('/home')}>this.props.history.push(&apos;/home&apos;)</button>
+      </div>
+    );
+  }
+}
+
+```
+
+`push` 方法的参数和 `Link` 的 `to` 的属性是一样的
