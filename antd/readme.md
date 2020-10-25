@@ -105,10 +105,7 @@ const lessModuleRegex = /\.module\.less$/;
 
 >已经将 `primary-color` 和 `link-color` 的颜色修改为 `#1DA57A`
 
-**注意**
-可以将主题色放在环境变量文件里
-
-`antd` 主题配置可以参考[官方地址](https://ant.design/docs/react/customize-theme-cn)
+本项目分让 `antd` 主题配置可以参考[官方地址](https://ant.design/docs/react/customize-theme-cn)
 
 **注意：**
 - `less-loader` 的处理范围不要过滤掉 `node_modules` 下的 `antd` 包。
