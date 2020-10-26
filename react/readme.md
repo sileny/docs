@@ -2,6 +2,7 @@
 
 - [支持装饰器写法](#decorators)
 - [添加git提交时的代码校验git-husky](#git-husky)
+- [分析构建包analyze](#analyze)
 
 ## decorators
 
@@ -117,4 +118,30 @@ yarn add husky lint-staged -D
       "prettier --write"
     ]
   },
+```
+
+## analyze
+
+分析 JavaScript 包，需要安装 `source-map-explorer`
+
+```
+npm i source-map-explorer -D
+```
+或
+```
+yarn add source-map-explorer -D
+```
+然后在 `package.json` 中，将以下行添加到 `scripts` 中：
+
+```json
+"scripts": {
+  "analyze": "source-map-explorer build/static/js/main.*"
+}
+```
+
+然后分析 `bundle(包)` 运行生产构建然后运行分析脚本
+
+```
+yarn build
+yarn analyze
 ```
