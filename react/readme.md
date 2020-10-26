@@ -3,6 +3,7 @@
 - [支持装饰器写法](#decorators)
 - [添加git提交时的代码校验git-husky](#git-husky)
 - [分析构建包analyze](#analyze)
+- [在开发环境中使用 HTTPS](#https)
 
 ## decorators
 
@@ -145,3 +146,30 @@ yarn add source-map-explorer -D
 yarn build
 yarn analyze
 ```
+
+## https
+
+- Windows-cmd
+```
+set HTTPS=true&&npm start
+```
+
+- Windows-Powershell
+```
+($env:HTTPS = "true") -and (npm start)
+```
+
+- `Linux,macOS`
+```
+HTTPS=true npm start
+```
+
+可以在 `package.json` 里添加如下配置，
+```
+"scripts": {
+  "https": "set HTTPS=true&&npm start"
+}
+```
+
+> 服务器将使用自签名证书
+
