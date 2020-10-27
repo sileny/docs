@@ -56,4 +56,33 @@ function Loading(props) {
 
 # 自定义一个懒加载组件
 
+```js
+import React, { Component } from 'react';
 
+const Loadable = ({ loader, loading: Loading }) => {
+  return class LoadableComponent extends Component {
+    state = {
+      LoadedComponent: null
+    };
+
+    componentDidMount() {
+      // import('./Dashboard')
+      loader()
+        .then(resp => {
+          this.setState({
+            LoadedComponent: resp.default
+          });
+        });
+    }
+
+    render() {
+      const { LoadedComponent } = this.state;
+      return LoadedComponent ? <LoadedComponent/> : <Loading/>;
+    }
+  };
+};
+```
+
+`loader()` 实际就是一个函数式组件
+
+在 `LoadableComponent` 组件完成渲染时，加载 `loader` 组件，然后，`render` 懒 `load` 到的 `LoadedComponent` 组件
