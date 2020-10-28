@@ -1,7 +1,6 @@
 # group
 
-分组数据
-
+需要分组的数据
 
 ```js
 const list = [
@@ -12,6 +11,7 @@ const list = [
   { controllable: false, groupId: 4, name: 5, value: 5 }
 ];
 
+// 需要添加到 `list` 每一条数据里的属性值
 const sn = 2020;
 ```
 
