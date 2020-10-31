@@ -53,6 +53,29 @@ if ('scrollRestoration' in history)
 - `manual` 滚动条会回到顶部
 - `auto` 会记录上一次滚动条所在的位置，刷新之后，停留在上一次滚动条所在的位置
 
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script>
+    if ('scrollRestoration' in history)
+      history.scrollRestoration = 'auto';
+  </script>
+</head>
+<body>
+<div style="height: 1800px;"></div>
+</body>
+</html>
+
+```
+修改 `history.scrollRestoration` 的值之后刷新浏览器试试看
+
+
 >如果相关连的 Document 不完全激活，会抛出一个 `SecurityError DOMException`
 
 ### state
