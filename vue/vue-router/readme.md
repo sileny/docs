@@ -44,11 +44,13 @@ export function install (Vue) { /* 4 */
     }
   })
 
-  Object.defineProperty(Vue.prototype, '$router', { // 向 Vue 实例添加 $router 属性，确保每个实例都可以直接使用 `this.$router` 访问到
+  // 向 Vue 实例添加 $router 属性，确保每个实例都可以直接使用 `this.$router` 访问到
+  Object.defineProperty(Vue.prototype, '$router', {
     get () { return this._routerRoot._router }
   })
 
-  Object.defineProperty(Vue.prototype, '$route', { // 向 Vue 实例添加 $route 属性，确保每个实例都可以直接使用 `this.$route` 访问到
+  // 向 Vue 实例添加 $route 属性，确保每个实例都可以直接使用 `this.$route` 访问到
+  Object.defineProperty(Vue.prototype, '$route', {
     get () { return this._routerRoot._route }
   })
 
@@ -86,7 +88,8 @@ export default {
     // directly use parent context's createElement() function
     // so that components rendered by router-view can resolve named slots
     const h = parent.$createElement
-    const name = props.name // 默认为 default，如果指定了名称，则会在具名插槽渲染对应的路由页面(<router-view name="named"></router-view>)
+    // 默认为 default，如果指定了名称，则会在具名插槽渲染对应的路由页面(<router-view name="named"></router-view>)
+    const name = props.name
     const route = parent.$route
     const cache = parent._routerViewCache || (parent._routerViewCache = {})
 
@@ -100,7 +103,8 @@ export default {
       if (vnodeData.routerView) { // 如果是嵌套的路由，则累加depth深度
         depth++
       }
-      if (vnodeData.keepAlive && parent._directInactive && parent._inactive) { // 是否使用了 `keep-alive` 组件缓存组件页面
+      // 是否使用了 `keep-alive` 组件缓存组件页面，以及该组件是否实现了 `activated` 和 `deactivated` 钩子函数
+      if (vnodeData.keepAlive && parent._directInactive && parent._inactive) {
         inactive = true
       }
       parent = parent.$parent
@@ -158,7 +162,7 @@ export default {
 
     // register instance in init hook
     // in case kept-alive component be actived when routes changed
-    // 当组件被 `keep-alive` 包裹，路由发生变化后，会执行组件实例里的 `activated` 钩子函数，在该钩子函数里可以维护组件的数据状态
+    // 当组件被 `keep-alive` 包裹，路由发生变化后，会执行组件实例里的 `activated` 和 `deactivated` 钩子函数，在该钩子函数里可以维护组件的数据状态
     data.hook.init = (vnode) => {
       if (vnode.data.keepAlive &&
         vnode.componentInstance &&
@@ -229,7 +233,7 @@ function resolveProps (route, config) {
 - 每个路由初始化时，都会注入对应的 `roueter` 实例属性，每个路由对应一个组件，会被缓存到 `cache` 里
 - 找到当前路由匹配的组件
 - 它会先判定当前视图组件的深度(`depth`)以及是否为 `keep-alive` 包裹的组件
-- 如果是 `keep-alive` 包裹的组件，且该组件实现了 `inactive` 或者 `deactived` 钩子函数
+- 如果是 `keep-alive` 包裹的组件，且该组件实现了 `activated` 或者 `deactived` 钩子函数
   - 会从缓存的组件里获取数据填充到该组件里，然后，通过 `createElement` 渲染
   - 未匹配到组件，则渲染空内容
 - 不是 `keep-alive` 包裹的组件，会先找到对应的组件
