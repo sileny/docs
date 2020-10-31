@@ -5,6 +5,9 @@
 
 为 `Vue` 实例添加全局插件，用法 `Vue.use(VueRouter)`
 
+- [RouterView](#routerview)
+- [RouterLink](#routerlink)
+
 下面是 `install` 源码
 ```js
 import View from './components/view' /* 1 */
@@ -64,9 +67,9 @@ export function install (Vue) { /* 4 */
 
 ```
 
-- 1
+### RouterView
 
-`./components/view.js` 下的源码
+`./components/view.js` 里的源码
 
 ```js
 import { warn } from '../util/warn'
@@ -241,6 +244,235 @@ function resolveProps (route, config) {
   - 否则，渲染匹配到的路由组件
 
 
-- 2
+### RouterLink
+
+源码如下
+```js
+/* @flow */
+
+import { createRoute, isSameRoute, isIncludedRoute } from '../util/route'
+import { extend } from '../util/misc'
+import { normalizeLocation } from '../util/location'
+import { warn } from '../util/warn'
+
+// work around weird flow bug
+const toTypes: Array<Function> = [String, Object]
+const eventTypes: Array<Function> = [String, Array]
+
+const noop = () => {}
+
+export default {
+  name: 'RouterLink',
+  props: {
+    to: { // 路由参数
+      type: toTypes,
+      required: true
+    },
+    tag: { // 用什么标签包裹，默认是a标签
+      type: String,
+      default: 'a'
+    },
+    exact: Boolean, // 严格匹配模式
+    append: Boolean, // 为true，则会在当前路由path前加上基准路径
+    replace: Boolean, // 为true，则则会使用 router.replace 实现页面的刷新，而不是 router.push 的有记录历史的方式
+    activeClass: String, // 激活样式
+    exactActiveClass: String, // 严格激活样式
+    ariaCurrentValue: {
+      type: String,
+      default: 'page'
+    },
+    event: { // 通过什么事件事件导航。默认，通过 click 实现导航
+      type: eventTypes,
+      default: 'click'
+    }
+  },
+  render (h: Function) {
+    const router = this.$router
+    const current = this.$route // 当前路由信息
+    // 查找to对应的路由信息：{ location, route, ref, href, normalizedTo, resolved }
+    const { location, route, href } = router.resolve(
+      this.to,
+      current,
+      this.append
+    )
+
+    const classes = {}
+    // 路由激活样式
+    const globalActiveClass = router.options.linkActiveClass
+    const globalExactActiveClass = router.options.linkExactActiveClass
+    // Support global empty active class
+    const activeClassFallback =
+      globalActiveClass == null ? 'router-link-active' : globalActiveClass
+    const exactActiveClassFallback =
+      globalExactActiveClass == null
+        ? 'router-link-exact-active'
+        : globalExactActiveClass
+    const activeClass =
+      this.activeClass == null ? activeClassFallback : this.activeClass
+    const exactActiveClass =
+      this.exactActiveClass == null
+        ? exactActiveClassFallback
+        : this.exactActiveClass
+
+    const compareTarget = route.redirectedFrom
+      ? createRoute(null, normalizeLocation(route.redirectedFrom), null, router)
+      : route
+
+    // 设置激活样式
+    classes[exactActiveClass] = isSameRoute(current, compareTarget)
+    classes[activeClass] = this.exact
+      ? classes[exactActiveClass]
+      : isIncludedRoute(current, compareTarget)
+
+    const ariaCurrentValue = classes[exactActiveClass] ? this.ariaCurrentValue : null
+
+    const handler = e => {
+      if (guardEvent(e)) {
+        // 如果 `router-link` 的 `replace` 属性为 true
+        if (this.replace) {
+          // 替换当前页面内容
+          router.replace(location, noop)
+        } else {
+          // 推入历史纪录栈
+          router.push(location, noop)
+        }
+      }
+    }
+
+    // link事件
+    const on = { click: guardEvent }
+    if (Array.isArray(this.event)) {
+      // <router-link to="/detail" :event="['dblclick']">detail</router-link>
+      // 会在多种事件下触发跳转
+      this.event.forEach(e => {
+        on[e] = handler
+      })
+    } else {
+      // 默认为click事件
+      // 当然，也可以修改事件触发的类型，比如，<router-link to="/detail" event="dblclick">detail</router-link>，将会在双击时跳转
+      on[this.event] = handler
+    }
+
+    const data: any = { class: classes }
+
+    const scopedSlot =
+      !this.$scopedSlots.$hasNormal &&
+      this.$scopedSlots.default &&
+      this.$scopedSlots.default({
+        href,
+        route,
+        navigate: handler,
+        isActive: classes[activeClass],
+        isExactActive: classes[exactActiveClass]
+      })
+
+    if (scopedSlot) {
+      if (scopedSlot.length === 1) {
+        return scopedSlot[0]
+      } else if (scopedSlot.length > 1 || !scopedSlot.length) {
+        if (process.env.NODE_ENV !== 'production') {
+          warn(
+            false,
+            `RouterLink with to="${
+              this.to
+            }" is trying to use a scoped slot but it didn't provide exactly one child. Wrapping the content with a span element.`
+          )
+        }
+        return scopedSlot.length === 0 ? h() : h('span', {}, scopedSlot)
+      }
+    }
+
+    if (this.tag === 'a') {
+      data.on = on
+      data.attrs = { href, 'aria-current': ariaCurrentValue }
+    } else {
+      // find the first <a> child and apply listener and href
+      // 例子，<router-link to="xxx" tag="span">aaa</router-link>
+      // 会先查找a标签
+      const a = findAnchor(this.$slots.default)
+      if (a) {
+        // 找到a标签，则绑定事件，使其具有路由功能
+        // in case the <a> is a static node
+        a.isStatic = false
+        const aData = (a.data = extend({}, a.data))
+        aData.on = aData.on || {}
+        // transform existing events in both objects into arrays so we can push later
+        for (const event in aData.on) {
+          const handler = aData.on[event]
+          if (event in on) {
+            aData.on[event] = Array.isArray(handler) ? handler : [handler]
+          }
+        }
+        // append new listeners for router-link
+        for (const event in on) {
+          if (event in aData.on) {
+            // on[event] is always a function
+            aData.on[event].push(on[event])
+          } else {
+            aData.on[event] = handler
+          }
+        }
+
+        // 设置属性
+        const aAttrs = (a.data.attrs = extend({}, a.data.attrs))
+        aAttrs.href = href
+        aAttrs['aria-current'] = ariaCurrentValue
+      } else {
+        // doesn't have <a> child, apply listener to self
+        data.on = on
+      }
+    }
+
+    // 渲染组件
+    return h(this.tag, data, this.$slots.default)
+  }
+}
+
+function guardEvent (e) {
+  // don't redirect with control keys
+  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) return
+  // don't redirect when preventDefault called
+  if (e.defaultPrevented) return
+  // don't redirect on right click
+  if (e.button !== undefined && e.button !== 0) return
+  // don't redirect if `target="_blank"`
+  if (e.currentTarget && e.currentTarget.getAttribute) {
+    const target = e.currentTarget.getAttribute('target')
+    if (/\b_blank\b/i.test(target)) return
+  }
+  // this may be a Weex event which doesn't have this method
+  if (e.preventDefault) {
+    e.preventDefault()
+  }
+  return true
+}
+
+function findAnchor (children) {
+  if (children) {
+    let child
+    for (let i = 0; i < children.length; i++) {
+      child = children[i]
+      // 找到a标签则返回该节点
+      if (child.tag === 'a') {
+        return child
+      }
+      if (child.children && (child = findAnchor(child.children))) {
+        return child
+      }
+    }
+  }
+}
+
+```
+
+首先，找到与当前路径匹配的路由信息，设定路由激活样式
+
+`event` 属性默认为 `click`，表示当点击时触发跳转。可以指定为别的事件类型，比如，双击的时候跳转，只需要将 `event="dblclick"` 即可。也可以指定多种事件类型触发跳转，比如，`<router-link to="/detail" :event="['click', 'contextmenu']">detail</router-link>`，可以在 `click` 或 `contextmenu` 的时候实现跳转。
+
+`tag` 用来指定路由渲染的元素。默认是通过 `a` 渲染。可以指定为别的元素，该元素可以嵌套 `a` 元素，如果该元素内部有 `a` 元素，那么，会先找到 `a` 元素，然后，为这个 `a` 元素设置属性，绑定事件，使其具有路由功能。
+
+`replace` 属性为 `true`，则，使用 `router.replace` 的方式替换页面内容，否则，使用 `router.push` 推入历史纪录栈
+
+
 - 3
 - 4
