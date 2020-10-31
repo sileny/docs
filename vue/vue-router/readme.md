@@ -1,7 +1,39 @@
 # vue-router
 
+源码目录结构
 
-## install
+- [components](#components)
+  - [link](#RouterLink)
+  - [view](#RouterView)
+- [history](#history)
+  - [AbstractHistory](#abstract)
+  - [History](#base)
+  - [HashHistory](#hash)
+  - [HTML5History](#html5)
+- [util](#util)
+  - [async](#async)
+  - [dom](#dom)
+  - [错误处理](#errors)
+  - [location](#location)
+  - [misc](#misc)
+  - [params](#params)
+  - [path](#path)
+  - [pushState](#pushstate)
+  - [query](#query)
+  - [resolve-component](#resolve-component)
+  - [route](#route)
+  - [scroll](#scroll)
+  - [state-key](#state-key)
+  - [warn](#warn)
+- [create-matcher](#create-matcher)
+- [create-route-map](#create-route-map)
+- [index](#index)
+- [install](#install)
+
+
+# index
+
+# install
 
 为 `Vue` 实例添加全局插件，用法 `Vue.use(VueRouter)`
 
@@ -66,6 +98,11 @@ export function install (Vue) {
 }
 
 ```
+
+# components
+
+- [RouterView](#routerview)
+- [RouterLink](#routerlink)
 
 ### RouterView
 
@@ -471,8 +508,61 @@ function findAnchor (children) {
 
 `replace` 属性为 `true`，则，使用 `router.replace` 的方式替换页面内容，否则，使用 `router.push` 推入历史纪录栈
 
+# history
 
-## util-route
+- [AbstractHistory](#abstract)
+- [History](#base)
+- [HashHistory](#hash)
+- [HTML5History](#html5)
+
+### abstract
+
+### base
+
+### hash
+
+### html5
+
+
+# util
+
+- [async](#async)
+- [dom](#dom)
+- [错误处理](#errors)
+- [location](#location)
+- [misc](#misc)
+- [params](#params)
+- [path](#path)
+- [pushState](#pushstate)
+- [query](#query)
+- [resolve-component](#resolve-component)
+- [route](#route)
+- [scroll](#scroll)
+- [state-key](#state-key)
+- [warn](#warn)
+
+
+### async
+
+### dom
+
+### errors
+
+### location
+
+### misc
+
+### params
+
+### path
+
+### PushState
+
+### query
+
+### resolve-component
+
+### route
 
 `route.js` 源码
 
@@ -621,5 +711,10 @@ function queryIncludes (current: Dictionary<string>, target: Dictionary<string>)
 
 ```
 
+### scroll
+
+### state-key
+
+### warn
 
 
