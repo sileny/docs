@@ -45,6 +45,14 @@ interface History {
 
 可以设置，以更改会话历史记录中当前条目的滚动恢复模式
 
+```js
+if ('scrollRestoration' in history)
+  history.scrollRestoration = 'manual';
+```
+
+- `manual` 滚动条会回到顶部
+- `auto` 会记录上一次滚动条所在的位置，刷新之后，停留在上一次滚动条所在的位置
+
 >如果相关连的 Document 不完全激活，会抛出一个 `SecurityError DOMException`
 
 ### state
