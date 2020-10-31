@@ -568,8 +568,6 @@ function findAnchor (children) {
 
 路由辅助方法
 ```flow js
-/* @flow */
-
 import type VueRouter from '../index'
 import { stringifyQuery } from './query'
 
