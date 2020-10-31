@@ -8,14 +8,14 @@
 - [RouterView](#routerview)
 - [RouterLink](#routerlink)
 
-下面是 `install` 源码
+下面是 `src/install.js` 源码
 ```js
-import View from './components/view' /* 1 */
-import Link from './components/link' /* 2 */
+import View from './components/view'
+import Link from './components/link'
 
-export let _Vue /* 3 */
+export let _Vue // 标记Vue实例
 
-export function install (Vue) { /* 4 */
+export function install (Vue) {
   if (install.installed && _Vue === Vue) return
   install.installed = true
 
@@ -248,8 +248,6 @@ function resolveProps (route, config) {
 
 源码如下
 ```js
-/* @flow */
-
 import { createRoute, isSameRoute, isIncludedRoute } from '../util/route'
 import { extend } from '../util/misc'
 import { normalizeLocation } from '../util/location'
@@ -474,5 +472,154 @@ function findAnchor (children) {
 `replace` 属性为 `true`，则，使用 `router.replace` 的方式替换页面内容，否则，使用 `router.push` 推入历史纪录栈
 
 
-- 3
-- 4
+## util-route
+
+`route.js` 源码
+
+路由辅助方法
+```flow js
+/* @flow */
+
+import type VueRouter from '../index'
+import { stringifyQuery } from './query'
+
+const trailingSlashRE = /\/?$/
+
+// 创建路由对象，和this.$route的是一致的
+export function createRoute (
+  record: ?RouteRecord,
+  location: Location,
+  redirectedFrom?: ?Location,
+  router?: VueRouter
+): Route {
+  const stringifyQuery = router && router.options.stringifyQuery
+
+  let query: any = location.query || {}
+  try {
+    query = clone(query)
+  } catch (e) {}
+
+  const route: Route = {
+    name: location.name || (record && record.name),
+    meta: (record && record.meta) || {},
+    path: location.path || '/',
+    hash: location.hash || '',
+    query,
+    params: location.params || {},
+    fullPath: getFullPath(location, stringifyQuery),
+    matched: record ? formatMatch(record) : []
+  }
+  if (redirectedFrom) {
+    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery)
+  }
+  return Object.freeze(route)
+}
+
+function clone (value) {
+  if (Array.isArray(value)) {
+    return value.map(clone)
+  } else if (value && typeof value === 'object') {
+    const res = {}
+    for (const key in value) {
+      res[key] = clone(value[key])
+    }
+    return res
+  } else {
+    return value
+  }
+}
+
+// the starting route that represents the initial state
+// 初始化的路由
+export const START = createRoute(null, {
+  path: '/'
+})
+
+// 对匹配到的路由进行格式化
+function formatMatch (record: ?RouteRecord): Array<RouteRecord> {
+  const res = []
+  while (record) {
+    res.unshift(record)
+    record = record.parent
+  }
+  return res
+}
+
+// 获取路由全路径
+function getFullPath (
+  { path, query = {}, hash = '' },
+  _stringifyQuery
+): string {
+  const stringify = _stringifyQuery || stringifyQuery
+  return (path || '/') + stringify(query) + hash
+}
+
+// 判断俩路由是否为同一个路由
+export function isSameRoute (a: Route, b: ?Route): boolean {
+  if (b === START) {
+    return a === b
+  } else if (!b) {
+    return false
+  } else if (a.path && b.path) {
+    return (
+      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query)
+    )
+  } else if (a.name && b.name) {
+    return (
+      a.name === b.name &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query) &&
+      isObjectEqual(a.params, b.params)
+    )
+  } else {
+    return false
+  }
+}
+
+function isObjectEqual (a = {}, b = {}): boolean {
+  // handle null value #1566
+  if (!a || !b) return a === b
+  const aKeys = Object.keys(a)
+  const bKeys = Object.keys(b)
+  if (aKeys.length !== bKeys.length) {
+    return false
+  }
+  return aKeys.every(key => {
+    const aVal = a[key]
+    const bVal = b[key]
+    // query values can be null and undefined
+    if (aVal == null || bVal == null) return aVal === bVal
+    // check nested equality
+    if (typeof aVal === 'object' && typeof bVal === 'object') {
+      return isObjectEqual(aVal, bVal)
+    }
+    return String(aVal) === String(bVal)
+  })
+}
+
+// 在 `login.vue` 组件里有 `<router-link to="login">aaa</router-link>`，该路由的样式会被 `active`
+export function isIncludedRoute (current: Route, target: Route): boolean {
+  return (
+    current.path.replace(trailingSlashRE, '/').indexOf(
+      target.path.replace(trailingSlashRE, '/')
+    ) === 0 &&
+    (!target.hash || current.hash === target.hash) &&
+    queryIncludes(current.query, target.query)
+  )
+}
+
+function queryIncludes (current: Dictionary<string>, target: Dictionary<string>): boolean {
+  for (const key in target) {
+    if (!(key in current)) {
+      return false
+    }
+  }
+  return true
+}
+
+```
+
+
+
