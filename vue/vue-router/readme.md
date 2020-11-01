@@ -120,6 +120,93 @@ export default class VueRouter {
 - 构造器方法实现了为 `router` 添加 `路由`，即，`route`。
 - 根据当前 `router` 运行的环境使用不同的 `history`
 
+
+### init
+
+`VueRouter` 初始化方法
+```js
+export default class VueRouter {
+  // ...
+
+  init (app: any /* Vue component instance */) {
+    process.env.NODE_ENV !== 'production' &&
+      assert(
+        install.installed,
+        `not installed. Make sure to call \`Vue.use(VueRouter)\` ` +
+          `before creating root instance.`
+      )
+
+    // 将Vue实例存到VueRouter实例的apps数组里
+    this.apps.push(app)
+
+    // set up app destroyed handler
+    // https://github.com/vuejs/vue-router/issues/2639
+    // 当Vue实例销毁的时候
+    app.$once('hook:destroyed', () => {
+      // clean out app from this.apps array once destroyed
+      // 销毁掉当前Vue实例
+      const index = this.apps.indexOf(app)
+      if (index > -1) this.apps.splice(index, 1)
+      // ensure we still have a main app or null if no apps
+      // we do not release the router so it can be reused
+      if (this.app === app) this.app = this.apps[0] || null
+
+      if (!this.app) {
+        // clean up event listeners
+        // https://github.com/vuejs/vue-router/issues/2341
+        // 不存在Vue实例，卸载popstate监听
+        this.history.teardownListeners()
+      }
+    })
+
+    // main app previously initialized
+    // return as we don't need to set up new history listener
+    if (this.app) {
+      return
+    }
+
+    this.app = app
+
+    const history = this.history
+
+    // 在浏览器环境下
+    if (history instanceof HTML5History || history instanceof HashHistory) {
+      const handleInitialScroll = routeOrError => {
+        const from = history.current
+        const expectScroll = this.options.scrollBehavior
+        const supportsScroll = supportsPushState && expectScroll
+
+        if (supportsScroll && 'fullPath' in routeOrError) {
+          // 调整滚动条位置
+          handleScroll(this, routeOrError, from, false)
+        }
+      }
+      const setupListeners = routeOrError => {
+        history.setupListeners()
+        handleInitialScroll(routeOrError)
+      }
+      history.transitionTo(
+        history.getCurrentLocation(),
+        setupListeners, // 路由跳转完成启动popstate监听
+        setupListeners // 路由跳转终端启动popstate监听
+      )
+    }
+
+    // 监听路由变化，当路由变化后，更新 app 的 _route 属性
+    history.listen(route => {
+      this.apps.forEach(app => {
+        app._route = route
+      })
+    })
+  }
+
+  // ...
+}
+```
+
+`VueRouter` 初始化后，将 `Vue` 实例 `app` 保存到当前 `VueRouter` 实例的 `apps` 里，`app` 在销毁的时候，卸载 `popstate` 监听，具体参考[History的teardownListeners](#teardownlisteners)和[HashHistory](#hash)、[HTML5History](#html5)
+
+
 # install
 
 为 `Vue` 实例添加全局插件，用法 `Vue.use(VueRouter)`
@@ -1050,13 +1137,232 @@ function normalizePath (
 - [HashHistory](#hash)
 - [HTML5History](#html5)
 
+不管是 `AbstractHistory` 还是 `HashHistory`，还是 `HTML5History`，都继承了 [History](#base) 抽象类，具有几乎相同的 `api`，抹平了接口调用差异化
+
 ### abstract
 
 ### base
 
+```js
+export class History {
+  router: Router // VueRouter实例
+  base: string // 路由前缀
+  current: Route // 当前路由对象
+  pending: ?Route
+  cb: (r: Route) => void //
+  ready: boolean // 是否初始化完成
+  readyCbs: Array<Function> // 加载完成后需要执行的回调
+  readyErrorCbs: Array<Function> // 错误的回调
+  errorCbs: Array<Function>
+  listeners: Array<Function> // 事件监听
+  cleanupListeners: Function // 错误监听
+
+  // implemented by sub-classes
+  // 定义子类必须实现的方法，抹平差异化api
+  +go: (n: number) => void
+  +push: (loc: RawLocation, onComplete?: Function, onAbort?: Function) => void
+  +replace: (
+    loc: RawLocation,
+    onComplete?: Function,
+    onAbort?: Function
+  ) => void
+  +ensureURL: (push?: boolean) => void
+  +getCurrentLocation: () => string
+  +setupListeners: Function
+
+  constructor (router: Router, base: ?string) {
+    this.router = router
+    // 序列化router导航的基准路由前缀
+    this.base = normalizeBase(base)
+    // start with a route object that stands for "nowhere"
+    this.current = START // 路由初始化后，先确保路由前缀正确
+    this.pending = null
+    this.ready = false // 标记为未加载完
+    this.readyCbs = [] // 收集回调函数
+    this.readyErrorCbs = []
+    this.errorCbs = []
+    this.listeners = [] // 收集popstate事件，只在浏览器环境下生效
+  }
+  // ...
+}
+
+// 确保路由前缀正确
+function normalizeBase (base: ?string): string {
+  if (!base) {
+    if (inBrowser) {
+      // respect <base> tag
+      const baseEl = document.querySelector('base')
+      base = (baseEl && baseEl.getAttribute('href')) || '/'
+      // strip full URL origin
+      base = base.replace(/^https?:\/\/[^\/]+/, '')
+    } else {
+      base = '/'
+    }
+  }
+  // make sure there's the starting slash
+  if (base.charAt(0) !== '/') {
+    base = '/' + base
+  }
+  // remove trailing slash
+  return base.replace(/\/$/, '')
+}
+```
+
+`History` 是 `AbstractHistory`、`HashHistory`、`HTML5History` 的基类。该类确保各种路由下的基准路由前缀是一致的，并初始化当前路由对象为 `START`，收集初始化完成时需要执行的回调
+
+`this.current = START` 表示将当前初始化时的路由赋值给 `current`，具体实现参考[这里](#route)，可以在所有模式下的路由实例的 `currentRoute` 获取到，代码实现如下，
+```js
+export default class VueRouter {
+  // ...
+  get currentRoute (): ?Route {
+    return this.history && this.history.current
+  }
+  // ...
+}
+```
+
+案例里在页面加载成功后，执行了 `log()`，10秒钟后，`this.$router.push` 向浏览器历史纪录栈里推入一条记录，更新当前 `Vue` 实例的 `route`，再次执行 `log()` 方法。
+```
+mounted() {
+  const log = () => console.log(11111111111);
+  setTimeout(() => {
+    this.$router.push({ path: this.$route.path, query: { a: 1 } });
+  }, 10000);
+  this.$router.afterEach(log);
+},
+```
+
+路由变化后，是如何更新当前 `Vue` 实例的 `route`？看[这里](#init)
+
+
+>`this.listeners` 收集 `popstate` 事件。调用 `history.pushState()` 或 `history.replaceState()` 不会触发 `popstate` 事件。只有在做出浏览器动作时候才会触发，如，点击浏览器的回退按钮或者前进按钮，或者在 js 代码里执行 `history.back()` 或 `history.forward()` 时才会触发。但不同的浏览器触发 `popstate` 的形式存在[差异](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/popstate_event)
+
+
+#### teardownListeners
+
+```js
+export class History {
+  // ...
+
+  teardownListeners () {
+    this.listeners.forEach(cleanupListener => {
+      cleanupListener()
+    })
+    this.listeners = []
+  }
+}
+```
+
+从源码里可以看出，`cleanupListener` 在 `hash` 模式下，表示为 `hashchange` 事件，在 `history` 模式下，表示 `popstate` 事件
+
+
 ### hash
 
+```js
+export class HashHistory extends History {
+  // ...
+
+  // this is delayed until the app mounts
+  // to avoid the hashchange listener being fired too early
+  setupListeners () {
+    if (this.listeners.length > 0) {
+      return
+    }
+
+    const router = this.router
+    const expectScroll = router.options.scrollBehavior
+    const supportsScroll = supportsPushState && expectScroll
+
+    if (supportsScroll) { // 监听 popstate 事件
+      this.listeners.push(setupScroll())
+    }
+
+    const handleRoutingEvent = () => {
+      const current = this.current
+      if (!ensureSlash()) {
+        return
+      }
+      this.transitionTo(getHash(), route => {
+        if (supportsScroll) {
+          handleScroll(this.router, route, current, true)
+        }
+        if (!supportsPushState) {
+          replaceHash(route.fullPath)
+        }
+      })
+    }
+    // 如果是 history 路由，则监听的是 popstate 事件；如果是 hash 模式，监听的是 hashchange 事件
+    const eventType = supportsPushState ? 'popstate' : 'hashchange'
+    window.addEventListener(
+      eventType,
+      handleRoutingEvent
+    )
+    this.listeners.push(() => {
+      window.removeEventListener(eventType, handleRoutingEvent)
+    })
+  }
+
+  // ...
+}
+```
+
+如果是 `history` 路由，则监听的是 `popstate` 事件；如果是 `hash` 模式，监听的是 `hashchange` 事件。
+
+不管是 `history` 路由 还是 `hash` 路由，都可以移除监听事件，事件的移除统一由 `History` 的 [teardownListeners](#teardownlisteners) 方法实现
+
+
 ### html5
+
+```js
+export class HTML5History extends History {
+  // ...
+
+  setupListeners () {
+    if (this.listeners.length > 0) {
+      return
+    }
+
+    const router = this.router
+    const expectScroll = router.options.scrollBehavior
+    const supportsScroll = supportsPushState && expectScroll
+
+    if (supportsScroll) { // 收集popstate事件监听
+      this.listeners.push(setupScroll())
+    }
+
+    const handleRoutingEvent = () => {
+      const current = this.current
+
+      // Avoiding first `popstate` event dispatched in some browsers but first
+      // history route not updated since async guard at the same time.
+      const location = getLocation(this.base)
+      if (this.current === START && location === this._startLocation) {
+        return
+      }
+
+      this.transitionTo(location, route => {
+        if (supportsScroll) {
+          handleScroll(router, route, current, true) // history模式调整滚动条位置
+        }
+      })
+    }
+    // 监听popstate事件
+    window.addEventListener('popstate', handleRoutingEvent)
+    this.listeners.push(() => {
+      // 销毁事件监听
+      window.removeEventListener('popstate', handleRoutingEvent)
+    })
+  }
+
+  // ...
+}
+```
+
+`setupScroll`[参考这里](#scroll)
+
+`history` 的 `popstate` 以及 `hash` 模式的 `hashchange` 监听参考[init](#init)
+
+`popstate` 事件移除，参考[teardownListeners](#teardownlisteners)
 
 
 # util
@@ -1409,6 +1715,85 @@ function queryIncludes (current: Dictionary<string>, target: Dictionary<string>)
 ```
 
 ### scroll
+
+`setupScroll` 方法通过 `history` 的 `replaceState` 修改当前浏览器历史记录，并监听 `popstate` 事件，`前进(forward)` 和 `后退(back)` 事件
+```js
+export function setupScroll () {
+  // Prevent browser scroll behavior on History popstate
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual'
+  }
+  // Fix for #1585 for Firefox
+  // Fix for #2195 Add optional third attribute to workaround a bug in safari https://bugs.webkit.org/show_bug.cgi?id=182678
+  // Fix for #2774 Support for apps loaded from Windows file shares not mapped to network drives: replaced location.origin with
+  // window.location.protocol + '//' + window.location.host
+  // location.host contains the port and location.hostname doesn't
+  const protocolAndPath = window.location.protocol + '//' + window.location.host
+  const absolutePath = window.location.href.replace(protocolAndPath, '')
+  // preserve existing history state as it could be overriden by the user
+  const stateCopy = extend({}, window.history.state)
+  stateCopy.key = getStateKey()
+  window.history.replaceState(stateCopy, '', absolutePath)
+  window.addEventListener('popstate', handlePopState)
+  return () => {
+    window.removeEventListener('popstate', handlePopState)
+  }
+}
+```
+该方法返回了一个函数，用来移除监听事件。该事件的移除统一由一个 [History的teardownListeners](#teardownlisteners) 方法来处理
+
+
+`handleScroll` 也是用来调整浏览器滚动条的位置
+```js
+export function handleScroll (
+  router: Router,
+  to: Route,
+  from: Route,
+  isPop: boolean
+) {
+  if (!router.app) {
+    return
+  }
+
+  const behavior = router.options.scrollBehavior
+  if (!behavior) {
+    return
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    assert(typeof behavior === 'function', `scrollBehavior must be a function`)
+  }
+
+  // wait until re-render finishes before scrolling
+  router.app.$nextTick(() => {
+    const position = getScrollPosition()
+    const shouldScroll = behavior.call(
+      router,
+      to,
+      from,
+      isPop ? position : null
+    )
+
+    if (!shouldScroll) {
+      return
+    }
+
+    if (typeof shouldScroll.then === 'function') {
+      shouldScroll
+        .then(shouldScroll => {
+          scrollToPosition((shouldScroll: any), position)
+        })
+        .catch(err => {
+          if (process.env.NODE_ENV !== 'production') {
+            assert(false, err.toString())
+          }
+        })
+    } else {
+      scrollToPosition(shouldScroll, position)
+    }
+  })
+}
+```
 
 ### state-key
 
