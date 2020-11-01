@@ -79,7 +79,9 @@ export default class VueRouter {
     this.beforeHooks = [] // 存储钩子函数
     this.resolveHooks = []
     this.afterHooks = []
-    this.matcher = createMatcher(options.routes || [], this) // 为当前router添加路由，并实现导航和重定向，参考#create-matcher解读
+    // 为当前router添加路由，并实现导航和重定向，参考`#create-matcher`解读
+    // 最终，this.matcher 在 `VueRouter` 实例的 `match` 方法上，可以用来匹配路由
+    this.matcher = createMatcher(options.routes || [], this)
 
     let mode = options.mode || 'hash'
     this.fallback =
@@ -108,7 +110,10 @@ export default class VueRouter {
         }
     }
   }
-  // ...
+
+  match (raw: RawLocation, current?: Route, redirectedFrom?: Location): Route {
+    return this.matcher.match(raw, current, redirectedFrom)
+  }
 }
 ```
 
