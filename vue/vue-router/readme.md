@@ -74,20 +74,20 @@ export default class VueRouter {
 
   constructor (options: RouterOptions = {}) {
     this.app = null
-    this.apps = [] // vue实例
+    this.apps = [] // 收集vue实例
     this.options = options // router可以选参数
     this.beforeHooks = [] // 存储钩子函数
     this.resolveHooks = []
     this.afterHooks = []
-    this.matcher = createMatcher(options.routes || [], this) // 
+    this.matcher = createMatcher(options.routes || [], this) // 为当前router添加路由，并实现导航和重定向，参考#create-matcher解读
 
     let mode = options.mode || 'hash'
     this.fallback =
-      mode === 'history' && !supportsPushState && options.fallback !== false
+      mode === 'history' && !supportsPushState && options.fallback !== false // 当不支持history时，对路由导航降级
     if (this.fallback) {
       mode = 'hash'
     }
-    if (!inBrowser) {
+    if (!inBrowser) { // 非浏览器环境使用AbstractHistory
       mode = 'abstract'
     }
     this.mode = mode
@@ -111,6 +111,9 @@ export default class VueRouter {
   // ...
 }
 ```
+
+- 构造器方法实现了为 `router` 添加 `路由`，即，`route`。
+- 根据当前 `router` 运行的环境使用不同的 `history`
 
 # install
 
