@@ -125,6 +125,8 @@ pushState(data: any, title: string, url?: string | null): void;
 
 ### replaceState
 
+修改当前历史记录实体。
+
 更新会话历史记录中的当前条目，以具有给定的数据，标题和URL（如果提供，但不为null）。
 
 
@@ -134,6 +136,75 @@ replaceState(data: any, title: string, url?: string | null): void;
 ```
 
 >如果相关连的 Document 不完全激活，会抛出一个 `SecurityError DOMException`
+
+
+假设 `http://mozilla.org/foo.html` 执行下面的 JavaScript 代码:
+
+```js
+var stateObj = { foo: "bar" };
+history.pushState(stateObj, "", "bar.html");
+```
+
+上面这两行的解释可以在 "Example of pushState() method"这个章节找到。然后假设 `http://mozilla.org/bar.html` 执行下面的 JavaScript 代码:
+
+```js
+history.replaceState(stateObj, "", "bar2.html");
+```
+
+这会让URL栏显示 `http://mozilla.org/bar2.html`, 但是不会刷新 `bar2.html` 页面 甚至不会检查 `bar2.html` 是否存在
+
+假设用户跳转到 `http://www.microsoft.com`, 然后点击返回按钮，这时, URL 栏将会显示 `http://mozilla.org/bar2.html` 页面. 如果用户此时点击返回按钮, URL 栏将会显示 `http://mozilla.org/foo.html` 页面, 最终绕过了 `bar.html` 页面
+
+下面是完整代码，
+
+`foo.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>foo</title>
+</head>
+<body>
+foo
+<script>
+  var stateObj = { foo: "bar" };
+  history.pushState(stateObj, "", "bar.html");
+</script>
+</body>
+</html>
+```
+
+`bar.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>bar - page</title>
+</head>
+<body>
+<script>
+  var stateObj = { foo: "bar" };
+  history.replaceState(stateObj, "", "bar2.html");
+</script>
+</body>
+</html>
+```
+
+`bar2.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>bar2</title>
+</head>
+<body>
+bar2	
+</body>
+</html>
+```
 
 
 ### queue
