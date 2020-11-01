@@ -70,6 +70,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 ```
+>`dispatch`方法是默认注入的方法
 
 将 `App` 组件的需要的数据状态和修改数据状态的方法通过 `connect` 来连接。即，点击 `++` 按钮实现数值新增，点击 `--` 实现数值减少
 
