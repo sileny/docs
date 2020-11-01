@@ -593,6 +593,8 @@ function findAnchor (children) {
 
 # create-matcher
 
+为当前 `router` 添加 `routes`，实现路由导航以及重定向
+
 ```js
 /* @flow */
 
@@ -620,6 +622,7 @@ export function createMatcher (
     createRouteMap(routes, pathList, pathMap, nameMap)
   }
 
+  // 根据当前路由匹配route:Route对象
   function match (
     raw: RawLocation,
     currentRoute?: Route,
@@ -666,6 +669,7 @@ export function createMatcher (
     return _createRoute(null, location)
   }
 
+  // 重定向到指定路由
   function redirect (
     record: RouteRecord,
     location: Location
@@ -797,6 +801,12 @@ function resolveRecordPath (path: string, record: RouteRecord): string {
 }
 
 ```
+
+- `addRoutes` 添加路由记录
+- `match` 匹配 `route`
+- `redirect` 重定向到匹配到的 `route`
+- `alias` 别名路由也可以导航
+
 
 # create-route-map
 
