@@ -1,6 +1,7 @@
 # optimization
 
 - [server端优化](#server)
+- [动画优化](#animation)
 
 # server
 
@@ -88,3 +89,13 @@ connect()
 
 - `level` 为 `3`，表示压缩率低，但压缩速度快
 - `memLevel` 为 `8`，表示使用更多的内存进行压缩
+
+# animation
+
+动画优化
+
+尽量不要使用 `width`、`height`、`margin`、`padding` 来做动画。
+
+`transform` 实现的动画与合成器线程相关，不需要等待主线程的样式计算或通过js动态计算，同时，它可以开启 `gpu` 加速，不会导致布局调整
+
+
