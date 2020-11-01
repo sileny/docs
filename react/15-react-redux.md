@@ -3,6 +3,7 @@
 - [install](#install)
 - [example](#example)
 - [multiple-reducer](#multiple-reducer)
+- [使用decorator实现redux计数器](#decorators)
 
 ## install
 
@@ -240,3 +241,131 @@ import rootReducer from './reducers'; // 状态：state
 const store = createStore(rootReducer);
 ```
 
+## decorators
+
+从上面的案例可以看出，顶级组件负责维护数据状态，子组件用来渲染数据。
+
+因此，可以将数据放在 `Provider` 组件上，通过 `Counter` 组件渲染实时的数据
+
+项目结构：
+```
+|src/
+|--redux-demo/
+|----actions/
+|------index.js
+|----reducers/
+|------counter.js
+|------index.js
+|----Counter.js
+|----store.js
+|--index.js
+```
+
+根程序
+`src/index.js`
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './redux-demo/store';
+import Counter from './redux-demo/Counter';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Counter />
+  </Provider>,
+  document.getElementById('root')
+);
+```
+
+计数器的装饰器方式实现
+`src/redux-demo/Counter.js`
+```js
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { decrementAction, incrementAction } from './actions';
+
+@connect(
+  state => {
+    const { counter } = state;
+    return {
+      counterValue: counter.num
+    };
+  },
+  dispatch => ({
+    decrement: () => dispatch(decrementAction),
+    increment: () => dispatch(incrementAction)
+  })
+)
+class Counter extends React.Component {
+  static propTypes = {
+    decrement: PropTypes.func,
+    increment: PropTypes.func,
+    counterValue: PropTypes.number
+  };
+  render() {
+    const { counterValue, decrement, increment } = this.props;
+    return <div className="counter">
+      <button onClick={decrement}>--</button>
+      <span>{counterValue}</span>
+      <button onClick={increment}>++</button>
+    </div>;
+  }
+}
+
+export default Counter;
+
+```
+
+状态数据
+`src/redux-demo/store.js`
+```js
+import reducers from '../redux-demo/reducers';
+import { createStore } from 'redux';
+
+const store = createStore(reducers);
+
+export default store;
+
+```
+
+`src/redux-demo/actions/index.js`
+```js
+export const incrementAction = { type: 'increment' };
+export const decrementAction = { type: 'decrement' };
+
+```
+
+计数器变更 `reducer`
+`src/redux-demo/reducers/counter.js`
+```js
+const counter = (state = { num: 0 }, action) => {
+  switch (action.type) {
+    case 'increment':
+      state.num++;
+      break;
+    case 'decrement':
+      state.num--;
+      break;
+    default:
+      break;
+  }
+  return { ...state };
+};
+
+export default counter;
+
+```
+
+整合多个 `reducer`
+`src/redux-demo/reducers/index.js`
+```js
+import { combineReducers } from 'redux';
+import counter from './counter';
+
+export default combineReducers({
+  counter
+});
+
+```
