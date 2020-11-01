@@ -186,7 +186,7 @@ export default class VueRouter {
         handleInitialScroll(routeOrError)
       }
       history.transitionTo(
-        history.getCurrentLocation(),
+        history.getCurrentLocation(), // 跳转到指定路由
         setupListeners, // 路由跳转完成启动popstate监听
         setupListeners // 路由跳转终端启动popstate监听
       )
@@ -205,6 +205,8 @@ export default class VueRouter {
 ```
 
 `VueRouter` 初始化后，将 `Vue` 实例 `app` 保存到当前 `VueRouter` 实例的 `apps` 里，`app` 在销毁的时候，卸载 `popstate` 监听，具体参考[History的teardownListeners](#teardownlisteners)和[HashHistory](#hash)、[HTML5History](#html5)
+
+`transitionTo` 该方法内部调用 `confirmTransition`，在跳转成功后，记录当前路由，执行 [updateRoute(route)](#updateroute) 更新 `Vue` 实例的 `route` 属性，执行 `afterHooks` 钩子函数
 
 
 # install
@@ -1149,7 +1151,7 @@ export class History {
   base: string // 路由前缀
   current: Route // 当前路由对象
   pending: ?Route
-  cb: (r: Route) => void //
+  cb: (r: Route) => void // 监听路由变化
   ready: boolean // 是否初始化完成
   readyCbs: Array<Function> // 加载完成后需要执行的回调
   readyErrorCbs: Array<Function> // 错误的回调
@@ -1183,6 +1185,21 @@ export class History {
     this.errorCbs = []
     this.listeners = [] // 收集popstate事件，只在浏览器环境下生效
   }
+
+  // 监听路由变化回调
+  listen (cb: Function) {
+    this.cb = cb
+  }
+
+  // ...
+
+  // 更新路由
+  updateRoute (route: Route) {
+    this.current = route
+    // this.cb 就是 listen 的回调参数，即，VueRouter.init方法执行时传入的listen方法体
+    this.cb && this.cb(route)
+  }
+
   // ...
 }
 
@@ -1232,7 +1249,7 @@ mounted() {
 },
 ```
 
-路由变化后，是如何更新当前 `Vue` 实例的 `route`？看[这里](#init)
+`listen` 方法用来监听路由变化。路由变化后，是如何更新当前 `Vue` 实例的 `route`？看[这里](#init)
 
 
 >`this.listeners` 收集 `popstate` 事件。调用 `history.pushState()` 或 `history.replaceState()` 不会触发 `popstate` 事件。只有在做出浏览器动作时候才会触发，如，点击浏览器的回退按钮或者前进按钮，或者在 js 代码里执行 `history.back()` 或 `history.forward()` 时才会触发。但不同的浏览器触发 `popstate` 的形式存在[差异](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/popstate_event)
