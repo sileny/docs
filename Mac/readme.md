@@ -167,6 +167,12 @@ node -> stable (-> N/A) (default)
 unstable -> N/A (default)
 ```
 
+安装指定版本 `node`
+```
+brew install node@14.15.0
+```
+
+
 ```
 brew install node
 ```
