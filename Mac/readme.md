@@ -16,6 +16,22 @@ curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection re
 199.232.68.133	githubusercontent.com
 ```
 
+>https://ipaddress.com`站点的信息不一定准确，可以尝试使用ping来找到比较合适的ip
+
+下面是 `ping` 的结果
+```
+ping raw.githubsercontent.com -t
+
+正在 Ping raw.githubsercontent.com [103.224.212.222] 具有 32 字节的数据:
+来自 103.224.212.222 的回复: 字节=32 时间=243ms TTL=45
+来自 103.224.212.222 的回复: 字节=32 时间=207ms TTL=45
+来自 103.224.212.222 的回复: 字节=32 时间=210ms TTL=45
+来自 103.224.212.222 的回复: 字节=32 时间=206ms TTL=45
+来自 103.224.212.222 的回复: 字节=32 时间=206ms TTL=46
+来自 103.224.212.222 的回复: 字节=32 时间=208ms TTL=46
+来自 103.224.212.222 的回复: 字节=32 时间=204ms TTL=46
+```
+
 如提示以下错误
 ```
 => xcode-select: note: no developer tools were found at '/Applications/Xcode.app', requesting install. Choose an option in the dialog to download the command line developer tools.
