@@ -16,7 +16,7 @@ curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection re
 199.232.68.133	githubusercontent.com
 ```
 
->https://ipaddress.com`站点的信息不一定准确，可以尝试使用ping来找到比较合适的ip
+>`https://ipaddress.com`站点的信息不一定准确，可以尝试使用ping来找到比较合适的ip
 
 下面是 `ping` 的结果
 ```
