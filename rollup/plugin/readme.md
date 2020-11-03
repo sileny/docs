@@ -233,7 +233,7 @@ function createMinifiedConfig(format) {
       format: outputConfigs[format].format, // 输出umd/amd/iife...格式
       name: 'index' // umd必须
     },
-    [terser(), { // 插件就是一个对象，该对象下有一些特定的方法，这些在会运行时执行的方法就是钩子函数
+    [terser(), { // 插件就是一个对象，该对象下有一些特定的方法，这些在特定时期执行的方法就是钩子函数
       writeBundle(options, bundle) {
         const { execFile } = require('child_process');
         execFile('node', ['D:/code/package/auto/copy-code.js', 'isArrayBuffer'], (error, stdout, stderr) => {
