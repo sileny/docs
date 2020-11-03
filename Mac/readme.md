@@ -187,6 +187,10 @@ unstable -> N/A (default)
 ```
 brew install node@14.15.0
 ```
+或者
+```
+nvm install v14.15.0
+```
 
 
 ```
