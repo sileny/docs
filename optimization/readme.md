@@ -2,6 +2,7 @@
 
 - [server端优化](#server)
 - [动画优化](#animation)
+- [雅虎军规](https://github.com/sileny/docs/blob/master/yahoo/rules.md)
 
 # server
 
