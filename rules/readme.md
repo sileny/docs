@@ -591,6 +591,7 @@ collect 收集/aggregate 聚集
   1. [命名规范](#naming-conventions)
   1. [存取器](#accessors)
   1. [事件](#events)
+  1. [jquery](#jquery)
   1. [ECMAScript 5 兼容性](#ecmascript-5-compatibility)
   1. [ECMAScript 6+ (ES 2015+) 风格](#ecmascript-6-es-2015-styles)
   1. [标准库](#standard-library)
