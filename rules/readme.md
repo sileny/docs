@@ -1,5 +1,13 @@
 # rules
 
+- [项目命名](#项目命名)
+- [目录名](#目录名)
+- [文件名](#文件名)
+- [css命名](#css命名)
+- [杜绝垃圾代码](#杜绝垃圾代码)
+- [其余](#其余)
+
+
 **做规范的原因**
 
 - 首先，公司项目代码不是你自己的，这点是最重要的
@@ -67,10 +75,38 @@
 - 投票：vote
 - 合作伙伴：partner
 
+# 杜绝垃圾代码
+
+`js` 示例
+```js
+var is_Hotel;
+var a = 20;
+
+function a() {
+  var is_hotel;
+  // ...
+  // 此处省略一万行
+  // ...
+  console.log(a);
+}
+```
+
+`css` 示例
+```css
+#a {
+  color: #f00 !important;
+}
+```
+- 禁止使用 `important`
+- 尽量避免 `id` 样式
+
+
 # 其余
 
 遵循项目配置规范
 
 - eslint
-- prettier
+- [prettier](https://prettier.io/) 支持多语言、多框架书写规范
 - commit规范
+
+`eslint` 配置项非常多，可以参考[官网](https://eslint.org/docs/user-guide/)
