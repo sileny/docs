@@ -3,6 +3,7 @@
 - [server端优化](#server)
 - [动画优化](#animation)
 - [雅虎军规](https://github.com/sileny/docs/blob/master/yahoo/rules.md)
+- [大量操作dom](#dom)
 
 # server
 
@@ -98,5 +99,13 @@ connect()
 尽量不要使用 `width`、`height`、`margin`、`padding` 来做动画。
 
 `transform` 实现的动画与合成器线程相关，不需要等待主线程的样式计算或通过js动态计算，同时，它可以开启 `gpu` 加速，不会导致布局调整
+
+# dom
+
+尽量少地操作dom元素，重新渲染代码昂贵，尤其在首屏
+
+如果确实需要大量的 `dom` 操作，可以使用 [fastdom](https://github.com/wilsonpage/fastdom)
+
+
 
 
