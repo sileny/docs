@@ -446,7 +446,7 @@ function a() {
 - [API文档规范](#API文档规范)
 - [继承](#继承)
 - [js特别容易在线上出问题的写法](#js特别容易在线上出问题的写法)
-- [js书写规范](js书写规范)
+- [js书写规范](#table-of-contents)
 
 ## js命名规范
 
@@ -563,9 +563,8 @@ collect 收集/aggregate 聚集
 
 暂只列举几种
 
-## js书写规范
 
-## <a id="table-of-contents">目录</a>
+## <a id="table-of-contents">js书写规范目录</a>
 
   1. [类型](#types)
   1. [引用](#references)
