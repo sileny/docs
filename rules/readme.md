@@ -103,8 +103,6 @@ function a() {
   color: #f00 !important;
 }
 ```
-- 禁止使用 `important`
-- 尽量避免 `id` 样式
 
 
 # css
