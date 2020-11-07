@@ -6,6 +6,9 @@ npx create-react-app react-ts --template typescript
 ```
 
 - 项目规范依赖
+
+引入了 `husky` 对提交的代码进行规范，因此，要先初始化仓库 `git init`
+
 ```
 yarn add husky lint-staged prettier -D
 ```
