@@ -118,6 +118,7 @@ yarn add @types/react-router-dom @types/react-redux
 动画效果比较好看
 ```
 yarn add @material-ui/core
+yarn add @material-ui/icons
 ```
 
 
