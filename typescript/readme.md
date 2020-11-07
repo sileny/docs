@@ -2,6 +2,12 @@
 
 - [apply](#apply)
 - [setTimeout](#settimeout)
+- [可索引类型](#可索引类型)
+- [interface和type关键字](#interface和type关键字)
+- [Objects/Functions](#Objects/Functions)
+- [其他数据类型](#其他数据类型)
+- [Extend](#Extend)
+- [interface extends interface](#interface extends interface)
 
 ## apply
 
@@ -45,3 +51,11 @@ function debounce(fn: Function, time: number) {
   }
 }
 ```
+
+## 可索引类型
+## interface和type关键字
+## Objects/Functions
+## 其他数据类型
+## Extend
+## interface extends interface
+
