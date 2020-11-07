@@ -90,7 +90,7 @@ function debounce(fn: Function, time: number) {
 ## implements
 ## 声明合并
 ## only interface can
-## 联合
+## 联合操作符
 ## extends
 ## keyof
 ## 泛型
