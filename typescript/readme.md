@@ -8,6 +8,32 @@
 - [其他数据类型](#其他数据类型)
 - [Extend](#Extend)
 - [interface extends interface](#interface-extends-interface)
+- [type extends type](#type-extends-type)
+- [interface extends type](#interface-extends-type)
+- [type extends interface](#type-extends-interface)
+- [implements](#implements)
+- [声明合并](#声明合并)
+- [only interface can](#only-interface-can)
+- [& 和 | 操作符](#&-和-|-操作符)
+- [交叉类型](#交叉类型)
+- [extends](#extends)
+- [keyof](#keyof)
+- [泛型](#泛型)
+- [小试牛刀](#小试牛刀)
+- [infer](#infer)
+- [工具泛型](#工具泛型)
+- [Partial](#Partial)
+- [Required](#Required)
+- [Readonly](#Readonly)
+- [Record](#Record)
+- [Pick](#Pick)
+- [Exclude](#Exclude)
+- [Extract](#Extract)
+- [Omit](#Omit)
+- [类型断言](#类型断言)
+- [函数重载](#函数重载)
+
+
 
 ## apply
 
@@ -58,4 +84,26 @@ function debounce(fn: Function, time: number) {
 ## 其他数据类型
 ## Extend
 ## interface extends interface
+## type extends type
+## interface extends type
+## type extends interface
+## implements
+## 声明合并
+## only interface can
+## & 和 | 操作符
+## extends
+## keyof
+## 泛型
+## 小试牛刀
+## infer
+## Partial
+## Required
+## Readonly
+## Record
+## Pick
+## Exclude
+## Extract
+## Omit
+## 类型断言
+## 函数重载
 
