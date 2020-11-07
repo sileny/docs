@@ -1,4 +1,110 @@
-# typescript
+# react-ts项目
+
+- 创建项目
+```
+npx create-react-app react-ts --template typescript
+```
+
+- 项目规范依赖
+```
+yarn add husky lint-staged prettier -D
+```
+
+常用的配置如下，通常配置在 `package.json` 里
+```
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.{css,scss,less,json,html,md,markdown}": [
+      "prettier --write"
+    ]
+  },
+```
+
+- 按需导入
+
+```
+yarn add babel-plugin-import -D
+```
+
+常用配置如下，在 `package.json` 里
+
+下面以按需导入 `antd` 为例，配置在 `pacakge.json` 里
+```
+  "babel": {
+    "plugins": [
+      [
+        "import",
+        {
+          "libraryName": "antd",
+          "libraryDirectory": "es",
+          "style": true
+        }
+      ]
+    ],
+    "presets": [
+      "react-app"
+    ]
+  }
+```
+
+- 支持装饰器写法
+
+```
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ]
+    ],
+    "presets": [
+      "react-app"
+    ]
+  }
+```
+
+
+- 开发依赖
+样式文件编译
+```
+yarn add sass -D
+yarn add less less-loader -D
+```
+
+
+- 项目文件分析
+```
+yarn add source-map-explorer -D
+```
+
+添加分析 `scripts`
+```
+"scripts": {
+  "analyze": "source-map-explorer build/static/js/main.*"
+}
+```
+
+- 运行时依赖
+```
+yarn add react-redux react-router-dom redux
+```
+
+`redux` 和 `react-redux` 进行状态管理
+
+`react-router-dom` 路由导航
+
+- 项目文件说明
+
 
 1、`react-app-env.d.ts` 声明文件
 
@@ -26,4 +132,5 @@
 FC = Functional Component
 SFC = Stateless Functional Component (已弃用)
 ```
+
 
