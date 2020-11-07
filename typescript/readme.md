@@ -14,7 +14,7 @@
 - [implements](#implements)
 - [声明合并](#声明合并)
 - [only interface can](#only-interface-can)
-- [& 和 | 操作符](#&-和-|-操作符)
+- [& 和 | 操作符](#&和|操作符)
 - [交叉类型](#交叉类型)
 - [extends](#extends)
 - [keyof](#keyof)
@@ -90,7 +90,7 @@ function debounce(fn: Function, time: number) {
 ## implements
 ## 声明合并
 ## only interface can
-## & 和 | 操作符
+## &和|操作符
 ## extends
 ## keyof
 ## 泛型
