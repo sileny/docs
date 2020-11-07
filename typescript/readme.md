@@ -91,11 +91,13 @@ function debounce(fn: Function, time: number) {
 ## 声明合并
 ## only interface can
 ## 联合操作符
+## 交叉类型
 ## extends
 ## keyof
 ## 泛型
 ## 小试牛刀
 ## infer
+## 工具泛型
 ## Partial
 ## Required
 ## Readonly
