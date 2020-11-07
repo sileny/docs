@@ -106,6 +106,15 @@ yarn add react-redux react-router-dom redux
 
 `react-router-dom` 路由导航
 
+
+- ui组件
+
+动画效果比较好看
+```
+yarn add @material-ui/core
+```
+
+
 - 项目文件说明
 
 
