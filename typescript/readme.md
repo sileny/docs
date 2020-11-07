@@ -585,9 +585,8 @@ type Test = ParamType<string>; // string
 
 ## 工具泛型
 
-```ts
 所谓的工具泛型，其实就是泛型的一些语法糖的实现。完全也是可以自己的写的。我们也可以在 `lib.d.ts` 中找到他们的定义
-```
+
 
 
 ## Partial
