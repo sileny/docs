@@ -106,6 +106,12 @@ yarn add react-redux react-router-dom redux
 
 `react-router-dom` 路由导航
 
+安装 `types` 文件，支持 `typescript`
+
+```
+yarn add @types/react-router-dom @types/react-redux
+```
+
 
 - ui组件
 
