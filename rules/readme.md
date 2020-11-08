@@ -4089,7 +4089,12 @@ collect 收集/aggregate 聚集
 
 ### husky-prettier
 
-`husky` 对提交的代码进行规范，因此，要先初始化仓库 `git init`
+`husky` 对提交的代码进行规范，因此，要先初始化仓库
+
+
+```
+git init
+```
 
 ```
 yarn add husky lint-staged prettier -D
