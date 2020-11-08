@@ -121,6 +121,12 @@ yarn add @material-ui/core
 yarn add @material-ui/icons
 ```
 
+- 懒加载swipe-views
+
+```
+yarn add react-swipeable-views
+```
+
 
 - 项目文件说明
 
