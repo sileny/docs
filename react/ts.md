@@ -124,6 +124,8 @@ yarn add @material-ui/icons
 yarn add @material-ui/pickers
 yarn add react-swipeable-views @types/react-swipeable-views # 懒加载swipe-views
 yarn add react-text-mask react-number-format @types/react-text-mask # 格式化
+yarn add react-swipeable-views-utils @types/react-swipeable-views-utils
+yarn add @material-ui/lab
 ```
 
 
