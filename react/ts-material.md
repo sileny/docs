@@ -7,29 +7,8 @@ npx create-react-app react-ts --template typescript
 
 ## 项目规范依赖
 
-引入了 `husky` 对提交的代码进行规范，因此，要先初始化仓库 `git init`
+参考[通用项目规范](https://github.com/sileny/docs/blob/master/rules/readme.md#%E9%80%9A%E7%94%A8%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83)
 
-```
-yarn add husky lint-staged prettier -D
-```
-
-常用的配置如下，通常配置在 `package.json` 里
-```
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,json}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "src/**/*.{css,scss,less,json,html,md,markdown}": [
-      "prettier --write"
-    ]
-  },
-```
 
 ## 按需导入
 
