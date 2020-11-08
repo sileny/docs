@@ -80,7 +80,7 @@ yarn add source-map-explorer -D
 
 ## 运行时依赖
 ```
-yarn add react-redux react-router-dom redux
+yarn add react-redux react-router-dom redux @types/react-router-dom @types/react-redux
 ```
 
 `redux` 和 `react-redux` 进行状态管理
@@ -89,9 +89,6 @@ yarn add react-redux react-router-dom redux
 
 安装 `types` 文件，支持 `typescript`
 
-```
-yarn add @types/react-router-dom @types/react-redux
-```
 
 
 ## ui组件
