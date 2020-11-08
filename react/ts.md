@@ -124,7 +124,7 @@ yarn add @material-ui/icons
 - 懒加载swipe-views
 
 ```
-yarn add react-swipeable-views
+yarn add react-swipeable-views @types/react-swipeable-views
 ```
 
 
