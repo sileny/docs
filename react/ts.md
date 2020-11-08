@@ -122,12 +122,8 @@ yarn add @types/react-router-dom @types/react-redux
 yarn add @material-ui/core
 yarn add @material-ui/icons
 yarn add @material-ui/pickers
-```
-
-## 懒加载swipe-views
-
-```
-yarn add react-swipeable-views @types/react-swipeable-views
+yarn add react-swipeable-views @types/react-swipeable-views # 懒加载swipe-views
+yarn add react-text-mask react-number-format @types/react-text-mask # 格式化
 ```
 
 
