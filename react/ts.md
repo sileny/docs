@@ -1,11 +1,11 @@
 # react-ts项目
 
-- 创建项目
+## 创建项目
 ```
 npx create-react-app react-ts --template typescript
 ```
 
-- 项目规范依赖
+## 项目规范依赖
 
 引入了 `husky` 对提交的代码进行规范，因此，要先初始化仓库 `git init`
 
@@ -31,7 +31,7 @@ yarn add husky lint-staged prettier -D
   },
 ```
 
-- 按需导入
+## 按需导入
 
 ```
 yarn add babel-plugin-import -D
@@ -58,8 +58,9 @@ yarn add babel-plugin-import -D
   }
 ```
 
-- 支持装饰器写法
+## 支持装饰器写法
 
+本项目本身就是 `typescript` 项目，所以，不用配置
 ```
   "babel": {
     "plugins": [
@@ -77,7 +78,8 @@ yarn add babel-plugin-import -D
 ```
 
 
-- 开发依赖
+## 开发依赖
+
 样式文件编译
 ```
 yarn add sass -D
@@ -85,7 +87,7 @@ yarn add less less-loader -D
 ```
 
 
-- 项目文件分析
+## 项目文件分析
 ```
 yarn add source-map-explorer -D
 ```
@@ -97,7 +99,7 @@ yarn add source-map-explorer -D
 }
 ```
 
-- 运行时依赖
+## 运行时依赖
 ```
 yarn add react-redux react-router-dom redux
 ```
@@ -113,22 +115,23 @@ yarn add @types/react-router-dom @types/react-redux
 ```
 
 
-- ui组件
+## ui组件
 
 动画效果比较好看
 ```
 yarn add @material-ui/core
 yarn add @material-ui/icons
+yarn add @material-ui/pickers
 ```
 
-- 懒加载swipe-views
+## 懒加载swipe-views
 
 ```
 yarn add react-swipeable-views @types/react-swipeable-views
 ```
 
 
-- 项目文件说明
+## 项目文件说明
 
 
 1、`react-app-env.d.ts` 声明文件
