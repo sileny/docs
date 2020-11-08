@@ -25,7 +25,7 @@
 - [css规范](#css)
 - [js规范](#js规范)
 - [图片规范](#图片规范)
-- [其余](#其余)
+- [通用项目规范](#通用项目规范)
 
 
 **规范目的**
@@ -4081,3 +4081,49 @@ collect 收集/aggregate 聚集
 
 **[⬆ 返回目录](#table-of-contents)**
 
+
+## 通用项目规范
+
+- [husky-prettier](#husky-prettier)
+- [eslint](#eslint)
+
+### husky-prettier
+
+`husky` 对提交的代码进行规范，因此，要先初始化仓库 `git init`
+
+```
+yarn add husky lint-staged prettier -D
+```
+
+常用的配置如下，通常配置在 `package.json` 里
+
+```
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.{css,scss,less,json,html,md,markdown}": [
+      "prettier --write"
+    ]
+  },
+```
+
+`.prettierrc` 文件配置
+```
+singleQuote: true
+printWidth: 120
+trailingComma: none
+arrowParens: avoid
+endOfLine: lf
+
+```
+
+### eslint
+
+`eslint` 根据具体的项目来区分
