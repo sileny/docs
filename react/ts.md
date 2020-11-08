@@ -128,6 +128,7 @@ yarn add react-swipeable-views-utils @types/react-swipeable-views-utils
 yarn add react-draggable
 yarn add notistack
 yarn add @material-ui/data-grid
+yarn add react-virtualized @types/react-virtualized
 ```
 
 
