@@ -12,5 +12,5 @@
 
 - `rollup-plugin-terser` 压缩代码
 
-- ``vue-template-compiler` 编译 `vue` 文件。一个 `vue` 文件通常包含 `template`、`script`、`style` 三部分。会将 `template` 内部的代码编译成 `render` 函数，最终该函数会被注入到 `script` 标签里。`vue` 文件里的 `script` 会作为一个 `ES Module`来执行，通过 `export` 显示指定输出
+- ``vue-template-compiler` 编译 `vue` 文件。一个 `vue` 文件通常包含 `template`、`script`、`style` 三部分。会将 `template` 内部的代码编译成 `render` 函数，最终该函数会被注入到 `script` 标签里。`vue` 文件里的 `script` 会作为一个 `ES Module`来执行，通过 `export` 显示指定输出。注意，`vue-template-compiler` 版本和 `vue` 版本要一致
 
