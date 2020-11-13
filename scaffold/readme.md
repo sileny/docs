@@ -434,6 +434,33 @@ yarn add @vue/eslint-config-prettier eslint-config-vue eslint-plugin-vue -D
 >`vue-loader`、`vue-style-loader`、`vue-template-compiler`，其中，`vue-template-compiler` 要和 `vue` 版本保持一致
 
 
+此时的 `babel.config.js`
+
+```js
+module.exports = api => {
+  return {
+    plugins: ['@babel/plugin-transform-runtime'],
+    presets: [
+      '@vue/app', // yarn add @vue/babel-preset-app -D
+      [
+        '@babel/preset-env',
+        {
+          useBuiltIns: 'entry',
+          // 根据配置的浏览器兼容，引入浏览器不兼容的 polyfill。
+          // 需要在入口文件手动添加 import '@babel/polyfill'，会自动根据 browserslist 替换成浏览器不兼容的所有 polyfill。
+          // caller.target will be the same as the target option from webpack
+          targets: api.caller(caller => caller && caller.target === 'node')
+            ? { node: 'current' }
+            : { chrome: '58', ie: '9' }
+        },
+        '@babel/preset-stage-2'
+      ]
+    ]
+  };
+};
+
+```
+
 
 ### react
 
