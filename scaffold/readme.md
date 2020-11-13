@@ -2,6 +2,7 @@
 
 - [基础配置](#基础配置)
 - [项目规范配置](#项目规范配置)
+- [完整配置](#完整配置)
 
 
 ## 基础配置
@@ -393,5 +394,333 @@ yarn add eslint eslint-config-prettier eslint-config-standard eslint-plugin-impo
 
 ```
 yarn add @vue/eslint-config-prettier eslint-config-vue eslint-plugin-vue -D
+```
+
+
+## 完整项目配置
+
+
+- 配置结构
+```
+|- build/
+|-   build.js
+|-   webpack.base.conf.js
+|-   webpack.dev.conf.js
+|-   webpack.prod.conf.js
+|- src/
+|-   App.vue
+|-   index.js
+```
+- [打包配置](#打包配置)
+- [源码结构](#源码结构)
+
+
+### 打包配置
+
+- `build.js`
+
+```js
+const webpack = require('webpack');
+const config = require('./webpack.prod.conf');
+
+webpack(config, (err, stats) => {
+  if (err || stats.hasErrors()) {
+    // 处理错误
+    console.error(err);
+    return;
+  }
+  console.log(
+    stats.toString({
+      chunks: false, // 使构建过程静默无输出
+      colors: true // 在控制台输出颜色字体
+    })
+  );
+});
+
+```
+
+
+- `webpack.base.conf.js` 文件
+
+```js
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AutoDllPlugin = require('autodll-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+
+module.exports = {
+  entry: ['@babel/polyfill', path.resolve(__dirname, '../src/index.js')],
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+    filename: '[name].js'
+  },
+  resolve: {
+    extensions: ['*', '.js', '.json', '.vue'],
+    alias: {
+      vue$: 'vue/dist/vue.esm.js',
+      '@': path.resolve(__dirname, '../src')
+    }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        include: [path.resolve(__dirname, '../src')]
+      },
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+            // plugins: ['@babel/transform-runtime']
+          }
+        },
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]?[hash]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]?[hash]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(mp3|wav|wma|ape|aac)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]?[hash]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          {
+            loader: 'px2rem-loader',
+            // options here
+            options: {
+              remUnit: 100, // 1rem = 100px
+              remPrecision: 8 // 计算出rem的小数点的个数
+            }
+          }
+        ]
+      },
+      {
+        test: /(\.sass$)|(\.scss$)/,
+        use: [
+          {
+            // loader: "style-loader" // creates style nodes from JS strings
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader' // translates CSS into CommonJS
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          {
+            loader: 'sass-loader' // compiles Less to CSS
+          },
+          {
+            loader: 'px2rem-loader',
+            // options here
+            options: {
+              remUnit: 100, // 1rem = 100px
+              remPrecision: 8 // 计算出rem的小数点的个数
+            }
+          }
+        ]
+      }
+    ]
+  },
+  optimization: {
+    splitChunks: {
+      // minSize: 0, // 包最小的体积 0代表无条件提取
+      cacheGroups: {
+        // commons:{ // 抽取基础库 vue、vue-router、vuex、react
+        //   test:/(vue|vue-router|vuex)/,
+        //   name:'vendors',
+        //   chunks: 'all'// 同步&异步加载的都提取出来
+        // },
+        commons: {
+          // 抽取基础库 vue、vue-router、vuex、react
+          name: 'commons',
+          chunks: 'all', // 同步&异步加载的都提取出来
+          minChunks: 2
+        }
+      }
+    }
+  },
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../index.html')
+    }),
+    new VueLoaderPlugin(),
+    new webpack.optimize.SplitChunksPlugin(),
+    // 抽取基础库 vue、react
+    new HtmlWebpackExternalsPlugin({
+      externals: [
+        {
+          module: 'vue',
+          entry: 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
+          global: 'Vue',
+        },
+        {
+          module: 'react',
+          entry: 'https://unpkg.com/react@17.0.1/umd/react.development.js',
+          global: 'React',
+        },
+        {
+          module: 'react-dom',
+          entry: 'https://unpkg.com/react-dom@17/umd/react-dom.development.js',
+          global: 'ReactDom',
+        }
+      ]
+    })
+    // Dll 优化打包速度
+    // new AutoDllPlugin({
+    // 	inject: true, // will inject the DLL bundle to index.html
+    // 	debug: true,
+    // 	filename: '[name]_[hash].js',
+    // 	path: './dll',
+    // 	entry: {
+    // 	  vendor: ['vue', 'vue-router']
+    // 	}
+    // }),
+  ]
+};
+```
+
+
+- `webpack.dev.conf.js`
+
+```js
+const merge = require('webpack-merge');
+const path = require('path');
+const baseConfig = require('./webpack.base.conf');
+
+module.exports = merge(baseConfig, {
+  mode: 'development',
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: path.resolve(__dirname, '../dist'),
+    open: true
+  }
+});
+
+```
+
+- `webpack.prod.conf.js`
+
+```js
+const merge = require('webpack-merge');
+const path = require('path');
+const baseConfig = require('./webpack.base.conf');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+module.exports = merge(baseConfig, {
+  mode: 'production',
+  devtool: 'source-map',
+  plugins: [
+    new CleanWebpackPlugin({
+      root: path.resolve(__dirname, '../'),
+      verbose: true,
+      dry: false
+    }),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.optimize\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }]
+      },
+      canPrint: true
+    })
+  ]
+});
+```
+
+
+### 源码结构
+
+```
+|- src/
+|-   index.js
+|-   App.vue
+```
+
+```js
+import Vue from 'vue';
+import App from './App';
+import router from './router';
+
+import './styles/index.scss';
+
+new Vue({
+  router: router,
+  render: h => h(App)
+}).$mount('#app');
+
+```
+
+`App.vue`
+```vue
+<template>
+  <div class="app">
+    <router-view></router-view>
+    <!-- 删除试试 底部菜单 -->
+    <FooterCmp></FooterCmp>
+  </div>
+</template>
+
+<script>
+import FooterCmp from './components/FooterCmp.vue';
+
+export default {
+  components: {
+    FooterCmp
+  }
+};
+</script>
+
 ```
 
