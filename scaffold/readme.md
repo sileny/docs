@@ -435,6 +435,14 @@ yarn add @vue/eslint-config-prettier eslint-config-vue eslint-plugin-vue -D
 
 
 
+### react
+
+```
+yarn add react react-router-dom redux react-redux
+```
+
+
+
 ## 项目配置
 
 
