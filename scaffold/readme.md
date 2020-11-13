@@ -1,6 +1,21 @@
 # 脚手架基本配置
 
-`package.json`
+- [基础配置](#基础配置)
+- [项目规范配置](#项目规范配置)
+
+
+## 基础配置
+
+- [polyfill](#polyfill)
+- [babel](#babel)
+- [打包优化](#打包优化)
+- [样式配置](#样式配置)
+- [文件清理](#文件清理)
+- [cdn配置](#cdn配置)
+- [html配置](#html配置)
+
+
+`package.json` 如下，
 
 ```json
 {
@@ -358,5 +373,25 @@ var webpackConfig = {
     <script src="index_bundle.js"></script>
   </body>
 </html>
+```
+
+
+## 项目规范配置
+
+- [通用](#通用)
+- [vue](#vue)
+- [react](#react)
+
+
+### 通用
+
+```
+yarn add eslint eslint-config-prettier eslint-config-standard eslint-plugin-import eslint-plugin-node eslint-plugin-prettier eslint-plugin-promise eslint-plugin-standard eslint-webpack-plugin -D
+```
+
+### vue
+
+```
+yarn add @vue/eslint-config-prettier eslint-config-vue eslint-plugin-vue -D
 ```
 
