@@ -377,9 +377,10 @@ var webpackConfig = {
 ```
 
 
-## 项目配置
+## 项目规范配置
 
 - [通用](#通用)
+- [代码规范](#代码规范)
 - [vue](#vue)
 - [react](#react)
 
@@ -390,11 +391,45 @@ var webpackConfig = {
 yarn add eslint eslint-config-prettier eslint-config-standard eslint-plugin-import eslint-plugin-node eslint-plugin-prettier eslint-plugin-promise eslint-plugin-standard eslint-webpack-plugin -D
 ```
 
+### 代码规范
+
+首先，要初始化仓库
+
+```
+git init
+```
+
+因为用到了 `husky`，后安装，会导致 `husky` 提交验证的时候失效
+
+```
+yarn add husky lint-staged prettier -D
+```
+
+在 `package.json` 里添加如下配置
+```json
+"husky": {
+  "hooks": {
+    "pre-commit": "lint-staged"
+  }
+},
+"lint-staged": {
+  "src/**/*.{js,jsx,json}": [
+    "prettier --write",
+    "eslint --fix"
+  ],
+  "src/**/*.{css,scss,less,json,html,md,markdown}": [
+    "prettier --write"
+  ]
+},
+```
+
+
 ### vue
 
 ```
 yarn add @vue/eslint-config-prettier eslint-config-vue eslint-plugin-vue -D
 ```
+
 
 
 ## 完整项目配置
