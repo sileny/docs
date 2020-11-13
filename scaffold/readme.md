@@ -431,8 +431,11 @@ yarn add @vue/eslint-config-prettier eslint-config-vue eslint-plugin-vue -D
 ```
 
 
+>`vue-loader`、`vue-style-loader`、`vue-template-compiler`，其中，`vue-template-compiler` 要和 `vue` 版本保持一致
 
-## 完整项目配置
+
+
+## 项目配置
 
 
 - 配置结构
