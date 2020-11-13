@@ -184,6 +184,9 @@ module.exports = {
 };
 ```
 
+推荐使用 [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)
+
+
 
 ### 样式配置
 
