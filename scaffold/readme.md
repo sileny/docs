@@ -828,6 +828,18 @@ yarn add cross-env -D
 },
 ```
 
+下面是将配置都写在 `webpack.config.js` 里之后做的脚本配置
+```
+"dev": "cross-env NODE_ENV='development' webpack-dev-server --env development --inline --progress",
+"build": "cross-env NODE_ENV='production' webpack --env production --mode=production"
+```
+比下面的配置少 `0.6k` 的代码
+```
+"dev": "webpack-dev-server --env development --inline --progress",
+"build": "webpack --env production --mode=production"
+```
+
+
 ## 热加载
 
 开发模式为了看到实时地效果，配置热加载，可以大大提升效率
