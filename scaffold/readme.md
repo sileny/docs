@@ -664,6 +664,9 @@ module.exports = merge(baseConfig, {
 
 ```
 
+热加载配置看[这里](#热加载)
+
+
 - `webpack.prod.conf.js`
 
 ```js
@@ -692,6 +695,36 @@ module.exports = merge(baseConfig, {
     })
   ]
 });
+```
+
+打包提取样式需要将 `style-loader` 提取出来的 `style` 放在 `.css` 文件里，加上以下配置
+```js
+module: {
+  rules: [
+    {
+      test: /\.(sa|sc|c)ss$/,
+      use: [
+        { loader: MiniCssExtractPlugin.loader },
+        { loader: 'css-loader' },
+        {
+          loader: 'postcss-loader',
+          options: {
+            plugins: [require('autoprefixer')]
+          }
+        },
+        { loader: 'sass-loader' },
+        {
+          loader: 'px2rem-loader',
+          // options here
+          options: {
+            remUnit: 100, // 1rem = 100px
+            remPrecision: 8 // 计算出rem的小数点的个数
+          }
+        }
+      ]
+    }
+  ]
+},
 ```
 
 
@@ -779,7 +812,7 @@ yarn add cross-env -D
 ## 热加载
 
 开发模式为了看到实时地效果，配置热加载，可以大大提升效率
-```
+```js
 module.exports = {
   entry: [
     '@babel/polyfill',                                  // 兼容性
