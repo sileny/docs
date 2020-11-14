@@ -863,3 +863,15 @@ module.exports = {
 [WDS] Live Reloading enabled.
 ```
 
+当改变文件后，会有以下日志输出
+```
+[WDS] 100% - Compilation completed.
+[HMR] Updated modules:
+[HMR]  - ./src/pages/index.vue?vue&type=script&lang=js&
+[HMR]  - ./src/pages/index.vue?vue&type=script&lang=js&
+[HMR]  - ./src/pages/index.vue
+[HMR]  - ./src/pages/index.vue?vue&type=template&id=57509004&
+[HMR]  - ./src/pages/index.vue?vue&type=template&id=57509004&
+[HMR] App is up to date.
+```
+
