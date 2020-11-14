@@ -850,3 +850,16 @@ module.exports = {
 }
 ```
 
+如果只是配置了插件，即 `new webpack.HotModuleReplacementPlugin()`，是不会实现热加载的，只会输出以下控制台日志
+```
+[HMR] Waiting for update signal from WDS...
+```
+
+
+热加载配置成功后，控制台会有如下日志输出，
+```
+[HMR] Waiting for update signal from WDS...
+[WDS] Hot Module Replacement enabled.
+[WDS] Live Reloading enabled.
+```
+
