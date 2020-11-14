@@ -710,7 +710,7 @@ module.exports = {
 - `webpack.dev.conf.js`
 
 ```js
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const path = require('path');
 const baseConfig = require('./webpack.base.conf');
 
@@ -728,7 +728,7 @@ module.exports = merge(baseConfig, {
 - `webpack.prod.conf.js`
 
 ```js
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const path = require('path');
 const baseConfig = require('./webpack.base.conf');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
