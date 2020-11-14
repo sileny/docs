@@ -220,49 +220,17 @@ module.exports = {
 module.exports = {
   rules: [
     {
-      test: /\.css$/,
+      test: /\.(sa|sc|c)ss$/,
       use: [
-        {
-          loader: MiniCssExtractPlugin.loader
-        },
-        {
-          loader: 'css-loader'
-        },
+        { loader: 'style-loader' },
+        { loader: 'css-loader' },
         {
           loader: 'postcss-loader',
           options: {
             plugins: [require('autoprefixer')]
           }
         },
-        {
-          loader: 'px2rem-loader',
-          // options here
-          options: {
-            remUnit: 100, // 1rem = 100px
-            remPrecision: 8 // 计算出rem的小数点的个数
-          }
-        }
-      ]
-    },
-    {
-      test: /(\.sass$)|(\.scss$)/,
-      use: [
-        {
-          // loader: "style-loader" // creates style nodes from JS strings
-          loader: MiniCssExtractPlugin.loader
-        },
-        {
-          loader: 'css-loader' // translates CSS into CommonJS
-        },
-        {
-          loader: 'postcss-loader',
-          options: {
-            plugins: [require('autoprefixer')]
-          }
-        },
-        {
-          loader: 'sass-loader' // compiles Less to CSS
-        },
+        { loader: 'sass-loader' },
         {
           loader: 'px2rem-loader',
           // options here
@@ -595,49 +563,17 @@ module.exports = {
         ]
       },
       {
-        test: /\.css$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          {
-            loader: 'css-loader'
-          },
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
           {
             loader: 'postcss-loader',
             options: {
               plugins: [require('autoprefixer')]
             }
           },
-          {
-            loader: 'px2rem-loader',
-            // options here
-            options: {
-              remUnit: 100, // 1rem = 100px
-              remPrecision: 8 // 计算出rem的小数点的个数
-            }
-          }
-        ]
-      },
-      {
-        test: /(\.sass$)|(\.scss$)/,
-        use: [
-          {
-            // loader: "style-loader" // creates style nodes from JS strings
-            loader: MiniCssExtractPlugin.loader
-          },
-          {
-            loader: 'css-loader' // translates CSS into CommonJS
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: [require('autoprefixer')]
-            }
-          },
-          {
-            loader: 'sass-loader' // compiles Less to CSS
-          },
+          { loader: 'sass-loader' },
           {
             loader: 'px2rem-loader',
             // options here
