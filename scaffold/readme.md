@@ -4,6 +4,7 @@
 - [项目规范配置](#项目规范配置)
 - [项目配置](#项目配置)
 - [环境变量配置](#环境变量配置)
+- [热加载](#热加载)
 
 
 ## 基础配置
@@ -812,4 +813,40 @@ export default {
 - `DefinePlugin` 的作用：是设置浏览器环境下能读取到的 `全局变量`，直接通过 `key` 读取，在 `node` 环境下是无法读取到的
 - `cross-env` 的作用：是通过命令行设置环境变量 `NODE_ENV`，使 `node` 环境下能读取到，通过 `process.env.NODE_ENV` 读取
 - 如果在 `DefinePlugin` 里设置的 `key` 是 `process.env.NODE_ENV` ，会覆盖 `webpack` 通过 `mode` 模式设置的环境变量的值
+
+
+安装依赖
+```
+yarn add cross-env -D
+```
+
+在 `package.json` 添加配置
+```
+"scripts": {
+  "dev": "cross-env NODE_ENV='development' webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+  "build": "cross-env NODE_ENV='production' node build/build.js"
+},
+```
+
+## 热加载
+
+开发模式为了看到实时地效果，配置热加载，可以大大提升效率
+```
+module.exports = {
+  entry: [
+    '@babel/polyfill',                                  // 兼容性
+    path.resolve(__dirname, '../src/index.js'),         // 程序入口
+    'webpack-dev-server/client?http://localhost:8080/'  // 热加载的关键
+  ],
+  devServer: {
+    compress: true,                                     // gzip压缩
+    contentBase: path.resolve(__dirname, '../dist'),    // contentbase代表html页面所在的相对目录，如果不配置项，devServer默认html所在的目录就是项目的根目录
+    hot: true,                                          // 启用热加载
+    open: true                                          // 自动打开浏览器
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()            // 热加载插件
+  ]
+}
+```
 
