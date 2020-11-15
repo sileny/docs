@@ -7,7 +7,12 @@
 
 # server
 
+
+虽然代码压缩成 `gz` 格式的了，但也需要在服务端做配置，下面介绍几种配置方式
+
 - [node](#node)
+- [node express](#express)
+- [spring boot](#spring)
 - [nginx](#nginx)
 
 
@@ -95,16 +100,39 @@ connect()
 - `memLevel` 为 `8`，表示使用更多的内存进行压缩
 
 
-## server
+
+## express
+
+1、安装 `compression`
+```
+npm install compression
+```
+
+2、配置
+```js
+const express = require('express');
+const compression = require('compression');
+
+const app = express();
+//尽量在其他中间件前使用compression
+app.use(compression());
+```
+
+如果，只是对某些请求使用此功能，可以这样
+```js
+app.use(compression({filter: shouldCompress}))
+function shouldCompress (req, res) {
+  if (req.headers['x-no-compression']) {
+    // 这里就过滤掉了请求头包含'x-no-compression'
+    return false
+  }
+  return compression.filter(req, res)
+}
+```
 
 
-虽然代码压缩成 `gz` 格式的了，但也需要在服务端做配置，下面介绍几种配置方式
 
-- [nginx](#nginx)
-- [node express](#express)
-- [spring boot](#spring)
-
-### nginx
+## nginx
 
 1、打开 `nginx` 配置文件 `nginx.conf`
 
@@ -211,36 +239,8 @@ ETag: W/"5f181a97-2ced"
 Content-Encoding: gzip
 ```
 
-### express
 
-1、安装 `compression`
-```
-npm install compression
-```
-
-2、配置
-```js
-const express = require('express');
-const compression = require('compression');
-
-const app = express();
-//尽量在其他中间件前使用compression
-app.use(compression());
-```
-
-如果，只是对某些请求使用此功能，可以这样
-```js
-app.use(compression({filter: shouldCompress}))
-function shouldCompress (req, res) {
-  if (req.headers['x-no-compression']) {
-    // 这里就过滤掉了请求头包含'x-no-compression'
-    return false
-  }
-  return compression.filter(req, res)
-}
-```
-
-### spring
+## spring
 
 `spring` 默认不开启 `gzip` 压缩，需要手动开启，配置如下，
 ```yml
