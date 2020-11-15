@@ -13,10 +13,14 @@
 
 ```
 https://cdn.jsdelivr.net/gh/sileny/unity@1.0.0/dist/index.min.js
+
+https://cdn.jsdelivr.net/npm/compress-base64@1.0.0/dist/index.min.js
 ```
 或者
 ```
 https://unpkg.com/@silen/unity@1.0.0/dist/index.js
+
+https://unpkg.com/compress-base64@1.0.0/dist/index.js
 ```
 
 `unpkg` 是一个快速的全球内容交付网络，适用于npm上的所有内容
