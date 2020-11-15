@@ -3,6 +3,7 @@
 写好的代码可以发布到 `npm` 仓库，也可以发布到 `github` 仓库
 
 - [npm](#npm)
+- [unpkg](#unpkg)
 - [github](#github)
 
 ## npm
@@ -17,7 +18,10 @@ https://cdn.jsdelivr.net/gh/sileny/unity@1.0.0/dist/index.min.js
 https://cdn.jsdelivr.net/npm/compress-base64@1.0.2/dist/index.min.js
 https://cdn.jsdelivr.net/npm/compress-base64
 ```
-或者
+
+
+## unpkg
+
 ```
 https://unpkg.com/@silen/unity@1.0.0/dist/index.js
 
