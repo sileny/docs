@@ -220,9 +220,9 @@ module.exports = {
 module.exports = {
   rules: [
     {
-      test: /\.(sa|sc|c)ss$/,
+      test: /.(sa|sc|c)ss$/,
       use: [
-        { loader: 'style-loader' },
+        { loader: 'vue-style-loader' },
         { loader: 'css-loader' },
         {
           loader: 'postcss-loader',
@@ -230,7 +230,6 @@ module.exports = {
             plugins: [require('autoprefixer')]
           }
         },
-        { loader: 'sass-loader' },
         {
           loader: 'px2rem-loader',
           // options here
@@ -238,7 +237,10 @@ module.exports = {
             remUnit: 100, // 1rem = 100px
             remPrecision: 8 // 计算出rem的小数点的个数
           }
-        }
+        },
+        // Uncaught Error: Module build failed (from ./node_modules/px2rem-loader/index.js):
+        // Error: undefined:21:5: property missing ':'
+        { loader: 'sass-loader' }
       ]
     }
   ]
@@ -563,9 +565,9 @@ module.exports = {
         ]
       },
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /.(sa|sc|c)ss$/,
         use: [
-          { loader: 'style-loader' },
+          { loader: 'vue-style-loader' },
           { loader: 'css-loader' },
           {
             loader: 'postcss-loader',
@@ -573,7 +575,6 @@ module.exports = {
               plugins: [require('autoprefixer')]
             }
           },
-          { loader: 'sass-loader' },
           {
             loader: 'px2rem-loader',
             // options here
@@ -581,7 +582,8 @@ module.exports = {
               remUnit: 100, // 1rem = 100px
               remPrecision: 8 // 计算出rem的小数点的个数
             }
-          }
+          },
+          { loader: 'sass-loader' }
         ]
       }
     ]
@@ -702,9 +704,9 @@ module.exports = merge(baseConfig, {
 module: {
   rules: [
     {
-      test: /\.(sa|sc|c)ss$/,
+      test: /.(sa|sc|c)ss$/,
       use: [
-        { loader: MiniCssExtractPlugin.loader },
+        { loader: isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader' },
         { loader: 'css-loader' },
         {
           loader: 'postcss-loader',
@@ -712,7 +714,6 @@ module: {
             plugins: [require('autoprefixer')]
           }
         },
-        { loader: 'sass-loader' },
         {
           loader: 'px2rem-loader',
           // options here
@@ -720,7 +721,10 @@ module: {
             remUnit: 100, // 1rem = 100px
             remPrecision: 8 // 计算出rem的小数点的个数
           }
-        }
+        },
+        // Uncaught Error: Module build failed (from ./node_modules/px2rem-loader/index.js):
+        // Error: undefined:21:5: property missing ':'
+        { loader: 'sass-loader' }
       ]
     }
   ]
