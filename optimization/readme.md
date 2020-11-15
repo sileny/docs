@@ -4,6 +4,7 @@
 - [动画优化](#animation)
 - [雅虎军规](https://github.com/sileny/docs/blob/master/yahoo/rules.md)
 - [大量操作dom](#dom)
+- [缓存](#cache)
 
 # server
 
@@ -270,6 +271,152 @@ server:
 
 如果确实需要大量的 `dom` 操作，可以使用 [fastdom](https://github.com/wilsonpage/fastdom)
 
+
+
+
+# cache
+
+
+- [nginx静态资源缓存](#静态资源缓存)
+- [nginx缓存指定目录下的资源](#nginx缓存指定目录下的资源)
+- [nginx location](#location)
+- [http2](#http2)
+- [proxy_cache_path](#proxy_cache_path)
+- [缓存location配置](#location)
+
+
+## 静态资源缓存
+
+nginx 提供了 `expires`、`ETag`、`if-modifyied-since` 指令来实现浏览器缓存控制
+
+- `expires`
+
+```
+location /img {
+    expires 90d; # 缓存90天
+}
+```
+
+对于静态资源，nginx 会自动添加 `ETag` 响应头信息。
+
+- `if-modified-since`
+
+此指令用来指定 `nginx` 如何拿到服务端的 `Last-Modified` 和浏览器端的 `if-modified-since` 时间进行比较。
+
+- 默认地，`if-modified-since` 执行的是 `exact` 匹配；
+- 也可以使用 `if-modified-since _before`，表示只要文件最后修改的时间早于或者等于浏览器的 `if-modified-since` 时间，返回 304
+
+```
+location = /cache {
+　　proxy_pass http://backend_tomcat/cache$is_args$args;
+　　expires 5s;
+}
+```
+
+1．浏览器发起请求，首先到Nginx，Nginx根据URL在Nginx本地查找是否有代理层本地缓存。
+
+2．Nginx没有找到本地缓存，则访问后端获取最新的文档，并放入到Nginx本地缓存中，返回200状态码和最新的文档给浏览器。
+
+3．Nginx找到本地缓存，首先验证文档是否过期（`Cache-Control:max-age=5`），如果过期，则访问后端获取最新的文档，并放入Nginx本地缓存中，返回200状态码和最新的文档给浏览器；如果文档没有过期，即if-modified-since与缓存文档的last-modified匹配，则返回304状态码给浏览器。
+
+
+
+
+## nginx缓存指定目录下的资源
+
+```
+http {
+    # ...
+    # 静态资源缓存：第一步
+    proxy_cache_path tmp-test levels=1:2 keys_zone=tmp-test:100m inactive=7d max_size=1000g;
+    # ...
+
+    server {
+        # ...
+        # 静态资源
+        location ~* ^.+\.(css|js|ico|gif|jpg|jpeg|png|webp)$ {
+            # 静态资源缓存：第二步
+            proxy_cache tmp-test; # 和 `proxy_cache_path tmp-test levels`的保持一致
+            proxy_cache_valid  200 206 304 301 302 10d;
+            proxy_cache_key $uri;
+            proxy_set_header   Host             $host:$server_port;
+            proxy_set_header   X-Real-IP        $remote_addr;
+            proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+            expires 90d;
+            proxy_pass http://localhost:8080; # 指向了开发环境的地址
+        }
+        # ...
+    }
+}
+```
+介绍下 `proxy_cache_path` 配置
+
+- `proxy_cache_path tmp-test`：缓存的路径为与 `nginx` 启动程序所在的目录同级的 `tmp-test`
+- `levels`：表示创建两级目录结构，比如 `/export/cache/proxy_cache//*/`，将所有文件放在一级目录结构中如果文件量很大会导致访问文件效率低。
+- `keys_zone`：设置存储所有缓存 `key` 和相关信息的共享内存区，1M大约能存储8000个key。
+- `inactive`：inactive指定被缓存的内容多久不被访问将从缓存中移除，以保证内容的新鲜;默认10分钟。
+- `max_size`：最大缓存阀值，`cachemanager`进程会监控最大缓存大小，当缓存达到该阀值，该进程将从缓存中移除最近最少使用的内容。
+- `use_temp_path`：如果为 `on`，则内容首先被写入临时文件(`proxy_temp_path`)，然后重命名到 `proxy_cache_path` 指定的目录;如果设置为 `off`，则内容直接被写入到 `proxy_cache_path` 指定的目录。
+- `proxy_cache` 启用proxy cache，并指定key_zone。另外，如果 `proxy_cache off` 表示关闭掉缓存。
+
+## location
+
+```
+location = /content {
+    proxy_cache cache;
+    proxy_cache_key $scheme$proxy_host$request_uri;
+    proxy_cache_valid 200 5s;
+    proxy_pass http://localhost/content$is_args$args;
+    add_header cache-status $upstream_cache_status;
+}
+```
+
+`proxy_cache`：指定使用哪个共享内存区域存储缓存键和相关信息;
+
+`proxy_cache_key`：设置缓存使用的key，默认为访问的完整URL，根据实际情况设置缓存key;
+
+`proxy_cache_valid`：为不同的响应状态码设置缓存时间;如果是 `proxy_cache_valid 5s` 则 `200`、`301`、`302`响应将被缓存;
+
+`proxy_cache_lock`：当多个客户端同时请求同一份内容时，如果开启 `proxy_cache_lock` (默认`off`)则只有一个请求被发送至后端;其他请求将等待该内容返回;当第一个请求返回时，其他请求将从缓存中获取内容返回;当第一个请求超过了 `proxy_cache_lock_timeout` 超时时间(默认 `5s`)，则其他请求将同时请求到后端来获取响应，且响应不会被缓存;启用 `proxy_cache_lock` 可以应对雪崩效应。
+
+
+
+
+
+
+## http2
+
+网站升级到 `http2`，会相对节省流量
+
+1.`nginx`
+
+添加 `nginx` 配置，原本 `https` 的 `listen` 为 `listen 443 ssl;`，修改为 `listen 443 ssl http2;`，然后，重启 `nginx`
+
+2.`HTTP/2的优势`
+
+- 多路复用
+可以用同一个连接传输多个资源。这可以使得 `http1` 的某些优化变得不必要。比如，
+  - 使用雪碧图技术，把多张小图合成一张大图，减少请求数
+  - 合并JS和CSS，减少请求数
+
+在 `http 1.1` 时代，由于需要建立多个 `TCP` 连接，服务器需要更多的线程来处理请求，同样地，浏览器也需要，所以浏览器会限制同一个域的同时请求数。Chrome是限制6个，总连接数是17个，其它浏览器的个数有所浮动，但差不多。而 `http2` 几乎没有请求并发限制
+
+
+- server push
+
+html没有加载，其他资源是不会加载的，而 `http2` 可以让服务把客户端很有可能请求的资源先 `push` 到客户端，不用等到请求的时候才发送。这样可以提高整体的渲染速度。
+
+`nginx` 官网目前暂不支持 `Server Push`，下面是一个 `http2` 的 `node.js` 的 demo
+```js
+response.push('/img/banner.png');
+```
+
+
+3.报文头压缩和二进制编码
+
+`http2` 修改了报文的传输格式。由 `http1.1` 变为 `http2` 的 `HEADERS frame` 和 `DATA frame` 等的形式
+
+如果浏览器不支持 `http/2` 会怎么样呢？也是能够正常打开的，为什么呢？因为建立 `https` 连接的时候需要先握手，浏览器或者客户端会发送一个Client Hello的包，这个包里面会说明它是否支持 `http2`，`nginx` 就能够根据握手信息决定是否使用 `http/2`，如果客户端不支持就使用 `http/1.1`
 
 
 
