@@ -22,7 +22,7 @@
 
 ```json
 {
-  "name": "vue2",
+  "name": "webpack-template",
   "version": "1.0.0",
   "author": "",
   "description": "",
@@ -187,7 +187,7 @@ module.exports = {
 };
 ```
 
-推荐使用 [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)
+但推荐使用更好的 [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)
 
 
 
