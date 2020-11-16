@@ -1,8 +1,52 @@
 # base64
 
 
+- [btoa](#btoa)
 - [ArrayBuffer转base64详解](#ArrayBuffer转base64详解)
 - [base64转换成Uint8Array](#base64转换成Uint8Array)
+
+
+
+## btoa
+
+转换成 base64
+
+- browser
+
+浏览器环境下转换成 `base64`
+
+```js
+bota('HELLO'); // "SEVMTE8="
+```
+
+- node
+
+node 环境下转换
+
+```js
+module.exports = function btoa(str) {
+  return new Buffer(str).toString('base64')
+};
+
+bota('HELLO'); // "SEVMTE8="
+```
+
+## atob
+
+- browser
+```js
+atob("SEVMTE8="); // "HELLO"
+```
+
+- node
+```js
+module.exports = function atob(str) {
+  return Buffer.from(str, 'base64').toString('binary')
+};
+
+atob("SEVMTE8="); // "HELLO"
+```
+
 
 ## ArrayBuffer转base64详解
 
