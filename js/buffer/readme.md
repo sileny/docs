@@ -2,7 +2,7 @@
 
 - [string-to-array-buffer](#string-to-array-buffer)
 - [string2uint8array](#string2uint8array)
-- [](#)
+- [Uint8Array转换成字符串](#uint8array2string)
 
 
 ## string-to-array-buffer
