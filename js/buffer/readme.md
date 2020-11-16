@@ -2,6 +2,7 @@
 
 - [string-to-array-buffer](#string-to-array-buffer)
 - [string2uint8array](#string2uint8array)
+- [](#)
 
 
 ## string-to-array-buffer
@@ -200,4 +201,18 @@ ArrayBuffer(5) {}
 byteLength: 5
 ```
 
+## uint8array2string
 
+`Uint8Array` 转字符串
+
+
+```js
+function uint8array2string(fileData){
+  var dataString = "";
+  for (var i = 0; i < fileData.length; i++) {
+    dataString += String.fromCharCode(fileData[i]);
+  }
+ 
+  return dataString
+}
+```
