@@ -1,7 +1,7 @@
 - # buffer
 
 - [string-to-array-buffer](#string-to-array-buffer)
-- []
+- [string2uint8array](#string2uint8array)
 
 
 ## string-to-array-buffer
@@ -158,5 +158,33 @@ ArrayBuffer.isView(int8a)  //return true  // 类方法ArrayBuffer.isView()判断
 - Float32Array：32位浮点数，长度4个字节。
 - Float64Array：64位浮点数，长度8个字节
 
+
+
+## string2uint8array
+
+```js
+function string2uint8array(str){
+  var arr = [];
+  for (var i = 0, j = str.length; i < j; ++i) {
+    arr.push(str.charCodeAt(i));
+  }
+ 
+  var tmpUint8Array = new Uint8Array(arr);
+  return tmpUint8Array
+}
+```
+
+打印 `string2uint8array('HELLO')`，输出如下，
+```
+Uint8Array(5) [72, 69, 76, 76, 79]
+```
+
+再看下 `str2ab('HELLO')` 输出的结果
+```
+ArrayBuffer(5) {}
+[[Int8Array]]: Int8Array(5) [72, 69, 76, 76, 79]
+[[Uint8Array]]: Uint8Array(5) [72, 69, 76, 76, 79]
+byteLength: 5
+```
 
 
