@@ -179,7 +179,20 @@ function string2uint8array(str){
 Uint8Array(5) [72, 69, 76, 76, 79]
 ```
 
-再看下 `str2ab('HELLO')` 输出的结果
+
+下面是 `ArrayBuffer` 与 `Uint8Array` 的应用，上面出现过
+```js
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
+  var bufView = new Uint8Array(buf);
+  for (var i = 0, strLen = str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+```
+
+再看下 `str2ab('HELLO')` 的输出结构，有 `Int8Array` 和 `Uint8Array` 两种可取的类型化数组
 ```
 ArrayBuffer(5) {}
 [[Int8Array]]: Int8Array(5) [72, 69, 76, 76, 79]
