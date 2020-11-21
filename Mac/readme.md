@@ -237,3 +237,24 @@ lts/erbium -> v12.19.0
 ```
 
 执行 `nvm ls-remote`，可以打印出更多的版本信息列表
+
+
+## idea
+
+在资源库文件夹内， 查找以下目录里所包含的IntelliJIdea文件夹，删除即可：
+
+（1）删除~/Library/Preferences/IntelliJIdea（IntelliJIdea后边跟版本发行日期）
+
+（2）删除~/Library/Caches/IntelliJIdea（IntelliJIdea后边跟版本发行日期）
+
+（3）删除~/Library/Application Support/IntelliJIdea（IntelliJIdea后边跟版本发行日期）
+
+（4）删除~/Library/ApplicationSupport/IntelliJIdea（IntelliJIdea后边跟版本发行日期）
+
+『注：此路径名与（3）不同：ApplicationSupport文件名中间没有空格，在（3）中Application Support文件名中，两个单词间有空格』
+
+（5）删除~/Library/Logs/IntelliJIdea（IntelliJIdea后边跟版本发行日期）
+
+至此，IntelliJ IDEA彻底删除卸载干净了，再次安装IntelliJ IDEA软件就能正常使用了
+
+
