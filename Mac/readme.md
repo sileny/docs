@@ -258,3 +258,7 @@ lts/erbium -> v12.19.0
 至此，IntelliJ IDEA彻底删除卸载干净了，再次安装IntelliJ IDEA软件就能正常使用了
 
 
+模糊查找路径
+```
+find ~ -iname "*idea*"
+```
