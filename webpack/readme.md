@@ -291,7 +291,7 @@ module.exports = {
 需要安装 `yarn add px2rem-loader sass sass-loader style-loader -D`
 
 
-** 注意 **
+**注意**
 
 1. 在 `vue` 模板中的 `<style lang='scss'>` 使用 `scss` 或者别的样式语言，需要使用 `vue-style-loader`
 ```js
