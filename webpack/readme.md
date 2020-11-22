@@ -1249,7 +1249,7 @@ module.exports = (env, args) => {
 - `scripts`
 ```
 "scripts": {
-  "analyze": "webpack --env production --config webpack-analyze.js && webpack-bundle-analyzer dist/stats.json",
+  "analyze": "webpack --env production --analyze && webpack-bundle-analyzer dist/stats.json",
   "dev": "webpack-dev-server --env development --inline --progress",
   "build": "webpack --env production"
 },
