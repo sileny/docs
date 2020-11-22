@@ -319,6 +319,27 @@ module.exports = {
 };
 ```
 
+需要注释 `import` 及 `Vue.use(xxx)`
+```js
+// import Vue from 'vue'
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
+import App from './App'
+ 
+Vue.config.productionTip = false
+ 
+// Vue.use(ElementUI)
+```
+
+**注**
+
+如果项目里配置了 `eslint`，那么，防止 `eslint` 报错，可以在 `globals` 里做配置
+```
+globals: {
+  Vue: false
+},
+```
+
 
 ### html配置
 
