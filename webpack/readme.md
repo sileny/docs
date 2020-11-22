@@ -257,6 +257,13 @@ module.exports = {
 压缩样式文件
 
 
+- `css-loader`
+
+会 `import/require()` 后再解析(`resolve`) `@import` 和 `url()` 语句
+
+因此，通常会使用 `file-loader` 和 `url-loader`
+
+
 
 - `postcss-loader`
 
@@ -274,13 +281,6 @@ module.exports = {
 - `clean-webpack-plugin`
 
 清理打包文件
-
-
-- `css-loader`
-
-会 `import/require()` 后再解析(`resolve`) `@import` 和 `url()` 语句
-
-因此，通常会使用 `file-loader` 和 `url-loader`
 
 
 ### cdn配置
