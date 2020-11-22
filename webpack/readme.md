@@ -319,7 +319,7 @@ module.exports = {
 };
 ```
 
-需要注释 `import` 及 `Vue.use(xxx)`
+引入外部资源后，需要注释 `import` 及 `Vue.use(xxx)`，此时，资源就完整地加载到内存，就没有按需引入这个说法
 ```js
 // import Vue from 'vue'
 // import ElementUI from 'element-ui'
