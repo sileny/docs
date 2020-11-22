@@ -623,7 +623,7 @@ module.exports = {
 
 **注意**
 
-如果是编译 `vue` 项目，需要用到 `vue-loader` 加载 `vue` 文件
+如果是编译 `vue` 项目，需要用到 `vue-loader` 加载 `vue` 文件，样式编译，用到 `vue-style-loader`
 ```js
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
@@ -641,6 +641,28 @@ module.exports = {
         test: /.vue$/,
         use: ['vue-loader'],
         include: [path.resolve(__dirname, './src')]
+      },
+      {
+        test: /.(sa|sc|c)ss$/,
+        use: [
+          { loader: 'vue-style-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          {
+            loader: 'px2rem-loader',
+            // options here
+            options: {
+              remUnit: 100, // 1rem = 100px
+              remPrecision: 8 // 计算出rem的小数点的个数
+            }
+          },
+          { loader: 'sass-loader' }
+        ]
       }
     ]
   },
@@ -863,6 +885,21 @@ module.exports = (env, args) => {
 ```
 
 
+### scripts
+
+项目使用了多个配置文件，其执行脚本如下，
+```
+"scripts": {
+  "analyze": "webpack --env production --config webpack-analyze.js && webpack-bundle-analyzer dist/stats.json",
+  "dev": "webpack-dev-server --env development --inline --progress --config webpack-dev.js",
+  "build": "webpack --env production --config webpack-prod.js"
+},
+```
+
+简化的配置在[这里](#最终配置)
+
+
+
 ### 源码结构
 
 ```
@@ -994,5 +1031,227 @@ module.exports = {
 [HMR]  - ./src/pages/index.vue?vue&type=template&id=57509004&
 [HMR]  - ./src/pages/index.vue?vue&type=template&id=57509004&
 [HMR] App is up to date.
+```
+
+
+## 最终配置
+
+- `webpack.config.js`
+```js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const webpack = require('webpack');
+
+module.exports = (env, args) => {
+  const { host, port, BRANCH } = args;
+  const isProd = env === 'production';
+  const entry = ['@babel/polyfill', path.resolve(__dirname, './src/index.js')];
+  let devServer = {};
+  let devtool = 'source-map';
+  const plugins = [];
+
+  if (!isProd) {
+    entry.push(`webpack-dev-server/client?http://${host}:${port}/`);
+
+    devServer = {
+      compress: true,
+      contentBase: path.resolve(__dirname, './dist'),
+      hot: true,
+      open: true
+    };
+
+    devtool = 'inline-source-map';
+
+    plugins.push(new webpack.HotModuleReplacementPlugin());
+  } else {
+    const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+    const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+    plugins.push(
+      new CleanWebpackPlugin({
+        root: path.resolve(__dirname, './'),
+        verbose: true,
+        dry: false
+      }),
+      new OptimizeCssAssetsPlugin({
+        assetNameRegExp: /.css$/g,
+        cssProcessor: require('cssnano'),
+        cssProcessorPluginOptions: {
+          preset: ['default', { discardComments: { removeAll: true } }]
+        },
+        canPrint: true
+      })
+    );
+  }
+
+  return {
+    mode: env,
+    devtool,
+    devServer,
+    entry,
+    output: {
+      path: path.resolve(__dirname, './dist'),
+      filename: 'js/[name].js'
+    },
+    resolve: {
+      extensions: ['.js', '.json', '.scss', '.less'],
+      alias: {
+        '@': path.resolve(__dirname, './src')
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /.js$/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+              // plugins: ['@babel/transform-runtime']
+            }
+          },
+          exclude: /node_modules/
+        },
+        {
+          test: /.(png|svg|jpg|gif)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[ext]?[hash]'
+              }
+            }
+          ]
+        },
+        {
+          test: /.(woff|woff2|eot|ttf|otf)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[ext]?[hash]'
+              }
+            }
+          ]
+        },
+        {
+          test: /.(mp3|wav|wma|ape|aac)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[ext]?[hash]'
+              }
+            }
+          ]
+        },
+        {
+          test: /.(sa|sc|c)ss$/,
+          use: [
+            { loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader' },
+            { loader: 'css-loader' },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: [require('autoprefixer')]
+              }
+            },
+            {
+              loader: 'px2rem-loader',
+              // options here
+              options: {
+                remUnit: 100, // 1rem = 100px
+                remPrecision: 8 // 计算出rem的小数点的个数
+              }
+            },
+            // Uncaught Error: Module build failed (from ./node_modules/px2rem-loader/index.js):
+            // Error: undefined:21:5: property missing ':'
+            { loader: 'sass-loader' }
+          ]
+        }
+      ]
+    },
+    optimization: {
+      splitChunks: {
+        minSize: 0, // 包最小的体积 0代表无条件提取
+        chunks: 'async',
+        maxSize: 20000, // 为0，则每个文件在每个阶段被编译后的文件内容都可以被访问到，例如，http://localhost:8080/js/main~src_pages_index_vue_这里的哈希不同而已.js
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        automaticNameDelimiter: '~',
+        cacheGroups: {
+          // commons:{ // 抽取基础库 vue、vue-router、vuex、react、react-dom
+          //   test:/(vue|vue-router|vuex)/,
+          //   name:'vendors',
+          //   chunks: 'all'// 同步&异步加载的都提取出来
+          // },
+          commons: {
+            // 抽取基础库 vue、vue-router、vuex、react、react-dom
+            name: 'commons',
+            chunks: 'all', // 同步&异步加载的都提取出来
+            minChunks: 2
+          }
+        }
+      }
+    },
+    plugins: [
+      ...plugins,
+      new webpack.DefinePlugin({
+        'process.env': JSON.stringify({
+          ...process.env,
+          BRANCH,
+          TIME: Date.now(),
+          VERSION: JSON.stringify('5fa3b9'),
+          BROWSER_SUPPORTS_HTML5: true
+        })
+      }),
+      new CompressionWebpackPlugin({
+        filename: '[file].gz[query]',
+        algorithm: 'gzip',
+        threshold: 10240,
+        test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i,
+        minRatio: 0.8,
+        deleteOriginalAssets: false
+      }),
+      new MiniCssExtractPlugin({
+        filename: 'css/' + (isProd ? '[name].css' : '[name].[contenthash].css'),
+        chunkFilename: 'css/' + (isProd ? '[id].css' : '[id].[contenthash].css')
+      }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, './index.html')
+      }),
+      new HtmlWebpackExternalsPlugin({ // 引入cdn资源
+        externals: [
+          {
+            module: 'vue',
+            entry: 'https://unpkg.com/vue@2.6.11/dist/vue.min.js',
+            global: 'Vue'
+          },
+          {
+            module: 'vue-router',
+            entry: 'https://unpkg.com/vue-router@3.2.0/dist/vue-router.min.js',
+            global: 'VueRouter'
+          }
+        ]
+      })
+    ]
+  };
+};
+
+```
+
+**Vue项目配置**，参考[打包配置`webpack-base.js`](#打包配置)
+
+
+- `scripts`
+```
+"scripts": {
+  "analyze": "webpack --env production --config webpack-analyze.js && webpack-bundle-analyzer dist/stats.json",
+  "dev": "webpack-dev-server --env development --inline --progress",
+  "build": "webpack --env production"
+},
 ```
 
