@@ -1040,18 +1040,43 @@ module.exports = {
 ```js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = (env, args) => {
-  const { host, port, BRANCH } = args;
+  const { host, port, BRANCH, analyze } = args;
   const isProd = env === 'production';
   const entry = ['@babel/polyfill', path.resolve(__dirname, './src/index.js')];
   let devServer = {};
   let devtool = 'source-map';
   const plugins = [];
+  let optimization = {
+    splitChunks: {
+      minSize: 0, // 包最小的体积 0代表无条件提取
+      chunks: 'async',
+      maxSize: 20000, // 为0，则每个文件在每个阶段被编译后的文件内容都可以被访问到，例如，http://localhost:8080/js/main~src_pages_index_vue_这里的哈希不同而已.js
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      automaticNameDelimiter: '~',
+      cacheGroups: {
+        // commons:{ // 抽取基础库 vue、vue-router、vuex、react、react-dom
+        //   test:/(vue|vue-router|vuex)/,
+        //   name:'vendors',
+        //   chunks: 'all'// 同步&异步加载的都提取出来
+        // },
+        commons: {
+          // 抽取基础库 vue、vue-router、vuex、react、react-dom
+          name: 'commons',
+          chunks: 'all', // 同步&异步加载的都提取出来
+          minChunks: 2
+        }
+      }
+    }
+  };
 
   if (!isProd) {
     entry.push(`webpack-dev-server/client?http://${host}:${port}/`);
@@ -1084,6 +1109,27 @@ module.exports = (env, args) => {
         canPrint: true
       })
     );
+    optimization = {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            // 抽取基础库 vue、vue-router、vuex、react、react-dom
+            test: /(vue|vue-router|vuex)/,
+            name: 'commons',
+            chunks: 'all' // 同步&异步加载的都提取出来
+          }
+        }
+      }
+    };
+    if (analyze) {
+      plugins.push(
+        new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
+          analyzerMode: 'disabled',
+          generateStatsFile: true,
+          statsOptions: { source: false }
+        })
+      );
+    }
   }
 
   return {
@@ -1091,18 +1137,25 @@ module.exports = (env, args) => {
     devtool,
     devServer,
     entry,
+    optimization,
     output: {
       path: path.resolve(__dirname, './dist'),
       filename: 'js/[name].js'
     },
     resolve: {
-      extensions: ['.js', '.json', '.scss', '.less'],
+      extensions: ['.js', '.json', '.vue', '.scss', '.less'],
       alias: {
+        vue$: 'vue/dist/vue.esm.js',
         '@': path.resolve(__dirname, './src')
       }
     },
     module: {
       rules: [
+        {
+          test: /.vue$/,
+          use: ['vue-loader'],
+          include: [path.resolve(__dirname, './src')]
+        },
         {
           test: /.js$/,
           use: {
@@ -1150,7 +1203,7 @@ module.exports = (env, args) => {
         {
           test: /.(sa|sc|c)ss$/,
           use: [
-            { loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader' },
+            { loader: isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader' },
             { loader: 'css-loader' },
             {
               loader: 'postcss-loader',
@@ -1173,35 +1226,10 @@ module.exports = (env, args) => {
         }
       ]
     },
-    optimization: {
-      splitChunks: {
-        minSize: 0, // 包最小的体积 0代表无条件提取
-        chunks: 'async',
-        maxSize: 20000, // 为0，则每个文件在每个阶段被编译后的文件内容都可以被访问到，例如，http://localhost:8080/js/main~src_pages_index_vue_这里的哈希不同而已.js
-        minChunks: 1,
-        maxAsyncRequests: 30,
-        maxInitialRequests: 30,
-        automaticNameDelimiter: '~',
-        cacheGroups: {
-          // commons:{ // 抽取基础库 vue、vue-router、vuex、react、react-dom
-          //   test:/(vue|vue-router|vuex)/,
-          //   name:'vendors',
-          //   chunks: 'all'// 同步&异步加载的都提取出来
-          // },
-          commons: {
-            // 抽取基础库 vue、vue-router、vuex、react、react-dom
-            name: 'commons',
-            chunks: 'all', // 同步&异步加载的都提取出来
-            minChunks: 2
-          }
-        }
-      }
-    },
     plugins: [
       ...plugins,
       new webpack.DefinePlugin({
         'process.env': JSON.stringify({
-          ...process.env,
           BRANCH,
           TIME: Date.now(),
           VERSION: JSON.stringify('5fa3b9'),
@@ -1223,7 +1251,8 @@ module.exports = (env, args) => {
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, './index.html')
       }),
-      new HtmlWebpackExternalsPlugin({ // 引入cdn资源
+      new VueLoaderPlugin(),
+      new HtmlWebpackExternalsPlugin({
         externals: [
           {
             module: 'vue',
@@ -1234,6 +1263,11 @@ module.exports = (env, args) => {
             module: 'vue-router',
             entry: 'https://unpkg.com/vue-router@3.2.0/dist/vue-router.min.js',
             global: 'VueRouter'
+          },
+          {
+            module: 'vuex',
+            entry: 'https://unpkg.com/vuex@3.5.1/dist/vuex.min.js',
+            global: 'Vuex'
           }
         ]
       })
