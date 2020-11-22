@@ -1289,3 +1289,99 @@ module.exports = (env, args) => {
 },
 ```
 
+- 完整的 `package.json` 配置
+
+```
+{
+  "name": "webpack-template",
+  "version": "1.0.0",
+  "author": "",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "analyze": "webpack --env production --analyze && webpack-bundle-analyzer dist/stats.json",
+    "dev": "webpack-dev-server --env development --inline --progress",
+    "build": "webpack --env production"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@silen/font-size": "^1.1.0",
+    "normalize.css": "^8.0.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@vue/babel-preset-app": "^4.5.8",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "autoprefixer": "^6.7.7",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "compression-webpack-plugin": "^6.1.1",
+    "css-loader": "^3.5.3",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-standard": "^16.0.1",
+    "eslint-config-vue": "^2.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.1.0",
+    "eslint-plugin-vue": "^7.1.0",
+    "eslint-webpack-plugin": "^2.3.0",
+    "file-loader": "^6.0.0",
+    "html-webpack-externals-plugin": "^3.8.0",
+    "html-webpack-plugin": "^4.5.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.1",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^2.1.2",
+    "px2rem-loader": "^0.1.9",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "vue-loader": "^15.9.2",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^5.6.0",
+    "webpack-bundle-analyzer": "^4.1.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sileny/webpack-template.git"
+  },
+  "keywords": [
+    "webpack5",
+    "vue",
+    "react"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,vue,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "src/**/*.{css,scss,less,html,md,markdown}": [
+      "prettier --write"
+    ]
+  },
+  "license": "MIT"
+}
+
+```
+
