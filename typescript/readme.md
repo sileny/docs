@@ -1,6 +1,7 @@
 # typescript
 
 - [constructor](#constructor)
+- [装饰器](#decorator)
 - [apply](#apply)
 - [setTimeout](#settimeout)
 - [可索引类型](#可索引类型)
@@ -53,6 +54,116 @@ class Person {
   constructor(public name: string) {}
 }
 ```
+
+
+## decorator
+
+1. 对类进行扩展
+
+```ts
+class Person {
+  constructor() {}
+}
+
+interface Person {
+  name: string;
+  age: number;
+}
+```
+
+上面的 `Interface` 和 `class` 是同名的，因此，属性会合并到一起
+
+使用装饰器对 `Person` 进行扩展
+
+定义一个装饰器
+```ts
+function enhancer(target: any) {
+  target.prototype.xx = 'xx';
+  target.prototype.yy = 'yy';
+}
+```
+
+使用 `enhancer` 对 `Person` 进行扩展
+
+```ts
+@enhancer
+class Person {
+  constructor() {}
+}
+
+const p = new Person();
+console.log(p.xx);
+```
+
+
+2. 使用装饰器替换类
+
+```ts
+namespace b {
+  // 返回一个新的类
+  function enhancer(target: any) {
+    return class {
+      public age: number = 20;
+    }
+  }
+
+  @enhancer
+  class Person {
+    constructor() {}
+  }
+
+  const p = new Person();
+  // console.log(p.name); // 报错
+  console.log(p.age);
+}
+```
+
+3. 使用装饰器 `extends` 类
+
+```ts
+namespace b {
+  // 返回一个新的类，该类继承自target参数，即，Person类
+  function enhancer(target: any) {
+    return class Child extends target {
+      public age: number = 20;
+    }
+  }
+
+  @enhancer
+  class Person {
+    name: string = 'parent name';
+    constructor() {}
+  }
+
+  const p = new Person();
+  // console.log(p.name); // 报错
+  console.log(p.age);
+}
+```
+
+
+4. 装饰器工厂
+
+通过传递参数的形式返回一个新的类
+```ts
+function enhancer(Clazz: any) {
+  // 返回一个装饰器
+  return function decorator(target: any) {
+    // 返回一个新的类
+    return class Child extends Clazz {
+      name: string = 'person';
+      age: number = 10;
+    }
+  }
+}
+
+@enhancer(Person)
+class Person {
+  name: string = 'person';
+  constructor() {}
+}
+```
+
 
 
 ## apply
