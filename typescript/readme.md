@@ -276,6 +276,34 @@ namespace d {
 ```
 
 
+8. 转换数据类型
+
+```ts
+namespace d {
+  function toNumber(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+    // 获取旧的方法
+    let oldMethod = descriptor.value;
+    descriptor.value = (...args: any[]) => {
+      return oldMethod.apply(this, args.map(val => parseFloat(val)));
+    };
+  }
+
+  class Person {
+    @toNumber
+    sum(...args: any[]) {
+      return args.reduce((a, b) => a + b, '');
+    }
+  }
+
+  const p = new Person();
+  p.sum(1, 2, '3'); // 6
+}
+```
+
+
+
+
+
 
 ## apply
 
