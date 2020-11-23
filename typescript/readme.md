@@ -165,6 +165,39 @@ class Person {
 ```
 
 
+5. 装饰属性
+
+使用装饰器装饰属性
+```ts
+namespace c {
+  // 如果装饰的是个普通的属性，这个target指向的是target指向类的原型，即，Person.prototype
+  // 如果装饰的是一个类的属性static，这个target指定类的定义，即，Person
+  function upper(target: any, propertyName: string) {
+    let value = target[propertyName];
+    const getter = () => value;
+    const setter = (newVal: string) => {
+      value = newVal.toUpperCase();
+    };
+    Object.defineProperty(target, propertyName, {
+      get: getter,
+      set: setter,
+      enumerable: true,
+      configurable: true
+    });
+  }
+
+  class Person {
+    @upper()
+    name: string;
+  }
+
+  const p = new Person();
+  p.name = 'test';
+  console.log(p.name); // TEST
+}
+```
+
+
 
 ## apply
 
