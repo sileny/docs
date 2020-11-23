@@ -5,6 +5,7 @@
 - [可索引类型](#可索引类型)
 - [interface和type关键字](#interface和type关键字)
 - [Objects/Functions](#Objects-Functions)
+- [function](#function)
 - [其他数据类型](#其他数据类型)
 - [Extend](#Extend)
 - [interface extends interface](#interface-extends-interface)
@@ -184,6 +185,19 @@ type Point = {
 type SetPoint = (x:number,y:number) => void;
 
 ```
+
+
+## function
+
+```ts
+type FunctionType = (firstName: string, lastName: string) => string;
+
+const getName: FunctionType = function(firstName: string, lastName: string): string {
+  return firstName + lastName;
+}
+```
+
+
 
 ## 其他数据类型
 
