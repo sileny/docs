@@ -1,5 +1,6 @@
 # typescript
 
+- [constructor](#constructor)
 - [apply](#apply)
 - [setTimeout](#settimeout)
 - [可索引类型](#可索引类型)
@@ -34,6 +35,24 @@
 - [类型断言](#类型断言)
 - [函数重载](#函数重载)
 
+
+
+## constructor
+
+```ts
+class Person {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+```
+等价于
+```ts
+class Person {
+  constructor(public name: string) {}
+}
+```
 
 
 ## apply
