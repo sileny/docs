@@ -170,8 +170,6 @@ class Person {
 使用装饰器装饰属性
 ```ts
 namespace c {
-  // 如果装饰的是个普通的属性，这个target指向的是target指向类的原型，即，Person.prototype
-  // 如果装饰的是一个类的属性static，这个target指定类的定义，即，Person
   function upper(target: any, propertyName: string) {
     let value = target[propertyName];
     const getter = () => value;
@@ -194,6 +192,86 @@ namespace c {
   const p = new Person();
   p.name = 'test';
   console.log(p.name); // TEST
+}
+```
+
+- 如果装饰的是个普通的属性，这个target指向的是target指向类的原型，即，Person.prototype
+- 如果装饰的是一个类的属性static，这个target指定类的定义，即，Person
+
+
+6. 装饰方法
+
+使用装饰器装饰方法
+```ts
+namespace c {
+  // 如果装饰的是个普通的属性，这个target指向的是target指向类的原型，即，Person.prototype
+  // 如果装饰的是一个类的属性static，这个target指定类的定义，即，Person
+  function upper(target: any, propertyName: string) {
+    let value = target[propertyName];
+    const getter = () => value;
+    const setter = (newVal: string) => {
+      value = newVal.toUpperCase();
+    };
+    Object.defineProperty(target, propertyName, {
+      get: getter,
+      set: setter,
+      enumerable: true,
+      configurable: true
+    });
+  }
+
+  function propertyEnumerable(flag: boolean) {
+    return function(target: any, propertyName: string) {
+      
+    }
+  }
+
+  function methodEnumerable(flag: boolean) {
+    // 装饰方法：一般传入下面三个参数
+    // target:被装饰的property或class
+    // propertyName:属性名
+    // descriptor: 属性描述符
+    return function(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+      descriptor.enumerable = flag;
+    }
+  }
+
+  class Person {
+    @upper()
+    @propertyEnumerable(false)
+    name: string;
+
+    @methodEnumerable(true)
+    getName() {
+      console.log(this.name);
+    }
+  }
+
+  const p = new Person();
+  p.name = 'test';
+  console.log(p.name); // TEST
+}
+```
+
+
+7. 装饰静态方法
+
+```ts
+namespace d {
+  function setAge(age: number) {
+    return function(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+      target.age = age;
+    }
+  }
+
+  class Person {
+    static age: number;
+
+    @setAge(100)
+    static getAge() {}
+  }
+
+  console.log(Person.age); // 100
 }
 ```
 
