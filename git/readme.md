@@ -6,6 +6,7 @@
 - [push](#push)
 - [更新代码后提交](#update)
 - [githooks](#githooks)
+- [git-mergetool](#git-mergetool)
 
 ## init
 ```
@@ -78,3 +79,56 @@ yarn add husky lint-staged -D
   ]
 }
 ```
+
+# git-mergetool
+
+代码合并工具
+
+- windows 系统
+
+```
+[user]
+	email = username@mail.com
+[http]
+	sslVerify = false
+	postbuffer = 104857600
+[winUpdater]
+	recentlySeenVersion = 2.29.2.windows.2
+[diff]
+    external = 'D:/Program Files/Beyond Compare 4/BCompare.exe' "$PWD/$LOCAL" "$PWD/$REMOTE"
+    renames = true
+ 
+[mergetool "bcomp"]
+    cmd = 'D:/Program Files/Beyond Compare 4/BCompare.exe' "$PWD/$REMOTE" "$PWD/$BASE" "$PWD/$LOCAL" "$PWD/$MERGED"
+    trustExitCode = false
+ 
+[mergetool]
+    keepBackup = false
+ 
+[merge]
+    tool = bcomp
+    stat = true
+
+```
+
+
+- MacOs
+
+```
+[diff] 
+    external = /Applications/AraxisMerge.app/Contents/Utilities/araxisgitdiff
+    renames = true
+
+[mergetool "araxis"] 
+    cmd = '/Applications/AraxisMerge.app/Contents/Utilities/araxisgitmerge' "$PWD/$REMOTE" "$PWD/$BASE" "$PWD/$LOCAL" "$PWD/$MERGED"
+    trustExitCode = false
+
+[mergetool]
+    keepBackup = false
+
+[merge] 
+    tool = araxis
+    stat = true
+```
+
+
