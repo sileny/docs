@@ -1,5 +1,6 @@
 # 脚手架基本配置
 
+
 - [基础配置](#基础配置)
 - [项目规范配置](#项目规范配置)
 - [项目配置](#项目配置)
@@ -927,7 +928,6 @@ new Vue({
 <template>
   <div class="app">
     <router-view></router-view>
-    <!-- 删除试试 底部菜单 -->
     <FooterCmp></FooterCmp>
   </div>
 </template>
@@ -979,7 +979,7 @@ yarn add cross-env -D
 "dev": "cross-env NODE_ENV='development' webpack-dev-server --env development --inline --progress",
 "build": "cross-env NODE_ENV='production' webpack --env production --mode=production"
 ```
-比下面的配置少 `0.6k` 的代码
+比下面的配置少 `0.6k` 的代码，应该是在为嵌入 `if (process.env.NODE_ENV)` 之类的代码
 ```
 "dev": "webpack-dev-server --env development --inline --progress",
 "build": "webpack --env production --mode=production"
