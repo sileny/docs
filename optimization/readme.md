@@ -1,6 +1,7 @@
 # optimization
 
 - [server端优化](#server)
+- [dns](#dns)
 - [动画优化](#animation)
 - [雅虎军规](https://github.com/sileny/docs/blob/master/yahoo/rules.md)
 - [大量操作dom](#dom)
@@ -254,6 +255,14 @@ server:
 
 
 
+# dns
+
+DNS 实现域名到IP的映射。通过域名访问站点，每次请求都要做DNS解析。目前每次DNS解析，通常在200ms以下。一般采用DNS Prefetch 一种DNS 预解析技术，当你浏览网页时，浏览器会在加载网页时对网页中的域名进行解析缓存，这样在你单击当前网页中的连接时就无需进行DNS的解析，减少用户等待时间，提高用户体验
+
+```
+<link rel="dns-prefetch" href="www.baidu.com" />
+```
+
 
 
 
@@ -283,6 +292,7 @@ server:
 - [http2](#http2)
 - [proxy_cache_path](#proxy_cache_path)
 - [缓存location配置](#location)
+- [localForage](./localForage.md)
 
 
 ## 静态资源缓存
