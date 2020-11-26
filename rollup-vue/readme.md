@@ -165,3 +165,31 @@ export default {
 ```
 
 项目代码在[这里](https://github.com/sileny/unity)
+
+3、进一步优化
+
+```
+<div class="unity-loader" v-if="!loaded">
+  <div class="unity-loader-bar">
+    <div class="unity-loader-fill" :style="{ width: progress * 100 + '%' }"></div>
+    <div class="unity-loader-text text-center">loading...</div>
+  </div>
+</div>
+```
+
+这部分代码嵌入到了组件内部，不方便实现纯粹的自定义的进度加载
+
+进行如下改写
+
+直接将上述的代码替换为 `<slot></slot>`
+
+最终 `template` 代码如下
+```
+<template>
+  <div class="unity-wrapper">
+    <div :id="containerId" :style="{ width: width + 'px', height: height + 'px' }"></div>
+    <slot></slot>
+    <div class="unity-button" v-if="hideFullButton !== true" @click="fullscreen">Fullscreen</div>
+  </div>
+</template>
+```
