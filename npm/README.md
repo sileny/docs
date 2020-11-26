@@ -47,13 +47,13 @@ app.listen(PORT, () => console.log(`app is running at localhost:${port}`));
 ```
 git init
 
-git config user.name sunsilently
+git config user.name xxx
 
-git config user.email sunsilently@outlook.com
+git config user.email yyy@mail.com
 
-git remote add origin https://github.com/sileny/名称
+git remote add origin https://github.com/xxx/名称
 
-git pull https://github.com/sileny/名称 main
+git pull https://github.com/xxx/名称 main
 
 git branch -m master main
 
@@ -78,7 +78,7 @@ $ npm init
 ```json
 "repository": {
   "type": "git",
-  "url": "git+https://github.com/sileny/docs.git"
+  "url": "git+https://github.com/xxx.git"
 },
 ```
 
