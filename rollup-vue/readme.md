@@ -184,7 +184,7 @@ export default {
 直接将上述的代码替换为 `<slot></slot>`
 
 最终 `template` 代码如下
-```
+```vue
 <template>
   <div class="unity-wrapper">
     <div :id="containerId" :style="{ width: width + 'px', height: height + 'px' }"></div>
@@ -193,3 +193,21 @@ export default {
   </div>
 </template>
 ```
+
+此时，在外部引入组件后，可以嵌入自定义的进度组件
+
+```vue
+<template>
+  <Unity
+    ref="unityRef"
+    src="./Build/WebglTest.json"
+    unityLoader="./Build/UnityLoader.js"
+    :hide-full-button="true"
+    @loaded="onLoaded"
+    @progress="onProgress"
+  >
+    <YourLoadingComponent></YourLoadingComponent>
+  </Unity>
+</template>
+```
+
