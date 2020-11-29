@@ -99,6 +99,7 @@ This may also be found at: C:\Users\USERNAME\.jenkins\secrets\initialAdminPasswo
 - 触发远程构建 (例如,使用脚本):
 - 使用远程脚本出发任务
 - git仓库代码更新后执行
+- `build` 构建的时候可以传入[环境变量](./env.md)
 
 
 ### 配置邮件
