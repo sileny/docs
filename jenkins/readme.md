@@ -67,7 +67,7 @@ This may also be found at: C:\Users\USERNAME\.jenkins\secrets\initialAdminPasswo
 
 访问 `http://127.0.0.1:3344`，输入账号密码
 
-密码就是 `b097438d3d6e429d8c5573b6128753d3`
+密码就是 `b097438d3d6e867d8c5573b6296753d3`
 
 完成配置
 
@@ -95,6 +95,11 @@ This may also be found at: C:\Users\USERNAME\.jenkins\secrets\initialAdminPasswo
 
 
 - 构建触发器
+
+    - 触发远程构建 (例如,使用脚本):
+    - 使用远程脚本出发任务
+    - git仓库代码更新后执行
+
 
 - 构建环境
 
