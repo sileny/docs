@@ -136,4 +136,9 @@ This may also be found at: C:\Users\USERNAME\.jenkins\secrets\initialAdminPasswo
   - `Charset`
 
 
+- 进入刚刚新建的项目
 
+`Triggers` --> `Build` --> `Post-build Actions`
+  - `Editable Email Notification` --> `Project Recipient List`，此处，输入邮箱地址，多个用英文逗号分隔开
+  - `Attach Build Log` --> 改为你想选择的模式，此处选了 `Attach Build Log`
+  - 点击 `Advanced Settings...`，`Triggers`，点击 `Add Trigger`，选择 `Always`，`Send To`，结束
