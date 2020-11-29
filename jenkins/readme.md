@@ -81,31 +81,59 @@ This may also be found at: C:\Users\USERNAME\.jenkins\secrets\initialAdminPasswo
 
 ## 配置任务
 
-- General
+### General
 
-　　目前仅需填写描述,其他不做了解
+目前仅需填写描述,其他不做了解
 
-- 源码管理
+### 源码管理
 
-    源码管理分两种方式，本地和远程(git/svn,两种操作方式类似)
+源码管理分两种方式，本地和远程(git/svn,两种操作方式类似)
 
-    选择 `git`，填写仓库、需要构建的分支信息等
+选择 `git`，填写仓库、需要构建的分支信息等
 
-    本地选无,然后把代码文件拉入jekenis工作空间中(workspace)
-
-
-- 构建触发器
-
-    - 触发远程构建 (例如,使用脚本):
-    - 使用远程脚本出发任务
-    - git仓库代码更新后执行
+本地选无,然后把代码文件拉入jekenis工作空间中(workspace)
 
 
-- 构建环境
+### 构建触发器
 
-- 构建
+- 触发远程构建 (例如,使用脚本):
+- 使用远程脚本出发任务
+- git仓库代码更新后执行
 
-- 发送构建邮件配置
 
-  - `E-mail Notification` 的 `User Name` 和 `Jenkins Location` 的 `System Admin e-mail address` 是一致的，此处的 `Password` 应该填写官方的授权码，`Reply-To Address` 是收件箱地址，与签名的不一样
+### 配置邮件
+
+发送构建邮件配置
+
+`Manage Jenkins` --> `Config System`
+
+- `Jenkins Location`
+
+`System Admin e-mail address` 填写邮箱地址
+
+- `Extended E-mail Notification`
+
+  - `SMTP server`
+  - `SMTP Port`： 465
+  - `SMTP Username`: 邮箱地址
+  - `SMTP Password`
+  - `Use SSL`
+  - `Default user e-mail suffix`
+  - `Charset`: UTF-8
+  - `Default Recipients`: 邮箱地址
+
+
+- `E-mail Notification`
+
+  - `SMTP server`
+  - `Default user e-mail suffix`
+  - `Use SMTP Authentication`
+  - `	User Name`
+  - `Password`
+  - `Use SSL`
+  - `SMTP Port`
+  - `Reply-To Address`
+  - `Charset`
+
+
 
