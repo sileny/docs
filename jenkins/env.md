@@ -1,8 +1,8 @@
 # env
 
-Windows：%BUILD_NUMBER%        %变量名%
+Windows：`%BUILD_NUMBER%` 格式，`%变量名%`
 
-Linux：${BUILD_NUMBER} ，也可以直接使用$BUILD_NUMBER
+Linux：`${BUILD_NUMBER}`，也可以直接使用 `$BUILD_NUMBER`
 
 自定义的参数化（Parameter）在调用时可以直接 用 `$参数名`，比如，`$endPoint`
 
