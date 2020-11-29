@@ -107,3 +107,5 @@ This may also be found at: C:\Users\USERNAME\.jenkins\secrets\initialAdminPasswo
 
 - 发送构建邮件配置
 
+  - `E-mail Notification` 的 `User Name` 和 `Jenkins Location` 的 `System Admin e-mail address` 是一致的，此处的 `Password` 应该填写官方的授权码，`Reply-To Address` 是收件箱地址，与签名的不一样
+
