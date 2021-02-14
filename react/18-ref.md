@@ -1,7 +1,7 @@
 # ref
 
 - [新写法](#新写法)
-- [函数式写法--不推荐](#函数式写法)
+- [函数式写法](#函数式写法)
 
 
 ## 新写法
@@ -56,7 +56,34 @@ class App extends React.Component {
     return (
       <div class="app">
         {/* 绑定ref实例到dom元素上 */}
-        <input type="text" placeholder="" ref={dom => this.inputDom = dom}>
+        <input type="text" placeholder="" ref={dom => {
+          console.log(`执行了多次`);
+          this.inputDom = dom;
+        }>
+      </div>
+    )
+  }
+}
+```
+
+推荐使用下面的写法，即，`You can avoid this by defining the ref callback as a bound method on the class, but note that it shouldn’t matter in most cases`
+```jsx
+class App extends React.Component {
+  constructor() {
+    super();
+    this.inputDom = null;
+  }
+
+  saveInput(dom) {
+    console.log(`只会执行一次`);
+    this.inputDom = dom;
+  }
+
+  render() {
+    return (
+      <div class="app">
+        {/* 绑定ref实例到dom元素上 */}
+        <input type="text" placeholder="" ref={this.saveInput}>
       </div>
     )
   }
