@@ -1,5 +1,11 @@
 # ref
 
+- [新写法](#新写法)
+- [函数式写法](#函数式写法)
+
+
+## 新写法
+
 `ref` 的用法
 
 - 先创建ref
@@ -30,6 +36,26 @@ class App extends React.Component {
       <div class="app">
         {/* 绑定ref实例到dom元素上 */}
         <input type="text" placeholder="" ref={this.inputDom}>
+      </div>
+    )
+  }
+}
+```
+
+## 函数式写法
+
+```jsx
+class App extends React.Component {
+  constructor() {
+    super();
+    this.inputDom = null;
+  }
+
+  render() {
+    return (
+      <div class="app">
+        {/* 绑定ref实例到dom元素上 */}
+        <input type="text" placeholder="" ref={dom => this.inputDom = dom}>
       </div>
     )
   }
