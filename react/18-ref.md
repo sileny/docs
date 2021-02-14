@@ -1,7 +1,7 @@
 # ref
 
 - [新写法](#新写法)
-- [函数式写法](#函数式写法)
+- [函数式写法--不推荐](#函数式写法)
 
 
 ## 新写法
@@ -44,6 +44,7 @@ class App extends React.Component {
 
 ## 函数式写法
 
+不推荐的写法，看[这里](https://reactjs.org/docs/refs-and-the-dom.html#caveats-with-callback-refs)
 ```jsx
 class App extends React.Component {
   constructor() {
